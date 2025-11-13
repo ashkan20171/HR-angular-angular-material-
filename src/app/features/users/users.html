@@ -1,44 +1,31 @@
-<div class="users-page">
-
-  <div class="header-row">
-    <h2>مدیریت کاربران</h2>
-
-    <button class="add-btn" (click)="addUser()">
-      ➕ افزودن کاربر
-    </button>
-  </div>
-
-  <div class="search-box">
-    <input type="text" placeholder="جستجو..." [(ngModel)]="searchText">
-  </div>
-
-  <table class="users-table">
-    <thead>
-      <tr>
-        <th>نام</th>
-        <th>نقش</th>
-        <th>وضعیت</th>
-        <th>عملیات</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let u of filteredUsers">
-        <td>{{ u.name }}</td>
-        <td>{{ u.role }}</td>
-
-        <td>
-          <span class="status" [ngClass]="u.status.toLowerCase()">
-            {{ u.status }}
-          </span>
-        </td>
-
-        <td>
-          <button class="edit" (click)="editUser(u)">✏️</button>
-          <button class="delete" (click)="deleteUser(u)">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
+<div class="users-header">
+  <h2>مدیریت کاربران</h2>
+  <button class="btn-add" (click)="add()">➕ افزودن کاربر</button>
 </div>
+
+<input class="search-input" placeholder="جستجو..." [(ngModel)]="search">
+
+<table class="users-table">
+  <thead>
+    <tr>
+      <th>نام</th>
+      <th>نام کاربری</th>
+      <th>نقش</th>
+      <th>ایمیل</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let u of filtered()">
+      <td>{{ u.name }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.role }}</td>
+      <td>{{ u.email }}</td>
+      <td class="actions">
+        <button (click)="edit(u.id)">✏️</button>
+        <button (click)="delete(u.id)">🗑️</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

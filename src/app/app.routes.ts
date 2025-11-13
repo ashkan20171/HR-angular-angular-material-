@@ -27,7 +27,7 @@ export const routes: Routes = [
       {
   path: 'users',
   loadComponent: () =>
-    import('./features/users/users').then(m => m.UsersComponent),
+    import('./features/users/users').then(m => m.Users),
   canMatch: [AuthGuard],
   data: { permission: 'users.view' }
 },

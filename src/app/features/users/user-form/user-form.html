@@ -1,0 +1,23 @@
+<h2>{{ editing ? 'ویرایش کاربر' : 'ایجاد کاربر جدید' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+
+  <label>نام</label>
+  <input formControlName="name">
+
+  <label>نام کاربری</label>
+  <input formControlName="username">
+
+  <label>ایمیل</label>
+  <input formControlName="email">
+
+  <label>نقش</label>
+  <select formControlName="role">
+    <option value="Admin">مدیر</option>
+    <option value="Manager">مدیر میانی</option>
+    <option value="Employee">کارمند</option>
+  </select>
+
+  <button class="btn-save">{{ editing ? 'ذخیره تغییرات' : 'ایجاد' }}</button>
+
+</form>

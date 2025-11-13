@@ -1,0 +1,30 @@
+form {
+  max-width: 450px;
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+input, select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+}
+
+.btn-save {
+  margin-top: 20px;
+  padding: 12px;
+  border: none;
+  background: #10b981;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}

@@ -1,42 +1,46 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { UserService, User } from './user.service';
 
 @Component({
   selector: 'app-users',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './users.html',
-  styleUrl: './users.css',
-  imports: [CommonModule]
+  styleUrl: './users.css'
 })
-export class UsersComponent {
+export class Users {
 
-  searchText = '';
+  users: User[] = [];
+  search = '';
 
-  users = [
-    { id: 1, name: 'اشکان رضایی', role: 'Admin', status: 'Active' },
-    { id: 2, name: 'مریم یوسفی', role: 'Manager', status: 'Active' },
-    { id: 3, name: 'محسن محمدی', role: 'Employee', status: 'Pending' },
-    { id: 4, name: 'زهرا احمدی', role: 'Employee', status: 'Blocked' }
-  ];
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {
+    this.users = this.userService.getAll();
+  }
 
-  get filteredUsers() {
+  filtered() {
     return this.users.filter(u =>
-      u.name.includes(this.searchText) ||
-      u.role.includes(this.searchText)
+      u.name.includes(this.search) ||
+      u.username.includes(this.search)
     );
   }
 
-  addUser() {
-    alert("صفحه افزودن کاربر بعداً ساخته می‌شود ✔");
+  edit(id: number) {
+    this.router.navigate(['/users', id]);
   }
 
-  editUser(user: any) {
-    alert("ویرایش کاربر: " + user.name);
+  add() {
+    this.router.navigate(['/users/new']);
   }
 
-  deleteUser(user: any) {
-    if (confirm(`کاربر ${user.name} حذف شود؟`)) {
-      this.users = this.users.filter(u => u.id !== user.id);
+  delete(id: number) {
+    if (confirm('آیا حذف شود؟')) {
+      this.userService.delete(id);
+      this.users = this.userService.getAll();
     }
   }
 }
