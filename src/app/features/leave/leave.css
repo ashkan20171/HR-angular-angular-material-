@@ -1,204 +1,236 @@
-/************************************
- * PAGE WRAPPER
- ************************************/
-.leave-page {
+/* =============================
+   Layout
+============================= */
+.leave-container {
   padding: 25px;
-  font-family: 'IRANSans', sans-serif;
-  animation: fadeIn 0.4s ease-in-out;
+  font-family: "IRANSans", sans-serif;
+  animation: fadeIn 0.4s ease;
 }
 
-h1 {
-  font-size: 28px;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 25px;
-  font-weight: 700;
-  color: var(--text-color);
 }
 
-/************************************
- * INFO BOXES
- ************************************/
-.info-grid {
+.page-header h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary, #1a1a1a);
+}
+
+/* =============================
+   Buttons
+============================= */
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-primary:hover {
+  background: #1e40af;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111;
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-secondary:hover {
+  background: #d1d5db;
+}
+
+/* =============================
+   Cards (Total / Used / Remaining)
+============================= */
+.stats-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   margin-bottom: 30px;
 }
 
-.info-card {
-  background: var(--card-bg);
+.card {
+  background: #ffffffaa;
+  backdrop-filter: blur(6px);
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px #00000010;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card .title {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.card .value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+}
+
+.card.highlight {
+  background: #d1fae5aa;
+  border-color: #6ee7b7;
+}
+
+/* =============================
+   Last Request
+============================= */
+.last-request {
+  margin-bottom: 30px;
+}
+
+.last-request h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.request-box {
+  background: #fff;
   padding: 18px;
   border-radius: 14px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 12px #00000010;
 }
 
-.info-card h3 {
-  font-size: 15px;
-  margin-bottom: 8px;
-  color: var(--text-color);
-}
-
-.info-card .value {
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
-.value.green { color: #16a34a; }
-.value.blue { color: #2563eb; }
-
-/* Progress bar */
-.progress {
-  width: 100%;
-  background: #e5e7eb;
-  height: 7px;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.bar {
-  height: 100%;
-  background: linear-gradient(90deg, #10b981, #059669);
-}
-
-/************************************
- * CHART BOX
- ************************************/
-.chart-box {
-  margin: 25px 0;
-  padding: 20px;
-  background: var(--card-bg);
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.chart-box img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-/************************************
- * TABLE HEADER + ADD BUTTON
- ************************************/
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 25px;
-}
-
-.btn-new {
-  padding: 8px 20px;
-  border-radius: 12px;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.btn-new:hover {
-  background: #4338ca;
-}
-
-/************************************
- * TABLE
- ************************************/
-.leave-table {
-  width: 100%;
-  margin-top: 15px;
-  border-collapse: collapse;
-  background: var(--card-bg);
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-}
-
-.leave-table thead {
-  background: var(--table-header);
-}
-
-.leave-table th, .leave-table td {
-  padding: 12px 15px;
-  text-align: center;
-  color: var(--text-color);
-  border-bottom: 1px solid var(--border);
-}
-
-.leave-table tbody tr:hover {
-  background: var(--hover);
-}
-
-/************************************
- * STATUS BADGES
- ************************************/
-.status {
-  padding: 4px 12px;
-  border-radius: 10px;
+/* =============================
+   Badges
+============================= */
+.badge {
+  padding: 4px 10px;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
+  color: #fff;
 }
 
-.status.pending {
-  background: #fef3c7;
-  color: #b45309;
+.badge.pending { background: #f59e0b; }
+.badge.accepted { background: #10b981; }
+.badge.rejected { background: #ef4444; }
+
+/* =============================
+   Table
+============================= */
+.table-box {
+  margin-top: 30px;
+  background: #fff;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 12px #00000012;
 }
 
-.status.accepted {
-  background: #d1fae5;
-  color: #065f46;
+.table-box h3 {
+  margin-bottom: 15px;
 }
 
-.status.rejected {
-  background: #fee2e2;
-  color: #991b1b;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
 }
 
-/************************************
- * MODAL
- ************************************/
-.modal {
+thead tr {
+  background: #f4f4f4;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* =============================
+   Modal
+============================= */
+.modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 20;
+  background: #00000055;
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.3s;
 }
 
-.modal-box {
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
   width: 420px;
-  background: var(--card-bg);
+  max-width: 90%;
+  background: #ffffff;
+  border-radius: 18px;
   padding: 25px;
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  transform: translate(-50%, -50%) scale(0.8);
+  animation: popup 0.35s forwards;
+  box-shadow: 0 10px 40px #00000025;
 }
 
-.modal-box h2 {
+.modal h3 {
+  margin-bottom: 15px;
+}
+
+/* =============================
+   Form
+============================= */
+.form-group,
+.form-row {
   margin-bottom: 18px;
-  color: var(--text-color);
 }
 
-.modal-box label {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-color);
+.form-row {
+  display: flex;
+  gap: 12px;
 }
 
-.modal-box input,
-.modal-box select,
-.modal-box textarea {
+.form-row div {
+  flex: 1;
+}
+
+input, select, textarea {
   width: 100%;
-  margin: 7px 0 15px;
-  padding: 8px;
+  padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--input-bg);
-  color: var(--text-color);
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: border 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.days-box {
+  padding: 10px 12px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-weight: 600;
 }
 
 .modal-actions {
@@ -207,51 +239,32 @@ h1 {
   gap: 12px;
 }
 
-.cancel {
-  padding: 8px 18px;
-  background: #e5e7eb;
-  border: none;
-  border-radius: 10px;
-}
-
-.submit {
-  padding: 8px 18px;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-}
-
-/************************************
- * ANIMATION
- ************************************/
+/* =============================
+   Animations
+============================= */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/************************************
- * 🌞 LIGHT THEME — Default
- ************************************/
-body.light {
-  --text-color: #1f2937;
-  --card-bg: #ffffff;
-  --border: #e5e7eb;
-  --shadow: 0 8px 25px rgba(0,0,0,0.08);
-  --table-header: #f3f4f6;
-  --hover: #f9fafb;
-  --input-bg: #ffffff;
+@keyframes popup {
+  0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
-/************************************
- * 🌙 DARK THEME — Enterprise Grade
- ************************************/
-body.dark {
-  --text-color: #f3f4f6;
-  --card-bg: #1f2937;
-  --border: #374151;
-  --shadow: 0 8px 25px rgba(0,0,0,0.35);
-  --table-header: #111827;
-  --hover: #2d3748;
-  --input-bg: #374151;
+/* =============================
+   Responsive
+============================= */
+@media (max-width: 768px) {
+  .stats-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .modal {
+    width: 95%;
+  }
 }

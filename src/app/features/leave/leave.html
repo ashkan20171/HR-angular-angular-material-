@@ -1,113 +1,123 @@
-<div class="leave-page">
+<div class="leave-container">
 
-  <h1>🛎 مدیریت مرخصی</h1>
+  <!-- Header -->
+  <div class="page-header">
+    <h2>مدیریت مرخصی‌ها</h2>
+    <button class="btn-primary" (click)="openModal()">➕ درخواست جدید</button>
+  </div>
 
-  <!-- بخش اطلاعات کاربر -->
-  <div class="info-grid">
+  <!-- Info Cards -->
+  <div class="stats-cards">
 
-    <div class="info-card">
-      <h3>روزهای باقیمانده</h3>
-      <p class="value green">{{ leaveInfo.remaining }}</p>
-      <div class="progress">
-        <div class="bar" [style.width.%]="(leaveInfo.used / leaveInfo.total) * 100"></div>
-      </div>
+    <div class="card">
+      <div class="title">مرخصی کل</div>
+      <div class="value">{{ leaveInfo.total }}</div>
     </div>
 
-    <div class="info-card">
-      <h3>روزهای استفاده‌شده</h3>
-      <p class="value blue">{{ leaveInfo.used }}</p>
+    <div class="card">
+      <div class="title">مصرف شده</div>
+      <div class="value">{{ leaveInfo.used }}</div>
     </div>
 
-    <div class="info-card">
-      <h3>کل سهمیه سال</h3>
-      <p class="value">{{ leaveInfo.total }}</p>
-    </div>
-
-    <div class="info-card last">
-      <h3>آخرین مرخصی ثبت‌شده</h3>
-      <p>{{ leaveInfo.lastRequest.type }}</p>
-      <span class="status" [ngClass]="leaveInfo.lastRequest.status">
-        {{ leaveInfo.lastRequest.status === 'accepted' ? 'تایید شده'
-        : leaveInfo.lastRequest.status === 'rejected' ? 'رد شده'
-        : 'در انتظار' }}
-      </span>
+    <div class="card highlight">
+      <div class="title">باقی‌مانده</div>
+      <div class="value">{{ leaveInfo.remaining }}</div>
     </div>
 
   </div>
 
-  <!-- نمودار -->
-  <div class="chart-box">
-    <img src="/assets/charts/chart-leave.png" alt="Leave chart">
+  <!-- Last Request -->
+  <div class="last-request">
+
+    <h3>آخرین درخواست</h3>
+
+    <div class="request-box">
+      <p><strong>نوع:</strong> {{ leaveInfo.lastRequest.type }}</p>
+      <p><strong>تاریخ:</strong> {{ leaveInfo.lastRequest.date }}</p>
+      <p>
+        <strong>وضعیت:</strong>
+        <span class="badge" [ngClass]="leaveInfo.lastRequest.status">
+          {{ leaveInfo.lastRequest.status | statusName }}
+        </span>
+      </p>
+    </div>
+
   </div>
 
-  <!-- بخش جدول -->
-  <div class="table-header">
-    <h2>سوابق مرخصی</h2>
-    <button class="btn-new" (click)="openModal()">➕ ثبت درخواست جدید</button>
+  <!-- Table -->
+  <div class="table-box">
+    <h3>سوابق درخواست‌ها</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>نوع مرخصی</th>
+          <th>از</th>
+          <th>تا</th>
+          <th>روز</th>
+          <th>توضیح</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of leaves">
+          <td>{{ item.type }}</td>
+          <td>{{ item.start }}</td>
+          <td>{{ item.end }}</td>
+          <td>{{ item.days }}</td>
+          <td>{{ item.desc || '-' }}</td>
+          <td>
+            <span class="badge" [ngClass]="item.status">
+              {{ item.status | statusName }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <table class="leave-table">
-    <thead>
-      <tr>
-        <th>نوع</th>
-        <th>از تاریخ</th>
-        <th>تا تاریخ</th>
-        <th>روز</th>
-        <th>وضعیت</th>
-        <th>توضیحات</th>
-      </tr>
-    </thead>
+  <!-- Modal -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
 
-    <tbody>
-      <tr *ngFor="let l of leaves">
-        <td>{{ l.type }}</td>
-        <td>{{ l.start }}</td>
-        <td>{{ l.end }}</td>
-        <td>{{ l.days }}</td>
-        <td>
-          <span class="status" [ngClass]="l.status">
-            {{ l.status === 'pending' ? 'در انتظار'
-            : l.status === 'accepted' ? 'تایید شده'
-            : 'رد شده' }}
-          </span>
-        </td>
-        <td>{{ l.desc || '-' }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Modal فرم -->
   <div class="modal" *ngIf="showModal">
-    <div class="modal-box">
+    <h3>درخواست مرخصی جدید</h3>
 
-      <h2>ثبت درخواست مرخصی</h2>
-
+    <div class="form-group">
       <label>نوع مرخصی</label>
       <select [(ngModel)]="newLeave.type">
-        <option value="">انتخاب کنید</option>
+        <option value="">انتخاب کنید...</option>
         <option>استحقاقی</option>
         <option>استعلاجی</option>
         <option>بدون حقوق</option>
       </select>
+    </div>
 
-      <label>از تاریخ</label>
-      <input type="date" [(ngModel)]="newLeave.start" (change)="calcDays()">
-
-      <label>تا تاریخ</label>
-      <input type="date" [(ngModel)]="newLeave.end" (change)="calcDays()">
-
-      <label>توضیحات</label>
-      <textarea [(ngModel)]="newLeave.desc"></textarea>
-
-      <p class="days-preview">
-        تعداد روز: <strong>{{ newLeave.days }}</strong>
-      </p>
-
-      <div class="modal-actions">
-        <button class="cancel" (click)="closeModal()">انصراف</button>
-        <button class="submit" (click)="submitLeave()">ثبت درخواست</button>
+    <div class="form-row">
+      <div>
+        <label>از تاریخ</label>
+        <input type="date" [(ngModel)]="newLeave.start" (change)="calcDays()">
       </div>
 
+      <div>
+        <label>تا تاریخ</label>
+        <input type="date" [(ngModel)]="newLeave.end" (change)="calcDays()">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>توضیحات</label>
+      <textarea rows="3" [(ngModel)]="newLeave.desc"></textarea>
+    </div>
+
+    <div class="days-box">
+      <strong>تعداد روز:</strong>
+      <span>{{ newLeave.days }}</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" (click)="submitLeave()">ثبت</button>
+      <button class="btn-secondary" (click)="closeModal()">لغو</button>
     </div>
   </div>
 
