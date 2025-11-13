@@ -1,0 +1,15 @@
+<h1 class="title">داشبورد</h1>
+
+<div class="cards">
+
+  <div class="card" *ngFor="let c of stats" [style.borderColor]="c.color">
+    <div class="icon" [style.color]="c.color">{{ c.icon }}</div>
+    <div class="info">
+      <h3>{{ c.value }}</h3>
+      <p>{{ c.title }}</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- نمودارها در مرحله بعد اضافه می‌کنیم -->

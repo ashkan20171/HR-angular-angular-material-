@@ -1,0 +1,51 @@
+<div class="login-wrapper" [dir]="currentDirection">
+
+  <!-- پس‌زمینه -->
+  <div class="page-bg" [style.background-image]="'url(' + currentBg + ')'"></div>
+
+  <!-- انتخاب زبان -->
+  <div class="lang-buttons">
+    <button (click)="changeLang('fa')">FA</button>
+    <button (click)="changeLang('en')">EN</button>
+  </div>
+
+  <!-- کارت لاگین -->
+  <div class="login-card">
+
+    <div class="logo-row">
+      <span class="logo-icon">🔐</span>
+      <span class="logo-text">AshkanHR</span>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="login-field">
+        <mat-label>{{ 'LOGIN.USERNAME' | translate }}</mat-label>
+        <input matInput formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="login-field">
+        <mat-label>{{ 'LOGIN.PASSWORD' | translate }}</mat-label>
+        <input matInput type="password" formControlName="password">
+      </mat-form-field>
+
+      <!-- کپچا -->
+      <div class="captcha-wrapper">
+        <re-captcha
+          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+          (resolved)="onCaptchaResolved($event)">
+        </re-captcha>
+      </div>
+
+      <button
+        mat-raised-button
+        class="login-button"
+        type="submit"
+        [disabled]="loginForm.invalid || !captchaOk">
+        {{ 'LOGIN.BUTTON' | translate }}
+      </button>
+
+    </form>
+  </div>
+
+</div>
