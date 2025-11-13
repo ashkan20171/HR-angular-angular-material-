@@ -1,15 +1,12 @@
 <div class="login-wrapper" [dir]="currentDirection">
 
-  <!-- پس‌زمینه -->
   <div class="page-bg" [style.background-image]="'url(' + currentBg + ')'"></div>
 
-  <!-- انتخاب زبان -->
   <div class="lang-buttons">
     <button (click)="changeLang('fa')">FA</button>
     <button (click)="changeLang('en')">EN</button>
   </div>
 
-  <!-- کارت لاگین -->
   <div class="login-card">
 
     <div class="logo-row">
@@ -29,7 +26,6 @@
         <input matInput type="password" formControlName="password">
       </mat-form-field>
 
-      <!-- کپچا -->
       <div class="captcha-wrapper">
         <re-captcha
           siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"

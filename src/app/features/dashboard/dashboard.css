@@ -1,108 +1,113 @@
 .dashboard {
   padding: 25px;
-  direction: rtl;
+  font-family: IRANSans, sans-serif;
 }
 
-/* خوش آمد */
+/* عنوان خوشامد */
 .welcome {
   font-size: 26px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #333;
+  font-weight: 700;
+  margin-bottom: 25px;
 }
 
 /* کارت‌ها */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  margin-bottom: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 20px;
 }
 
 .stat-card {
-  background: white;
+  background: #fff;
   padding: 18px;
   border-radius: 14px;
-  border: 2px solid transparent;
+  border: 2px solid;
   display: flex;
+  gap: 15px;
   align-items: center;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  transition: .3s;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
 }
 
 .icon {
   width: 55px;
   height: 55px;
-  font-size: 28px;
+  font-size: 26px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 12px;
-  margin-left: 15px;
+  justify-content: center;
+  border-radius: 14px;
 }
 
 .details h3 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .details p {
   margin: 0;
-  color: gray;
+  color: #666;
 }
 
-/* نمودار */
+/* نمودارها */
+.charts-row {
+  display: flex;
+  gap: 22px;
+  margin: 30px 0;
+}
+
 .chart-box {
-  background: white;
+  width: 50%;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* خلاصه وضعیت */
+.summary-box {
+  background: #fff;
   padding: 20px;
   border-radius: 14px;
   margin-bottom: 25px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
 }
 
-.chart-box img {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 10px;
+.summary-box ul {
+  margin: 0;
+  padding-left: 18px;
 }
 
 /* جدول */
 .table-box {
-  background: white;
-  padding: 22px;
+  background: #fff;
+  padding: 20px;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
 }
 
 table {
   width: 100%;
+  margin-top: 12px;
   border-collapse: collapse;
-  margin-top: 15px;
 }
 
-table th,
+table th {
+  text-align: right;
+  padding: 10px 0;
+  color: #333;
+}
+
 table td {
-  padding: 12px 10px;
-  text-align: center;
-}
-
-thead {
-  background: #f3f4f6;
-  font-weight: bold;
+  padding: 8px 0;
+  border-top: 1px solid #eee;
 }
 
 .status {
   padding: 5px 12px;
-  border-radius: 10px;
-  color: white;
+  color: #fff;
+  border-radius: 8px;
   font-size: 13px;
 }
 
-.status.pending { background: orange; }
-.status.accepted { background: green; }
-.status.rejected { background: red; }
+.pending { background: #f59e0b; }
+.accepted { background: #10b981; }
+.rejected { background: #ef4444; }

@@ -1,46 +1,76 @@
 import { Injectable } from '@angular/core';
-import { Role, ROLE_PERMISSIONS } from './permissions';
+
+export type Role = 'admin' | 'manager' | 'employee';
+
+export interface AppUser {
+  username: string;
+  password: string;
+  role: Role;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private currentRole: Role = 'Employee';
+  // لیست کاربران واقعی سیستم
+  private users: AppUser[] = [
+    { username: 'admin', password: '1234', role: 'admin' },
+    { username: 'manager', password: '2222', role: 'manager' },
+    { username: 'employee', password: '3333', role: 'employee' }
+  ];
 
-  constructor() {
-    const savedRole = localStorage.getItem('userRole') as Role;
-    if (savedRole) {
-      this.currentRole = savedRole;
-    }
+  constructor() {}
+
+  // نقش فعلی کاربر
+  get role(): Role {
+    return (localStorage.getItem('role') as Role) || 'employee';
   }
 
-  // شبیه‌سازی لاگین
-  login(username: string) {
-    let role: Role = 'Employee';
+  // بررسی دسترسی‌ها
+  hasPermission(permission: string): boolean {
+    const role = this.role;
 
-    if (username === 'admin') role = 'Admin';
-    else if (username === 'manager') role = 'Manager';
+    const permissions: Record<Role, string[]> = {
+      admin: [
+        'dashboard.view',
+        'users.view',
+        'users.edit',
+        'requests.view',
+        'profile.view'
+      ],
+      manager: [
+        'dashboard.view',
+        'users.view',
+        'requests.view',
+        'profile.view'
+      ],
+      employee: [
+        'dashboard.view',
+        'profile.view'
+      ]
+    };
 
-    this.currentRole = role;
-    localStorage.setItem('userRole', role);
+    return permissions[role].includes(permission);
+  }
+
+  // ⭐ متد جدید و صحیح login با خروجی true/false
+  login(username: string, password: string): boolean {
+
+    const user = this.users.find(
+      u => u.username === username && u.password === password
+    );
+
+    if (!user) return false;
+
+    // ذخیره اطلاعات
+    localStorage.setItem('userName', user.username);
+    localStorage.setItem('role', user.role);
 
     return true;
   }
 
-  getRole(): Role {
-    return this.currentRole;
-  }
-
-  getPermissions() {
-    return ROLE_PERMISSIONS[this.currentRole];
-  }
-
-  hasPermission(permission: string): boolean {
-    return this.getPermissions().includes(permission);
-  }
-
   logout() {
-    localStorage.removeItem('userRole');
+    localStorage.clear();
   }
 }

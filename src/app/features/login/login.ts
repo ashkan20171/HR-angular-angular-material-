@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -30,12 +31,12 @@ export class Login implements OnInit {
   captchaOk = false;
   currentBg = '';
   currentDirection: 'rtl' | 'ltr' = 'rtl';
-  auth: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private auth: AuthService
   ) {}
 
   ngOnInit() {
@@ -67,12 +68,17 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
-  if (this.loginForm.invalid || !this.captchaOk) return;
+    if (this.loginForm.invalid || !this.captchaOk) return;
 
-  const username = this.loginForm.value.username;
+    const { username, password } = this.loginForm.value;
 
-  this.auth.login(username);
+    const success = this.auth.login(username, password);
 
-  this.router.navigate(['/dashboard']);
-}
+    if (!success) {
+      alert('نام کاربری یا رمز اشتباه است');
+      return;
+    }
+
+    this.router.navigate(['/dashboard']);
+  }
 }

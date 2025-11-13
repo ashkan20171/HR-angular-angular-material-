@@ -1,12 +1,12 @@
 <div class="dashboard">
 
-  <h1 class="welcome">
-    👋 خوش آمدی، {{ userName }}
-  </h1>
+  <h1 class="welcome">👋 خوش آمدی، {{ userName }}</h1>
 
   <!-- کارت‌ها -->
   <div class="stats-grid">
-    <div class="stat-card" *ngFor="let item of stats" [style.borderColor]="item.color">
+    <div class="stat-card" 
+         *ngFor="let item of stats" 
+         [style.borderColor]="item.color">
 
       <div class="icon" [style.background]="item.color + '22'">
         {{ item.icon }}
@@ -16,14 +16,24 @@
         <h3>{{ item.value }}</h3>
         <p>{{ item.title }}</p>
       </div>
-
     </div>
   </div>
 
-  <!-- نمودار -->
-  <div class="chart-box">
-    <h2>نمودار عملکرد ماهانه</h2>
-    <img src="/assets/charts/chart-sample.png" alt="chart" />
+  <!-- ۲ نمودار -->
+  <div class="charts-row">
+    <img src="/assets/charts/chart1.png" class="chart-box">
+    <img src="/assets/charts/chart2.png" class="chart-box">
+  </div>
+
+  <!-- خلاصه وضعیت -->
+  <div class="summary-box">
+    <h2>خلاصه وضعیت سازمان</h2>
+    <ul>
+      <li>⭐ میانگین حضور کارکنان: ۹۳٪</li>
+      <li>🕒 دیرکرد‌های امروز: ۳ نفر</li>
+      <li>🏖️ مجموع مرخصی‌های ثبت‌شده ماه: ۲۱ مورد</li>
+      <li>📊 بیشترین فعالیت: واحد مالی</li>
+    </ul>
   </div>
 
   <!-- جدول درخواست‌ها -->
@@ -34,35 +44,27 @@
       <thead>
         <tr>
           <th>کاربر</th>
-          <th>نوع درخواست</th>
+          <th>نوع</th>
           <th>تاریخ</th>
           <th>وضعیت</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr>
-          <td>علی</td>
-          <td>مرخصی</td>
-          <td>۱۴۰۳/۰۸/۲۳</td>
-          <td><span class="status pending">در انتظار</span></td>
-        </tr>
-
-        <tr>
-          <td>مریم</td>
-          <td>اضافه‌کاری</td>
-          <td>۱۴۰۳/۰۸/۲۲</td>
-          <td><span class="status accepted">تأیید شده</span></td>
-        </tr>
-
-        <tr>
-          <td>سارا</td>
-          <td>ماموریت</td>
-          <td>۱۴۰۳/۰۸/۲۱</td>
-          <td><span class="status rejected">رد شده</span></td>
+        <tr *ngFor="let r of recentRequests">
+          <td>{{ r.user }}</td>
+          <td>{{ r.type }}</td>
+          <td>{{ r.date }}</td>
+          <td>
+            <span class="status" [ngClass]="r.status">
+              {{ r.status === 'pending' ? 'در انتظار' :
+                 r.status === 'accepted' ? 'تایید شده' : 'رد شده' }}
+            </span>
+          </td>
         </tr>
       </tbody>
     </table>
+
   </div>
 
 </div>

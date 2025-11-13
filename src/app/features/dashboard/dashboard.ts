@@ -10,20 +10,21 @@ import { CommonModule } from '@angular/common';
 })
 export class Dashboard {
 
-  userName = 'کاربر';  // مقدار اولیه
+  userName = localStorage.getItem("userName") || "کاربر";
+
+  // کارت‌ها
   stats = [
     { title: 'کاربران فعال', value: 128, icon: '🧑‍🤝‍🧑', color: '#4f46e5' },
     { title: 'درخواست‌های امروز', value: 12, icon: '📄', color: '#10b981' },
-    { title: 'مرخصی در انتظار', value: 5, icon: '🕒', color: '#f59e0b' },
+    { title: 'مرخصی مانده', value: '8 روز', icon: '🏖️', color: '#f59e0b' },
     { title: 'پیام‌های جدید', value: 3, icon: '📩', color: '#ef4444' }
   ];
 
-  constructor() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-    if (user?.name) {
-      this.userName = user.name;
-    }
-  }
+  // جدول درخواست‌ها
+  recentRequests = [
+    { user: 'علی', type: 'مرخصی', date: '۱۴۰۳/۱۰/۲۳', status: 'pending' },
+    { user: 'مریم', type: 'اضافه‌کاری', date: '۱۴۰۳/۱۰/۲۲', status: 'accepted' },
+    { user: 'سارا', type: 'ماموریت', date: '۱۴۰۳/۱۰/۲۱', status: 'rejected' }
+  ];
 
 }
