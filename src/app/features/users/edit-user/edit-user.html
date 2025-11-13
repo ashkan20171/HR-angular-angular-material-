@@ -1,0 +1,42 @@
+<div class="edit-user-page">
+
+  <h2 class="title">ویرایش کاربر</h2>
+
+  <form [formGroup]="editUserForm" (ngSubmit)="saveChanges()">
+
+    <div class="form-row">
+      <label>نام کامل</label>
+      <input type="text" formControlName="name">
+    </div>
+
+    <div class="form-row">
+      <label>نام کاربری</label>
+      <input type="text" formControlName="username">
+    </div>
+
+    <div class="form-row">
+      <label>نقش کاربری</label>
+      <select formControlName="role">
+        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>وضعیت</label>
+      <select formControlName="status">
+        <option value="Active">فعال</option>
+        <option value="Pending">در انتظار</option>
+        <option value="Blocked">مسدود</option>
+      </select>
+    </div>
+
+    <div class="button-row">
+      <button type="button" class="cancel-btn" (click)="cancel()">لغو</button>
+      <button type="submit" class="save-btn" [disabled]="editUserForm.invalid">
+        ذخیره تغییرات
+      </button>
+    </div>
+
+  </form>
+
+</div>

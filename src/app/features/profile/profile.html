@@ -1,0 +1,71 @@
+<div class="profile-container">
+
+  <!-- کارت پروفایل -->
+  <div class="profile-header">
+
+    <div class="avatar-box">
+      <img [src]="userData.avatar" class="avatar">
+
+      <label class="upload-btn">
+        تغییر عکس
+        <input type="file" (change)="uploadAvatar($event)">
+      </label>
+    </div>
+
+    <div class="profile-info">
+      <h2>{{ userData.name }}</h2>
+      <p class="role">{{ userData.role }}</p>
+    </div>
+
+  </div>
+
+  <!-- فرم اطلاعات کاربری -->
+  <form [formGroup]="profileForm" class="profile-form" (ngSubmit)="saveProfile()">
+
+    <div class="form-row">
+      <label>نام کامل</label>
+      <input type="text" formControlName="name">
+    </div>
+
+    <div class="form-row">
+      <label>نام کاربری</label>
+      <input type="text" formControlName="username">
+    </div>
+
+    <div class="form-row">
+      <label>ایمیل</label>
+      <input type="email" formControlName="email">
+    </div>
+
+    <div class="form-row">
+      <label>شماره موبایل</label>
+      <input type="text" formControlName="mobile">
+    </div>
+
+    <div class="form-row">
+      <label>نقش کاربری</label>
+      <select formControlName="role">
+        <option value="Admin">ادمین</option>
+        <option value="Manager">مدیر</option>
+        <option value="Employee">کارمند</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>وضعیت</label>
+      <select formControlName="status">
+        <option value="Active">فعال</option>
+        <option value="Pending">در انتظار</option>
+        <option value="Blocked">مسدود</option>
+      </select>
+    </div>
+
+    <div class="button-row">
+      <button type="submit" class="save-btn" [disabled]="profileForm.invalid">
+        ذخیره تغییرات
+      </button>
+    </div>
+
+  </form>
+
+</div>

@@ -1,0 +1,43 @@
+<div class="add-user-page">
+
+  <h2 class="title">افزودن کاربر جدید</h2>
+
+  <form [formGroup]="addUserForm" (ngSubmit)="saveUser()">
+
+    <div class="form-row">
+      <label>نام کامل</label>
+      <input type="text" formControlName="name" placeholder="مثال: اشکان رضایی">
+    </div>
+
+    <div class="form-row">
+      <label>نام کاربری</label>
+      <input type="text" formControlName="username" placeholder="مثال: ashkan.rz">
+    </div>
+
+    <div class="form-row">
+      <label>نقش کاربری</label>
+      <select formControlName="role">
+        <option value="">انتخاب نقش...</option>
+        <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label>وضعیت</label>
+      <select formControlName="status">
+        <option value="Active">فعال</option>
+        <option value="Pending">در انتظار</option>
+        <option value="Blocked">مسدود</option>
+      </select>
+    </div>
+
+    <div class="button-row">
+      <button type="button" class="cancel-btn" (click)="cancel()">لغو</button>
+      <button type="submit" class="save-btn" [disabled]="addUserForm.invalid">
+        ذخیره کاربر
+      </button>
+    </div>
+
+  </form>
+
+</div>

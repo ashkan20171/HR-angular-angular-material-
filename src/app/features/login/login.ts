@@ -30,6 +30,7 @@ export class Login implements OnInit {
   captchaOk = false;
   currentBg = '';
   currentDirection: 'rtl' | 'ltr' = 'rtl';
+  auth: any;
 
   constructor(
     private fb: FormBuilder,
@@ -66,9 +67,12 @@ export class Login implements OnInit {
   }
 
   onSubmit() {
-    if (this.loginForm.invalid || !this.captchaOk) return;
+  if (this.loginForm.invalid || !this.captchaOk) return;
 
-    localStorage.setItem('token', 'logged');
-    this.router.navigate(['/dashboard']);
-  }
+  const username = this.loginForm.value.username;
+
+  this.auth.login(username);
+
+  this.router.navigate(['/dashboard']);
+}
 }

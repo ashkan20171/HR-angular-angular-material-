@@ -1,15 +1,68 @@
-<h1 class="title">داشبورد</h1>
+<div class="dashboard">
 
-<div class="cards">
+  <h1 class="welcome">
+    👋 خوش آمدی، {{ userName }}
+  </h1>
 
-  <div class="card" *ngFor="let c of stats" [style.borderColor]="c.color">
-    <div class="icon" [style.color]="c.color">{{ c.icon }}</div>
-    <div class="info">
-      <h3>{{ c.value }}</h3>
-      <p>{{ c.title }}</p>
+  <!-- کارت‌ها -->
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let item of stats" [style.borderColor]="item.color">
+
+      <div class="icon" [style.background]="item.color + '22'">
+        {{ item.icon }}
+      </div>
+
+      <div class="details">
+        <h3>{{ item.value }}</h3>
+        <p>{{ item.title }}</p>
+      </div>
+
     </div>
   </div>
 
-</div>
+  <!-- نمودار -->
+  <div class="chart-box">
+    <h2>نمودار عملکرد ماهانه</h2>
+    <img src="/assets/charts/chart-sample.png" alt="chart" />
+  </div>
 
-<!-- نمودارها در مرحله بعد اضافه می‌کنیم -->
+  <!-- جدول درخواست‌ها -->
+  <div class="table-box">
+    <h2>آخرین درخواست‌ها</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>کاربر</th>
+          <th>نوع درخواست</th>
+          <th>تاریخ</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>علی</td>
+          <td>مرخصی</td>
+          <td>۱۴۰۳/۰۸/۲۳</td>
+          <td><span class="status pending">در انتظار</span></td>
+        </tr>
+
+        <tr>
+          <td>مریم</td>
+          <td>اضافه‌کاری</td>
+          <td>۱۴۰۳/۰۸/۲۲</td>
+          <td><span class="status accepted">تأیید شده</span></td>
+        </tr>
+
+        <tr>
+          <td>سارا</td>
+          <td>ماموریت</td>
+          <td>۱۴۰۳/۰۸/۲۱</td>
+          <td><span class="status rejected">رد شده</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

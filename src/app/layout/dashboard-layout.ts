@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,19 +7,25 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.css',
-  imports: [CommonModule, RouterOutlet]
+  imports: [CommonModule, RouterModule]
 })
 export class DashboardLayout {
 
-  sidebarOpen = true;
+  userName = localStorage.getItem('userName') || 'کاربر';
+  userRole = localStorage.getItem('role') || 'Employee';
 
-  toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
-  }
+  constructor(private router: Router) {}
+
+
+  menu = [
+  { title: 'داشبورد', icon: '📊', link: '/dashboard', permission: 'dashboard.view' },
+  { title: 'کاربران', icon: '👥', link: '/users', permission: 'users.view' },
+  { title: 'پروفایل', icon: '🙍‍♂️', link: '/profile', permission: 'profile.view' }
+];
 
   logout() {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
 
 }
