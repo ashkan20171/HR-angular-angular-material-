@@ -1,0 +1,95 @@
+<div class="leave-page">
+
+  <h1>درخواست اضافه‌کاری</h1>
+
+  <!-- کارت‌ها -->
+  <div class="info-grid">
+
+    <div class="info-card">
+      <h3>اضافه‌کاری انجام شده این ماه</h3>
+      <div class="value blue">{{ getTotalThisMonth() }} ساعت</div>
+      <div class="progress">
+        <div class="bar" style="width: 65%"></div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>سقف مجاز ماهانه</h3>
+      <div class="value green">30 ساعت</div>
+    </div>
+
+  </div>
+
+  <!-- نمودار -->
+  <div class="chart-box">
+    <h2>نمودار ساعات اضافه‌کاری</h2>
+    <img src="/assets/charts/overtime-chart.png" alt="chart" />
+  </div>
+
+  <!-- جدول -->
+  <div class="table-header">
+    <h2>سوابق اضافه‌کاری</h2>
+    <button class="btn-new" (click)="openNew()">➕ ثبت اضافه‌کاری</button>
+  </div>
+
+  <table class="leave-table">
+    <thead>
+      <tr>
+        <th>تاریخ</th>
+        <th>شروع</th>
+        <th>پایان</th>
+        <th>ساعت</th>
+        <th>وضعیت</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of overtimeList">
+        <td>{{ item.date }}</td>
+        <td>{{ item.start }}</td>
+        <td>{{ item.end }}</td>
+        <td>{{ item.hours }}</td>
+        <td>
+          <span class="status"
+            [ngClass]="{
+              'pending': item.status === 'pending',
+              'accepted': item.status === 'accepted',
+              'rejected': item.status === 'rejected'
+            }">
+            {{
+              item.status === 'pending' ? 'در انتظار' :
+              item.status === 'accepted' ? 'تأیید شده' : 'رد شده'
+            }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- MODAL -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-box">
+
+      <h2>ثبت اضافه‌کاری</h2>
+
+      <label>تاریخ</label>
+      <input type="text" [(ngModel)]="form.date" placeholder="مثال: ۱۴۰۳/۰۸/۲۲">
+
+      <label>ساعت شروع</label>
+      <input type="time" [(ngModel)]="form.start">
+
+      <label>ساعت پایان</label>
+      <input type="time" [(ngModel)]="form.end">
+
+      <label>توضیحات</label>
+      <textarea rows="3" [(ngModel)]="form.reason"></textarea>
+
+      <div class="modal-actions">
+        <button class="cancel" (click)="closeModal()">لغو</button>
+        <button class="submit" (click)="submit()">ثبت</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

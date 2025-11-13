@@ -20,7 +20,8 @@ export class DashboardLayout {
   menu = [
   { title: 'داشبورد', icon: '📊', link: '/dashboard', permission: 'dashboard.view' },
   { title: 'کاربران', icon: '👥', link: '/users', permission: 'users.view' },
-  { title: 'پروفایل', icon: '🙍‍♂️', link: '/profile', permission: 'profile.view' }
+  { title: 'پروفایل', icon: '🙍‍♂️', link: '/profile', permission: 'profile.view' },
+  
 ];
 
   logout() {

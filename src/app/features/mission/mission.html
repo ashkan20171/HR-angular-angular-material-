@@ -1,0 +1,103 @@
+<div class="mission-page">
+
+  <h1>درخواست مأموریت</h1>
+
+  <!-- کارت‌ها -->
+  <div class="info-grid">
+
+    <div class="info-card">
+      <h3>مأموریت‌های این ماه</h3>
+      <div class="value blue">{{ missionList.length }} مورد</div>
+      <div class="progress"><div class="bar" style="width: 40%"></div></div>
+    </div>
+
+    <div class="info-card">
+      <h3>روزهای مأموریت</h3>
+      <div class="value green">5 روز</div>
+    </div>
+
+  </div>
+
+  <!-- نمودار -->
+  <div class="chart-box">
+    <h2>نمودار وضعیت مأموریت</h2>
+    <img src="/assets/charts/mission-chart.png" alt="chart" />
+  </div>
+
+  <!-- جدول -->
+  <div class="table-header">
+    <h2>سوابق مأموریت</h2>
+    <button class="btn-new" (click)="openNew()">➕ ثبت مأموریت</button>
+  </div>
+
+  <table class="mission-table">
+    <thead>
+      <tr>
+        <th>تاریخ شروع</th>
+        <th>تاریخ پایان</th>
+        <th>نوع</th>
+        <th>مقصد</th>
+        <th>مدت</th>
+        <th>وضعیت</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of missionList">
+        <td>{{ item.start }}</td>
+        <td>{{ item.end }}</td>
+        <td>{{ item.type }}</td>
+        <td>{{ item.place }}</td>
+        <td>{{ item.days }} روز</td>
+
+        <td>
+          <span class="status"
+            [ngClass]="{
+              'pending': item.status === 'pending',
+              'accepted': item.status === 'accepted',
+              'rejected': item.status === 'rejected'
+            }">
+            {{
+              item.status === 'pending' ? 'در انتظار' :
+              item.status === 'accepted' ? 'تأیید شده' : 'رد شده'
+            }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- MODAL -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-box">
+
+      <h2>ثبت مأموریت جدید</h2>
+
+      <label>نوع مأموریت</label>
+      <select [(ngModel)]="form.type">
+        <option>داخلی</option>
+        <option>خارج از شهر</option>
+        <option>خارج از کشور</option>
+      </select>
+
+      <label>مقصد</label>
+      <input type="text" [(ngModel)]="form.place" placeholder="مثال: اصفهان">
+
+      <label>تاریخ شروع</label>
+      <input type="text" [(ngModel)]="form.start">
+
+      <label>تاریخ پایان</label>
+      <input type="text" [(ngModel)]="form.end">
+
+      <label>توضیحات</label>
+      <textarea rows="3" [(ngModel)]="form.reason"></textarea>
+
+      <div class="modal-actions">
+        <button class="cancel" (click)="closeModal()">لغو</button>
+        <button class="submit" (click)="submit()">ثبت</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

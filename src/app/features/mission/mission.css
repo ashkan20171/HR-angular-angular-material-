@@ -1,0 +1,257 @@
+/************************************
+ * PAGE WRAPPER
+ ************************************/
+.leave-page {
+  padding: 25px;
+  font-family: 'IRANSans', sans-serif;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/************************************
+ * INFO BOXES
+ ************************************/
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.info-card {
+  background: var(--card-bg);
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.info-card h3 {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.info-card .value {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.value.green { color: #16a34a; }
+.value.blue { color: #2563eb; }
+
+/* Progress bar */
+.progress {
+  width: 100%;
+  background: #e5e7eb;
+  height: 7px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+/************************************
+ * CHART BOX
+ ************************************/
+.chart-box {
+  margin: 25px 0;
+  padding: 20px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.chart-box img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/************************************
+ * TABLE HEADER + ADD BUTTON
+ ************************************/
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.btn-new {
+  padding: 8px 20px;
+  border-radius: 12px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.btn-new:hover {
+  background: #4338ca;
+}
+
+/************************************
+ * TABLE
+ ************************************/
+.leave-table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.leave-table thead {
+  background: var(--table-header);
+}
+
+.leave-table th, .leave-table td {
+  padding: 12px 15px;
+  text-align: center;
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border);
+}
+
+.leave-table tbody tr:hover {
+  background: var(--hover);
+}
+
+/************************************
+ * STATUS BADGES
+ ************************************/
+.status {
+  padding: 4px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status.accepted {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/************************************
+ * MODAL
+ ************************************/
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.modal-box {
+  width: 420px;
+  background: var(--card-bg);
+  padding: 25px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.modal-box h2 {
+  margin-bottom: 18px;
+  color: var(--text-color);
+}
+
+.modal-box label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+  width: 100%;
+  margin: 7px 0 15px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel {
+  padding: 8px 18px;
+  background: #e5e7eb;
+  border: none;
+  border-radius: 10px;
+}
+
+.submit {
+  padding: 8px 18px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+/************************************
+ * ANIMATION
+ ************************************/
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/************************************
+ * 🌞 LIGHT THEME — Default
+ ************************************/
+body.light {
+  --text-color: #1f2937;
+  --card-bg: #ffffff;
+  --border: #e5e7eb;
+  --shadow: 0 8px 25px rgba(0,0,0,0.08);
+  --table-header: #f3f4f6;
+  --hover: #f9fafb;
+  --input-bg: #ffffff;
+}
+
+/************************************
+ * 🌙 DARK THEME — Enterprise Grade
+ ************************************/
+body.dark {
+  --text-color: #f3f4f6;
+  --card-bg: #1f2937;
+  --border: #374151;
+  --shadow: 0 8px 25px rgba(0,0,0,0.35);
+  --table-header: #111827;
+  --hover: #2d3748;
+  --input-bg: #374151;
+}

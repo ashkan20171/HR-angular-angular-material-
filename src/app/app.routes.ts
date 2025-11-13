@@ -48,6 +48,16 @@ export const routes: Routes = [
   canMatch: [AuthGuard],
   data: { permission: 'profile.view' }
 },
+{
+  path: 'leave',
+  loadComponent: () =>
+    import('./features/leave/leave').then(m => m.Leave)
+},
+{
+  path: 'mission',
+  loadComponent: () =>
+    import('./features/mission/mission').then(m => m.Mission)
+},
       // Default child route
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
