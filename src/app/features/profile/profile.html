@@ -1,71 +1,37 @@
 <div class="profile-container">
 
-  <!-- کارت پروفایل -->
-  <div class="profile-header">
+  <div class="profile-card fade-in">
 
     <div class="avatar-box">
-      <img [src]="userData.avatar" class="avatar">
-
-      <label class="upload-btn">
-        تغییر عکس
-        <input type="file" (change)="uploadAvatar($event)">
-      </label>
+      <div class="avatar">{{ user.name[0] }}</div>
     </div>
 
-    <div class="profile-info">
-      <h2>{{ userData.name }}</h2>
-      <p class="role">{{ userData.role }}</p>
+    <h2 class="name">{{ user.name }}</h2>
+    <p class="role">{{ user.role }}</p>
+
+    <div class="info-list">
+
+      <div class="info-item">
+        <span class="label">نام کاربری:</span>
+        <span>{{ user.username }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">ایمیل:</span>
+        <span>{{ user.email }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">تاریخ عضویت:</span>
+        <span>۱۴۰۲/۰۷/۱۲</span>
+      </div>
+
     </div>
+
+    <button class="edit-btn" (click)="edit()">
+      ✏️ ویرایش پروفایل
+    </button>
 
   </div>
-
-  <!-- فرم اطلاعات کاربری -->
-  <form [formGroup]="profileForm" class="profile-form" (ngSubmit)="saveProfile()">
-
-    <div class="form-row">
-      <label>نام کامل</label>
-      <input type="text" formControlName="name">
-    </div>
-
-    <div class="form-row">
-      <label>نام کاربری</label>
-      <input type="text" formControlName="username">
-    </div>
-
-    <div class="form-row">
-      <label>ایمیل</label>
-      <input type="email" formControlName="email">
-    </div>
-
-    <div class="form-row">
-      <label>شماره موبایل</label>
-      <input type="text" formControlName="mobile">
-    </div>
-
-    <div class="form-row">
-      <label>نقش کاربری</label>
-      <select formControlName="role">
-        <option value="Admin">ادمین</option>
-        <option value="Manager">مدیر</option>
-        <option value="Employee">کارمند</option>
-      </select>
-    </div>
-
-    <div class="form-row">
-      <label>وضعیت</label>
-      <select formControlName="status">
-        <option value="Active">فعال</option>
-        <option value="Pending">در انتظار</option>
-        <option value="Blocked">مسدود</option>
-      </select>
-    </div>
-
-    <div class="button-row">
-      <button type="submit" class="save-btn" [disabled]="profileForm.invalid">
-        ذخیره تغییرات
-      </button>
-    </div>
-
-  </form>
 
 </div>

@@ -44,7 +44,7 @@ export const routes: Routes = [
 {
   path: 'profile',
   loadComponent: () =>
-    import('./features/profile/profile').then(m => m.ProfileComponent),
+    import('./features/profile/profile').then(m => m.Profile),
   canMatch: [AuthGuard],
   data: { permission: 'profile.view' }
 },

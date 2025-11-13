@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';   // ⬅ اضافه شد
 import { Router } from '@angular/router';
 import { UserService, User } from './user.service';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule   // ⬅ اضافه شد
+  ],
   templateUrl: './users.html',
   styleUrl: './users.css'
 })

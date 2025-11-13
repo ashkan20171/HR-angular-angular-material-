@@ -1,96 +1,78 @@
 .profile-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px;
+  display: flex;
+  justify-content: center;
+  padding: 50px 20px;
 }
 
-.profile-header {
+.profile-card {
+  width: 430px;
   background: white;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.08);
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
+  border-radius: 22px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  padding: 35px;
+  text-align: center;
+  animation: fadeIn 0.6s;
 }
 
 .avatar-box {
-  text-align: center;
-  margin-right: 25px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
 }
 
 .avatar {
-  width: 110px;
-  height: 110px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #e5e7eb;
-}
-
-.upload-btn {
-  display: block;
-  margin-top: 12px;
-  background: #0ea5e9;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   color: white;
-  padding: 6px 16px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
+  font-size: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
 }
 
-.upload-btn input {
-  display: none;
-}
-
-.profile-info h2 {
+.name {
   font-size: 26px;
-  margin: 0;
+  margin-top: 10px;
+  color: #333;
 }
 
 .role {
   font-size: 16px;
-  color: #6b7280;
-  margin-top: 6px;
+  margin-top: 4px;
+  color: #666;
 }
 
-/* فرم */
-.profile-form {
-  background: white;
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+.info-list {
+  margin-top: 25px;
+  text-align: left;
 }
 
-.form-row {
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.form-row label {
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.form-row input,
-.form-row select {
-  padding: 12px;
+.info-item {
+  background: #f8f8ff;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
-  background: #f8fafc;
-  font-size: 15px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
 }
 
-.save-btn {
-  background: #0ea5e9;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
-  border: none;
+.label {
+  font-weight: 600;
+  color: #555;
+}
+
+.edit-btn {
+  margin-top: 25px;
+  width: 100%;
+  padding: 14px;
   font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
   cursor: pointer;
-}
-
-.save-btn:disabled {
-  opacity: 0.5;
 }

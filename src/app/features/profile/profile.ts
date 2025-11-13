@@ -1,57 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { UserService, User } from '../users/user.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
 })
-export class ProfileComponent implements OnInit {
+export class Profile {
 
-  profileForm!: FormGroup;
+  user!: User;
 
-  userData = {
-    name: 'اشکان رضایی',
-    username: 'ashkan.rz',
-    email: 'ashkan@example.com',
-    mobile: '09123456789',
-    role: 'Admin',
-    status: 'Active',
-    avatar: '/assets/avatar/default.png'
-  };
-
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit() {
-    this.profileForm = this.fb.group({
-      name: [this.userData.name, Validators.required],
-      username: [this.userData.username, Validators.required],
-      email: [this.userData.email, [Validators.required, Validators.email]],
-      mobile: [this.userData.mobile, Validators.required],
-      role: [this.userData.role, Validators.required],
-      status: [this.userData.status, Validators.required]
-    });
+  constructor(private users: UserService) {
+    const username = localStorage.getItem('logged_user') || 'ali';
+    this.user = this.users.getAll().find(x => x.username === username)!;
   }
 
-  uploadAvatar(event: any) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = e => {
-      this.userData.avatar = e.target?.result as string;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  saveProfile() {
-    if (this.profileForm.invalid) return;
-
-    console.log('Updated Profile:', this.profileForm.value);
-
-    alert('پروفایل با موفقیت ذخیره شد ✔');
+  edit() {
+    alert('در نسخه نهایی این صفحه به ویرایش پروفایل متصل می‌شود!');
   }
 }

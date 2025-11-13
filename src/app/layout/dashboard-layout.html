@@ -10,34 +10,19 @@
 
     <nav class="menu">
 
-      <a routerLink="/dashboard" routerLinkActive="active">
-        📊 داشبورد
-      </a>
-
-      <a routerLink="/users" routerLinkActive="active">
-        👥 مدیریت کاربران
-      </a>
-
-      <a routerLink="/requests" routerLinkActive="active">
-        📝 درخواست‌ها
-      </a>
-
-      <a routerLink="/profile" routerLinkActive="active">
-        🙍‍♂️ پروفایل من
-      </a>
+      <ng-container *ngFor="let item of menu">
+        <li>
+          <a [routerLink]="item.link">{{ item.icon }} {{ item.title }}</a>
+        </li>
+      </ng-container>
 
     </nav>
-<li *ngFor="let item of menu" 
-    *ngIf="auth.hasPermission(item.permission)">
-  <a [routerLink]="item.link">{{ item.icon }} {{ item.title }}</a>
-</li>
 
   </aside>
 
   <!-- Content -->
   <div class="content-area">
 
-    <!-- Header -->
     <header class="header">
 
       <div class="user-box">
