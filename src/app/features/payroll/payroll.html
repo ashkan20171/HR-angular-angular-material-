@@ -1,36 +1,75 @@
-<div class="payroll-page">
+<div class="payroll-wrapper">
 
-  <h1>فیش‌های حقوقی</h1>
+  <h2 class="title">حقوق و دستمزد</h2>
 
-  <table class="pay-table">
-    <thead>
-      <tr>
-        <th>ماه</th>
-        <th>حقوق پایه</th>
-        <th>جمع مزایا</th>
-        <th>جمع کسورات</th>
-        <th>حقوق نهایی</th>
-        <th></th>
-      </tr>
-    </thead>
+  <!-- کارت حقوق ماه جاری -->
+  <div class="salary-card">
+    <h3>حقوق ماه جاری – {{ current.month }}</h3>
 
-    <tbody>
-      <tr *ngFor="let p of pay.payroll()">
-        <td>{{ p.month }}</td>
-        <td>{{ p.baseSalary | number }}</td>
+    <div class="row">
+      <span>حقوق پایه:</span>
+      <strong>{{ current.base | number }}</strong>
+    </div>
 
-        <td>{{ p.rows.filter(r => r.type==='plus').reduce((t,r)=>t+r.amount,0) | number }}</td>
+    <div class="row">
+      <span>اضافه‌کاری:</span>
+      <strong>{{ current.overtime | number }}</strong>
+    </div>
 
-        <td>{{ p.rows.filter(r => r.type==='minus').reduce((t,r)=>t+r.amount,0) | number }}</td>
+    <div class="row">
+      <span>مزایا / پاداش:</span>
+      <strong>{{ current.bonus | number }}</strong>
+    </div>
 
-        <td class="final">{{ p.finalSalary | number }}</td>
+    <div class="row minus">
+      <span>مالیات:</span>
+      <strong>{{ current.tax | number }}</strong>
+    </div>
 
-        <td>
-          <button class="btn" (click)="openSlip(p.id)">مشاهده فیش</button>
-        </td>
-      </tr>
-    </tbody>
+    <div class="row minus">
+      <span>بیمه:</span>
+      <strong>{{ current.insurance | number }}</strong>
+    </div>
 
-  </table>
+    <div class="final-salary">
+      جمع پرداختی:
+      <strong>{{ finalSalary | number }} تومان</strong>
+    </div>
+
+    <button class="btn-download" (click)="downloadPDF()">
+      دریافت فیش حقوقی PDF
+    </button>
+  </div>
+
+  <!-- تاریخچه پرداخت‌ها -->
+  <div class="table-box">
+    <h3>تاریخچه حقوق</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ماه</th>
+          <th>پایه</th>
+          <th>اضافه‌کاری</th>
+          <th>پاداش</th>
+          <th>مالیات</th>
+          <th>بیمه</th>
+          <th>خالص پرداخت</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let row of history">
+          <td>{{ row.month }}</td>
+          <td>{{ row.base | number }}</td>
+          <td>{{ row.overtime | number }}</td>
+          <td>{{ row.bonus | number }}</td>
+          <td>{{ row.tax | number }}</td>
+          <td>{{ row.insurance | number }}</td>
+          <td class="final">{{ row.final | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
