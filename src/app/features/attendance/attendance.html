@@ -1,0 +1,59 @@
+<div class="attendance-page">
+
+  <h1>حضور و غیاب</h1>
+
+  <div class="status-box">
+
+    <div class="info">
+      <p>وضعیت فعلی:</p>
+
+      <div class="state" *ngIf="!att.records()[0]?.checkIn">خارج از شرکت</div>
+
+      <div class="state working" *ngIf="att.records()[0]?.checkIn && !att.records()[0]?.checkOut">
+        در حال کار
+      </div>
+
+      <div class="state done" *ngIf="att.records()[0]?.checkOut">
+        پایان روز کاری
+      </div>
+
+      <p class="today">امروز: {{ att.records()[0]?.date || '' }}</p>
+    </div>
+
+    <div class="buttons">
+      <button class="btn in" (click)="checkIn()" 
+              [disabled]="att.records()[0]?.checkIn">ورود</button>
+
+      <button class="btn out" (click)="checkOut()" 
+              [disabled]="!att.records()[0]?.checkIn || att.records()[0]?.checkOut">خروج</button>
+    </div>
+
+  </div>
+
+  <h2>سابقه حضور</h2>
+
+  <table class="att-table">
+    <thead>
+      <tr>
+        <th>تاریخ</th>
+        <th>ورود</th>
+        <th>خروج</th>
+        <th>ساعات کاری</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of att.records()">
+        <td>{{ r.date }}</td>
+        <td>{{ r.checkIn || '-' }}</td>
+        <td>{{ r.checkOut || '-' }}</td>
+        <td>{{ r.hours || '-' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="summary">
+    مجموع ساعات کاری ماه: <strong>{{ att.totalHoursThisMonth() }}</strong>
+  </div>
+
+</div>

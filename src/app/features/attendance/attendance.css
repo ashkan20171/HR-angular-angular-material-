@@ -1,0 +1,70 @@
+.attendance-page {
+  padding: 25px;
+}
+
+.status-box {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  margin-bottom: 25px;
+}
+
+.state {
+  margin: 8px 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  background: #e5e7eb;
+}
+
+.state.working {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.state.done {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.buttons button {
+  width: 120px;
+  height: 45px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.in {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn.out {
+  background: #ef4444;
+  color: white;
+}
+
+.att-table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.att-table th,
+.att-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summary {
+  margin-top: 18px;
+  font-size: 17px;
+  font-weight: bold;
+}
