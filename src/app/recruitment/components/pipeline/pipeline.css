@@ -1,0 +1,76 @@
+.pipeline {
+  font-family: IRANSans;
+  direction: rtl;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.column {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+  min-height: 400px;
+}
+
+.column h4 {
+  margin-bottom: 10px;
+  color: #0f62fe;
+}
+
+.app-card {
+  background: #f9fafb;
+  border: 1px solid #eee;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.app-card h5 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.app-card .email {
+  font-size: 12px;
+  opacity: .6;
+  margin-bottom: 8px;
+}
+
+.skills span {
+  font-size: 11px;
+  background: #e7f1ff;
+  color: #0f62fe;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 4px;
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions button {
+  border: none;
+  padding: 5px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.accept {
+  background: #c7f7cf;
+  color: #067d20;
+}
+
+.reject {
+  background: #ffd1d1;
+  color: #a30000;
+}

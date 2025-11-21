@@ -1,0 +1,99 @@
+.recruitment {
+  direction: rtl;
+  padding: 25px;
+  font-family: IRANSans;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #0f62fe;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 350px auto;
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.btn-main {
+  background: #0f62fe;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.job-item {
+  padding: 15px;
+  border: 1px solid #eee;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.job-item.active {
+  border-color: #0f62fe;
+  background: #e8f0fe;
+}
+
+.job-item h4 {
+  margin: 0;
+}
+
+.dept {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.status {
+  float: left;
+  font-size: 12px;
+  background: #c7f3cb;
+  color: #067d13;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.status.closed {
+  background: #ffd8d8;
+  color: #b80000;
+}
+
+.footer {
+  margin-top: 10px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.app-table th,
+.app-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  background: #0f62fe;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+}

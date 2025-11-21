@@ -1,0 +1,56 @@
+<div class="profile">
+
+  <div class="top">
+
+    <div class="info-box">
+      <h2>{{ applicant.name }}</h2>
+      <p class="email">{{ applicant.email }}</p>
+
+      <div class="skills">
+        <span *ngFor="let s of applicant.skills">{{ s }}</span>
+      </div>
+
+      <div class="stage">
+        مرحله فعلی:
+        <strong>{{ applicant.stageName }}</strong>
+      </div>
+    </div>
+
+    <div class="resume-box">
+      <h3>رزومه</h3>
+      <iframe [src]="applicant.resume | safeUrl" class="resume"></iframe>
+    </div>
+
+  </div>
+
+  <!-- Timeline -->
+  <h3 class="title">تایم‌لاین استخدام</h3>
+  <div class="timeline">
+    <div class="item" *ngFor="let t of applicant.history">
+      <div class="dot"></div>
+      <div class="content">
+        <h4>{{ t.title }}</h4>
+        <span class="date">{{ t.date }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <h3 class="title">یادداشت‌های HR</h3>
+
+  <div class="add-note">
+    <textarea [(ngModel)]="noteText" placeholder="یادداشت جدید..."></textarea>
+    <button (click)="addNote()">ثبت یادداشت</button>
+  </div>
+
+  <div class="note-list">
+    <div class="note" *ngFor="let n of notes; let i = index">
+      <div class="text">{{ n.text }}</div>
+      <div class="footer">
+        <span>{{ n.date }}</span>
+        <button (click)="deleteNote(i)">حذف</button>
+      </div>
+    </div>
+  </div>
+
+</div>

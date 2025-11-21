@@ -1,0 +1,66 @@
+<div class="recruitment">
+
+  <h2>سیستم مدیریت استخدام</h2>
+
+  <div class="grid">
+
+    <!-- Jobs list -->
+    <div class="card job-list">
+      <div class="header-row">
+        <h3>موقعیت‌های شغلی</h3>
+        <button class="btn-main">➕ موقعیت جدید</button>
+      </div>
+<app-pipeline *ngIf="selectedJob" [jobId]="selectedJob"></app-pipeline>
+      <div class="job-item" 
+           *ngFor="let j of service.jobs"
+           [class.active]="selectedJob === j.id"
+           (click)="selectJob(j.id)">
+
+        <h4>{{ j.title }}</h4>
+        <span class="dept">{{ j.department }}</span>
+        <span class="status" [class.closed]="j.status==='closed'">
+          {{ j.status==='open' ? 'فعال' : 'بسته' }}
+        </span>
+
+        <div class="footer">
+          <span>نیاز: {{ j.need }} نفر</span>
+          <span>ددلاین: {{ j.deadline }}</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Applicants -->
+    <div class="card applicants" *ngIf="selectedJob">
+
+      <h3>متقاضیان شغل انتخاب شده</h3>
+
+      <table class="app-table">
+        <thead>
+          <tr>
+            <th>نام</th>
+            <th>مهارت‌ها</th>
+            <th>مرحله فعلی</th>
+            <th>رزومه</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let a of service.getApplicantsByJob(selectedJob)">
+            <td>{{ a.name }}</td>
+            <td>{{ a.skills.join(', ') }}</td>
+            <td>مرحله {{ a.stage }}</td>
+            <td><a [href]="a.resume" target="_blank">دانلود</a></td>
+            <td>
+              <button class="btn-small">Pipeline</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
