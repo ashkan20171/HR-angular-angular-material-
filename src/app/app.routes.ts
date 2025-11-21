@@ -62,6 +62,16 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
+  {
+  path: 'payroll',
+  loadComponent: () =>
+    import('./features/payroll/payroll').then(m => m.Payroll)
+},
+{
+  path: 'notifications',
+  loadComponent: () =>
+    import('./features/notifications/notifications').then(m => m.Notifications)
+},
 
   // 404 fallback
   { path: '**', redirectTo: 'login' }

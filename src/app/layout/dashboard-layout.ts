@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NotificationService } from '../features/notifications/notification.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -14,7 +15,7 @@ export class DashboardLayout {
   userName = localStorage.getItem('userName') || 'کاربر';
   userRole = localStorage.getItem('role') || 'Employee';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public notif: NotificationService) {}
 
 
   menu = [

@@ -1,0 +1,33 @@
+<div class="notif-page">
+
+  <h1>اعلان‌ها</h1>
+
+  <div class="notif-list">
+
+    <div class="notif-item"
+         *ngFor="let n of notif.notifications()"
+         [class.unread]="!n.read">
+
+      <div class="left">
+        <h3>{{ n.title }}</h3>
+        <p>{{ n.message }}</p>
+        <span class="date">{{ n.date }}</span>
+      </div>
+
+      <div class="actions">
+        <button class="open" (click)="open(n.id)">
+          مشاهده
+        </button>
+
+        <button class="star"
+                [class.active]="n.important"
+                (click)="toggleImportant(n.id)">
+          ★
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
