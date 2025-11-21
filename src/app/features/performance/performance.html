@@ -1,78 +1,60 @@
-<div class="performance">
+<div class="performance-wrapper">
 
-  <h1 class="title">ارزیابی عملکرد کارکنان</h1>
+  <h2 class="title">تحلیل عملکرد کارکنان</h2>
 
-  <!-- فیلترها -->
-  <div class="filters">
-    <input type="text" class="input" placeholder="جستجو کارمند..." [(ngModel)]="search">
-
-    <select class="input" [(ngModel)]="selectedPeriod">
-      <option value="">دوره ارزیابی</option>
-      <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
-    </select>
-
-    <button class="btn-primary" (click)="openAddModal()">➕ ثبت ارزیابی</button>
+  <!-- KPI ROW -->
+  <div class="kpi-row">
+    <div class="kpi-card" *ngFor="let k of kpi" [style.borderColor]="k.color">
+      <div class="icon" [style.background]="k.color + '22'">{{ k.icon }}</div>
+      <div class="details">
+        <h3>{{ k.value }}</h3>
+        <p>{{ k.title }}</p>
+      </div>
+    </div>
   </div>
 
-  <!-- جدول -->
-  <table class="table">
-    <thead>
-      <tr>
-        <th>کارمند</th>
-        <th>دوره</th>
-        <th>امتیاز</th>
-        <th>وضعیت</th>
-        <th>عملیات</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let r of filtered()">
-        <td>{{ r.employee }}</td>
-        <td>{{ r.period }}</td>
-        <td>{{ r.score }} / 100</td>
-        <td>
-          <span class="status" [ngClass]="r.score >= 85 ? 'excellent' :
-                                           r.score >= 70 ? 'good' :
-                                           r.score >= 50 ? 'normal' : 'weak' ">
-            {{ getStatus(r.score) }}
-          </span>
-        </td>
-        <td>
-          <button class="btn-icon" (click)="edit(r.id)">✏️</button>
-          <button class="btn-icon danger" (click)="remove(r.id)">🗑️</button>
-        </td>
-      </tr>
-    </tbody>
-
-  </table>
-
-  <!-- مودال -->
-  <div class="modal" *ngIf="showModal">
-    <div class="modal-box">
-
-      <h2>{{ editMode ? 'ویرایش ارزیابی' : 'ثبت ارزیابی جدید' }}</h2>
-
-      <label>نام کارمند</label>
-      <input class="input" [(ngModel)]="form.employee">
-
-      <label>دوره ارزیابی</label>
-      <select class="input" [(ngModel)]="form.period">
-        <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
-      </select>
-
-      <label>امتیاز</label>
-      <input class="input" type="number" min="0" max="100" [(ngModel)]="form.score">
-
-      <label>توضیحات</label>
-      <textarea class="input" rows="3" [(ngModel)]="form.desc"></textarea>
-
-      <div class="modal-actions">
-        <button class="btn-primary" (click)="save()">ثبت</button>
-        <button class="btn-secondary" (click)="closeModal()">لغو</button>
-      </div>
-
+  <!-- CHARTS SECTION -->
+  <div class="charts">
+    <div class="chart-box">
+      <h3>نمودار عملکرد ماهانه</h3>
+      <img src="/assets/charts/chart-performance.png" alt="Performance Chart">
     </div>
+
+    <div class="chart-box">
+      <h3>نمودار بهره‌وری تیم</h3>
+      <img src="/assets/charts/chart-team.png" alt="Team Chart">
+    </div>
+  </div>
+
+  <!-- EMPLOYEE PERFORMANCE TABLE -->
+  <div class="table-box">
+    <h3>جزئیات عملکرد کارکنان</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>کارمند</th>
+          <th>امتیاز</th>
+          <th>تسک‌های انجام شده</th>
+          <th>تاخیر</th>
+          <th>روند</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let e of employees" [class]="getScoreColor(e.score)">
+          <td>{{ e.name }}</td>
+          <td>{{ e.score }}</td>
+          <td>{{ e.tasks }}</td>
+          <td>{{ e.late }}</td>
+          <td>
+            <span *ngIf="e.trend === 'up'" class="up">▲</span>
+            <span *ngIf="e.trend === 'down'" class="down">▼</span>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
   </div>
 
 </div>

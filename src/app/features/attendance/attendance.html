@@ -1,40 +1,76 @@
-<div class="attendance-page">
+<div class="attendance-wrapper">
 
-  <h1>حضور و غیاب</h1>
+  <h2 class="title">سیستم حضور و غیاب</h2>
 
-  <div class="action-row">
-    <button class="btn checkin" (click)="checkIn()">ثبت ورود</button>
-    <button class="btn checkout" (click)="checkOut()">ثبت خروج</button>
+  <!-- کارت وضعیت امروز -->
+  <div class="today-card" [class]="getStatusClass(today.status)">
+    <h3>حضور امروز</h3>
+
+    <div class="row">
+      <span>تاریخ:</span>
+      <strong>{{ today.date }}</strong>
+    </div>
+
+    <div class="row">
+      <span>ورود:</span>
+      <strong>{{ today.enter }}</strong>
+    </div>
+
+    <div class="row">
+      <span>خروج:</span>
+      <strong>{{ today.exit }}</strong>
+    </div>
+
+    <div class="today-status">
+      وضعیت:  
+      <span [class]="getStatusClass(today.status)">
+        {{
+          today.status === 'on-time' ? 'بموقع' :
+          today.status === 'late' ? 'تاخیر' :
+          today.status === 'absent' ? 'غیبت' :
+          'دورکاری'
+        }}
+      </span>
+    </div>
   </div>
 
-  <table class="att-table">
-    <thead>
-      <tr>
-        <th>تاریخ</th>
-        <th>ورود</th>
-        <th>خروج</th>
-        <th>ساعات کاری</th>
-        <th>وضعیت</th>
-      </tr>
-    </thead>
+  <!-- جدول هفتگی -->
+  <div class="table-box">
+    <h3>حضور هفتگی</h3>
 
-    <tbody>
-      <tr *ngFor="let r of att.records()">
-        <td>{{ r.date }}</td>
-        <td>{{ r.checkIn }}</td>
-        <td>{{ r.checkOut }}</td>
-        <td>{{ r.workHours }}</td>
-        <td>
-          <span class="status"
-                [class.present]="r.status==='present'"
-                [class.late]="r.status==='late'"
-                [class.absent]="r.status==='absent'">
-            {{ r.status }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
+    <table>
+      <thead>
+        <tr>
+          <th>روز</th>
+          <th>ورود</th>
+          <th>خروج</th>
+          <th>تاخیر (دقیقه)</th>
+          <th>اضافه‌کاری</th>
+          <th>وضعیت</th>
+        </tr>
+      </thead>
 
-  </table>
+      <tbody>
+        <tr *ngFor="let d of weekly" [class]="getStatusClass(d.status)">
+          <td>{{ d.date }}</td>
+          <td>{{ d.enter }}</td>
+          <td>{{ d.exit }}</td>
+          <td>{{ d.late }}</td>
+          <td>{{ d.overtime }}</td>
+          <td class="status-cell">
+            <span [class]="getStatusClass(d.status)">
+              {{
+                d.status === 'on-time' ? 'بموقع' :
+                d.status === 'late' ? 'تاخیر' :
+                d.status === 'absent' ? 'غیبت' :
+                'دورکاری'
+              }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 
 </div>

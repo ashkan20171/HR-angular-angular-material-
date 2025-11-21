@@ -1,82 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PerformanceService, Review } from './performance.service';
 
 @Component({
   selector: 'app-performance',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './performance.html',
-  styleUrl: './performance.css',
-  imports: [CommonModule, FormsModule]
+  styleUrl: './performance.css'
 })
-export class Performance {
+export class Performance implements OnInit {
 
-  search = '';
-  selectedPeriod = '';
+  kpi = [
+    { title: 'میانگین عملکرد ماهانه', value: 87, icon: '📈', color: '#2563eb' },
+    { title: 'بهره‌وری تیم', value: 92, icon: '⚡', color: '#10b981' },
+    { title: 'حضور و غیاب', value: '96%', icon: '⏱️', color: '#f59e0b' },
+    { title: 'درخواست‌های معوق', value: 4, icon: '📄', color: '#ef4444' }
+  ];
 
-  showModal = false;
-  editMode = false;
+  employees = [
+    { name: 'علی', score: 95, tasks: 18, late: 1, trend: 'up' },
+    { name: 'مریم', score: 88, tasks: 14, late: 0, trend: 'up' },
+    { name: 'سارا', score: 77, tasks: 12, late: 3, trend: 'down' },
+    { name: 'محمد', score: 69, tasks: 9, late: 4, trend: 'down' }
+  ];
 
-  periods = ['زمستان ۱۴۰۳', 'پاییز ۱۴۰۳', 'تابستان ۱۴۰۳', 'بهار ۱۴۰۳'];
+  constructor() {}
 
-  form: Review = {
-    id: 0,
-    employee: '',
-    period: '',
-    score: 0,
-    desc: ''
-  };
+  ngOnInit(): void {}
 
-  constructor(private service: PerformanceService) {}
-
-  get list() {
-    return this.service.getAll();
-  }
-
-  filtered() {
-    return this.list.filter(r =>
-      (r.employee.includes(this.search) || !this.search) &&
-      (r.period === this.selectedPeriod || !this.selectedPeriod)
-    );
-  }
-
-  openAddModal() {
-    this.editMode = false;
-    this.form = { id: 0, employee: '', period: '', score: 0, desc: '' };
-    this.showModal = true;
-  }
-
-  edit(id: number) {
-    this.editMode = true;
-    this.form = { ...this.service.getOne(id) };
-    this.showModal = true;
-  }
-
-  remove(id: number) {
-    if (confirm('حذف شود؟')) {
-      this.service.remove(id);
-    }
-  }
-
-  save() {
-    if (!this.form.employee || this.form.score < 0 || this.form.score > 100) return;
-
-    if (this.editMode) this.service.update(this.form);
-    else this.service.add(this.form);
-
-    this.closeModal();
-  }
-
-  closeModal() {
-    this.showModal = false;
-  }
-
-  getStatus(score: number) {
-    if (score >= 85) return 'عالی';
-    if (score >= 70) return 'خوب';
-    if (score >= 50) return 'متوسط';
-    return 'ضعیف';
+  getScoreColor(score: number) {
+    if (score >= 85) return 'good';
+    if (score >= 70) return 'mid';
+    return 'bad';
   }
 
 }
