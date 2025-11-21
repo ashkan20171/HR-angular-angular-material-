@@ -1,54 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { StatusNamePipe } from '../../shared/pipes/status-name.pipe';
+import { LeaveService, LeaveItem } from './leave.service';
 
 @Component({
   selector: 'app-leave',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './leave.html',
-  styleUrl: './leave.css',
-  imports: [CommonModule, FormsModule, StatusNamePipe]
+  styleUrl: './leave.css'
 })
-export class Leave {
+export class Leave implements OnInit {
 
-  leaveInfo = {
-    total: 30,
-    used: 12,
-    remaining: 18,
-    lastRequest: { type: 'مرخصی استعلاجی', date: '۱۴۰۳/۱۰/۱۶', status: 'accepted' }
-  };
-
-  leaves = [
-    { type: 'استحقاقی', start: '۱۴۰۳/۱۰/۲۲', end: '۱۴۰۳/۱۰/۲۳', days: 2, status: 'pending', desc: '' },
-    { type: 'استعلاجی', start: '۱۴۰۳/۱۰/۱۶', end: '۱۴۰۳/۱۰/۱۶', days: 1, status: 'accepted', desc: 'بیماری' },
-    { type: 'بدون حقوق', start: '۱۴۰۳/۰۹/۲۹', end: '۱۴۰۳/۰۹/۳۰', days: 2, status: 'rejected', desc: '' }
-  ];
-
+  summary: any;
+  leaves: LeaveItem[] = [];
   showModal = false;
 
-  newLeave = { type: '', start: '', end: '', desc: '', days: 0 };
+  newLeave = {
+    type: '',
+    start: '',
+    end: '',
+    desc: '',
+    days: 0
+  };
+
+  constructor(private leaveService: LeaveService) {}
+
+  ngOnInit() {
+    this.summary = this.leaveService.getSummary();
+    this.leaves = this.leaveService.getLeaves();
+  }
 
   openModal() { this.showModal = true; }
   closeModal() { this.showModal = false; }
 
   calcDays() {
-    if (!this.newLeave.start || !this.newLeave.end) {
-      this.newLeave.days = 0;
-      return;
-    }
+    if (!this.newLeave.start || !this.newLeave.end) return;
 
-    const s = new Date(this.newLeave.start);
-    const e = new Date(this.newLeave.end);
-    const diff = (e.getTime() - s.getTime()) / 86400000 + 1;
-
-    this.newLeave.days = diff > 0 ? diff : 0;
+    this.newLeave.days = this.leaveService.calculateDays(
+      this.newLeave.start,
+      this.newLeave.end
+    );
   }
 
   submitLeave() {
-    if (!this.newLeave.type || this.newLeave.days <= 0) return;
+    if (this.newLeave.days <= 0 || !this.newLeave.type) return;
 
-    this.leaves.unshift({ ...this.newLeave, status: 'pending' });
+    this.leaveService.addLeave(this.newLeave);
+    
+    this.leaves = this.leaveService.getLeaves();
+    this.summary = this.leaveService.getSummary();
+
+    this.newLeave = { type: '', start: '', end: '', desc: '', days: 0 };
     this.closeModal();
   }
 }

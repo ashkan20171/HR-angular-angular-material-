@@ -1,270 +1,141 @@
-/* =============================
-   Layout
-============================= */
-.leave-container {
+.leave-wrapper {
   padding: 25px;
+  direction: rtl;
   font-family: "IRANSans", sans-serif;
-  animation: fadeIn 0.4s ease;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.page-header h2 {
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--text-primary, #1a1a1a);
-}
-
-/* =============================
-   Buttons
-============================= */
-.btn-primary {
-  background: #2563eb;
-  color: #fff;
-  padding: 10px 22px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.25s;
-}
-
-.btn-primary:hover {
-  background: #1e40af;
-}
-
-.btn-secondary {
-  background: #e5e7eb;
-  color: #111;
-  padding: 9px 18px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.btn-secondary:hover {
-  background: #d1d5db;
-}
-
-/* =============================
-   Cards (Total / Used / Remaining)
-============================= */
-.stats-cards {
+/* Summary Cards */
+.summary-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 18px;
-  margin-bottom: 30px;
 }
 
 .card {
-  background: #ffffffaa;
-  backdrop-filter: blur(6px);
-  border: 1px solid #e5e7eb;
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 4px 16px #00000010;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-}
-
-.card .title {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.card .value {
-  font-size: 26px;
-  font-weight: 700;
-  color: #111;
-}
-
-.card.highlight {
-  background: #d1fae5aa;
-  border-color: #6ee7b7;
-}
-
-/* =============================
-   Last Request
-============================= */
-.last-request {
-  margin-bottom: 30px;
-}
-
-.last-request h3 {
-  margin-bottom: 12px;
-  font-size: 20px;
-}
-
-.request-box {
   background: #fff;
-  padding: 18px;
   border-radius: 14px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 2px 12px #00000010;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  border-top: 4px solid #2D6CDF;
 }
 
-/* =============================
-   Badges
-============================= */
-.badge {
+.card.used { border-color: #F44336; }
+.card.remaining { border-color: #16C47F; }
+.card.last { border-color: #19B7B2; }
+
+.card .num {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.card .status {
   padding: 4px 10px;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 13px;
-  font-weight: 600;
   color: #fff;
 }
 
-.badge.pending { background: #f59e0b; }
-.badge.accepted { background: #10b981; }
-.badge.rejected { background: #ef4444; }
+.status.pending { background: #FFC256; }
+.status.accepted { background: #16C47F; }
+.status.rejected { background: #F44336; }
 
-/* =============================
-   Table
-============================= */
-.table-box {
-  margin-top: 30px;
-  background: #fff;
-  padding: 18px;
-  border-radius: 16px;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 3px 12px #00000012;
+/* Divider */
+.divider {
+  height: 2px;
+  background: #e5e7eb;
+  margin: 30px 0;
 }
 
-.table-box h3 {
-  margin-bottom: 15px;
+/* Header */
+.header-action {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
 }
 
-table {
+.btn-add {
+  padding: 9px 18px;
+  background: #2D6CDF;
+  color: #fff;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Table */
+.leave-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-thead tr {
-  background: #f4f4f4;
-}
-
-th, td {
+.leave-table th {
+  background: #f8fafc;
   padding: 12px;
-  border-bottom: 1px solid #eee;
+  text-align: center;
 }
 
-tbody tr:hover {
-  background: #f9fafb;
+.leave-table td {
+  padding: 12px;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
 }
 
-/* =============================
-   Modal
-============================= */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: #00000055;
-  backdrop-filter: blur(3px);
-  animation: fadeIn 0.3s;
-}
-
+/* Modal */
 .modal {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 420px;
-  max-width: 90%;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 25px;
-  transform: translate(-50%, -50%) scale(0.8);
-  animation: popup 0.35s forwards;
-  box-shadow: 0 10px 40px #00000025;
-}
-
-.modal h3 {
-  margin-bottom: 15px;
-}
-
-/* =============================
-   Form
-============================= */
-.form-group,
-.form-row {
-  margin-bottom: 18px;
-}
-
-.form-row {
+  inset: 0;
+  background: rgba(0,0,0,0.45);
   display: flex;
-  gap: 12px;
+  justify-content: center;
+  align-items: center;
 }
 
-.form-row div {
-  flex: 1;
+.modal-box {
+  width: 420px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
 }
 
-input, select, textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-  transition: border 0.2s;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #2563eb;
-}
-
-.days-box {
-  padding: 10px 12px;
-  background: #f3f4f6;
-  border-radius: 10px;
-  margin-bottom: 18px;
+.modal-box label {
+  display: block;
+  margin-top: 10px;
   font-weight: 600;
 }
 
-.modal-actions {
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+  width: 100%;
+  padding: 9px;
+  margin-top: 5px;
+  border-radius: 7px;
+  border: 1px solid #d1d5db;
+}
+
+.modal-buttons {
+  margin-top: 18px;
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
 }
 
-/* =============================
-   Animations
-============================= */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+.btn-cancel {
+  background: #bbb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
 }
 
-@keyframes popup {
-  0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
-  100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
-}
-
-/* =============================
-   Responsive
-============================= */
-@media (max-width: 768px) {
-  .stats-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .form-row {
-    flex-direction: column;
-  }
-
-  .modal {
-    width: 95%;
-  }
+.btn-ok {
+  background: #2D6CDF;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
 }

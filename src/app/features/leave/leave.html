@@ -1,123 +1,104 @@
-<div class="leave-container">
+<div class="leave-wrapper">
 
-  <!-- Header -->
-  <div class="page-header">
-    <h2>مدیریت مرخصی‌ها</h2>
-    <button class="btn-primary" (click)="openModal()">➕ درخواست جدید</button>
-  </div>
-
-  <!-- Info Cards -->
-  <div class="stats-cards">
+  <!-- Summary Cards -->
+  <div class="summary-cards">
 
     <div class="card">
-      <div class="title">مرخصی کل</div>
-      <div class="value">{{ leaveInfo.total }}</div>
+      <h3>مرخصی کل</h3>
+      <p class="num">{{ summary.total }}</p>
     </div>
 
-    <div class="card">
-      <div class="title">مصرف شده</div>
-      <div class="value">{{ leaveInfo.used }}</div>
+    <div class="card used">
+      <h3>استفاده شده</h3>
+      <p class="num">{{ summary.used }}</p>
     </div>
 
-    <div class="card highlight">
-      <div class="title">باقی‌مانده</div>
-      <div class="value">{{ leaveInfo.remaining }}</div>
+    <div class="card remaining">
+      <h3>باقیمانده</h3>
+      <p class="num">{{ summary.remaining }}</p>
+    </div>
+
+    <div class="card last">
+      <h3>آخرین درخواست</h3>
+      <p class="last-type">{{ summary.last.type }}</p>
+      <span class="status" [class]="summary.last.status">
+        {{ summary.last.status }}
+      </span>
     </div>
 
   </div>
 
-  <!-- Last Request -->
-  <div class="last-request">
+  <!-- Important Line -->
+  <div class="divider"></div>
 
-    <h3>آخرین درخواست</h3>
-
-    <div class="request-box">
-      <p><strong>نوع:</strong> {{ leaveInfo.lastRequest.type }}</p>
-      <p><strong>تاریخ:</strong> {{ leaveInfo.lastRequest.date }}</p>
-      <p>
-        <strong>وضعیت:</strong>
-        <span class="badge" [ngClass]="leaveInfo.lastRequest.status">
-          {{ leaveInfo.lastRequest.status | statusName }}
-        </span>
-      </p>
-    </div>
-
+  <!-- Action -->
+  <div class="header-action">
+    <h2>درخواست‌های من</h2>
+    <button class="btn-add" (click)="openModal()">➕ درخواست جدید</button>
   </div>
 
   <!-- Table -->
-  <div class="table-box">
-    <h3>سوابق درخواست‌ها</h3>
+  <table class="leave-table">
+    <thead>
+      <tr>
+        <th>نوع</th>
+        <th>شروع</th>
+        <th>پایان</th>
+        <th>روز</th>
+        <th>توضیحات</th>
+        <th>وضعیت</th>
+      </tr>
+    </thead>
 
-    <table>
-      <thead>
-        <tr>
-          <th>نوع مرخصی</th>
-          <th>از</th>
-          <th>تا</th>
-          <th>روز</th>
-          <th>توضیح</th>
-          <th>وضعیت</th>
-        </tr>
-      </thead>
+    <tbody>
+      <tr *ngFor="let l of leaves">
+        <td>{{ l.type }}</td>
+        <td>{{ l.start }}</td>
+        <td>{{ l.end }}</td>
+        <td>{{ l.days }}</td>
+        <td>{{ l.desc || '-' }}</td>
 
-      <tbody>
-        <tr *ngFor="let item of leaves">
-          <td>{{ item.type }}</td>
-          <td>{{ item.start }}</td>
-          <td>{{ item.end }}</td>
-          <td>{{ item.days }}</td>
-          <td>{{ item.desc || '-' }}</td>
-          <td>
-            <span class="badge" [ngClass]="item.status">
-              {{ item.status | statusName }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <td>
+          <span class="status" [class]="l.status">
+            {{ l.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
   <!-- Modal -->
-  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
-
   <div class="modal" *ngIf="showModal">
-    <h3>درخواست مرخصی جدید</h3>
+    <div class="modal-box">
 
-    <div class="form-group">
+      <h3>درخواست مرخصی جدید</h3>
+
       <label>نوع مرخصی</label>
       <select [(ngModel)]="newLeave.type">
-        <option value="">انتخاب کنید...</option>
+        <option value="">انتخاب کنید</option>
         <option>استحقاقی</option>
         <option>استعلاجی</option>
         <option>بدون حقوق</option>
       </select>
-    </div>
 
-    <div class="form-row">
-      <div>
-        <label>از تاریخ</label>
-        <input type="date" [(ngModel)]="newLeave.start" (change)="calcDays()">
-      </div>
+      <label>تاریخ شروع</label>
+      <input type="date" [(ngModel)]="newLeave.start" (change)="calcDays()">
 
-      <div>
-        <label>تا تاریخ</label>
-        <input type="date" [(ngModel)]="newLeave.end" (change)="calcDays()">
-      </div>
-    </div>
+      <label>تاریخ پایان</label>
+      <input type="date" [(ngModel)]="newLeave.end" (change)="calcDays()">
 
-    <div class="form-group">
       <label>توضیحات</label>
-      <textarea rows="3" [(ngModel)]="newLeave.desc"></textarea>
-    </div>
+      <textarea [(ngModel)]="newLeave.desc"></textarea>
 
-    <div class="days-box">
-      <strong>تعداد روز:</strong>
-      <span>{{ newLeave.days }}</span>
-    </div>
+      <div class="days-preview">
+        روزهای مرخصی: {{ newLeave.days }}
+      </div>
 
-    <div class="modal-actions">
-      <button class="btn-primary" (click)="submitLeave()">ثبت</button>
-      <button class="btn-secondary" (click)="closeModal()">لغو</button>
+      <div class="modal-buttons">
+        <button class="btn-cancel" (click)="closeModal()">لغو</button>
+        <button class="btn-ok" (click)="submitLeave()">ثبت</button>
+      </div>
+
     </div>
   </div>
 
