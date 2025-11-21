@@ -1,81 +1,68 @@
 <div class="payroll-page">
 
-  <h1>فیش حقوقی</h1>
+  <h1>حقوق و دستمزد</h1>
 
-  <!-- فیش ماه جاری -->
-  <div class="current-box">
+  <!-- حقوق ماه جاری -->
+  <div class="current-pay">
+    <h2>فیش حقوق ماه جاری</h2>
 
-    <h2>{{ currentPayslip.month }}</h2>
-
-    <div class="grid">
-
-      <div class="item">
-        <span>حقوق پایه</span>
-        <strong>{{ format(currentPayslip.basic) }} تومان</strong>
+    <div class="box">
+      <div>
+        <p>حقوق پایه</p>
+        <strong>{{ payroll.latest().baseSalary | number }}</strong>
       </div>
 
-      <div class="item">
-        <span>مزایا</span>
-        <strong>{{ format(currentPayslip.bonus) }} تومان</strong>
+      <div>
+        <p>اضافه‌کاری</p>
+        <strong class="green">{{ payroll.latest().overtime | number }}</strong>
       </div>
 
-      <div class="item">
-        <span>اضافه‌کاری</span>
-        <strong>{{ format(currentPayslip.overtime) }} تومان</strong>
+      <div>
+        <p>کسورات</p>
+        <strong class="red">{{ payroll.latest().deductions | number }}</strong>
       </div>
 
-      <div class="item minus">
-        <span>بیمه</span>
-        <strong>{{ format(currentPayslip.insurance) }} تومان</strong>
+      <div>
+        <p>مالیات</p>
+        <strong class="red">{{ payroll.latest().tax | number }}</strong>
       </div>
 
-      <div class="item minus">
-        <span>مالیات</span>
-        <strong>{{ format(currentPayslip.tax) }} تومان</strong>
+      <div>
+        <p>بیمه</p>
+        <strong class="red">{{ payroll.latest().insurance | number }}</strong>
       </div>
 
+      <div class="final">
+        <p>خالص پرداختی</p>
+        <strong>{{ payroll.latest().finalPay | number }}</strong>
+      </div>
     </div>
-
-    <div class="net-box">
-      <span>خالص پرداختی</span>
-      <strong>{{ format(currentPayslip.net) }} تومان</strong>
-    </div>
-
-    <button class="btn-download" (click)="downloadPDF()">
-      ⬇ دانلود PDF رسمی
-    </button>
 
   </div>
-
-
 
   <!-- تاریخچه -->
-  <div class="history-box">
+  <h2>تاریخچه فیش‌ها</h2>
 
-    <h2>سوابق فیش‌های حقوقی</h2>
+  <table class="records-table">
+    <thead>
+      <tr>
+        <th>ماه</th>
+        <th>حقوق پایه</th>
+        <th>اضافه‌کاری</th>
+        <th>کسورات</th>
+        <th>خالص پرداختی</th>
+      </tr>
+    </thead>
 
-    <table>
-      <thead>
-        <tr>
-          <th>ماه</th>
-          <th>خالص پرداختی</th>
-          <th>دانلود</th>
-        </tr>
-      </thead>
-
-      <tbody>
-
-        <tr *ngFor="let h of history">
-          <td>{{ h.month }}</td>
-          <td>{{ format(h.net) }} تومان</td>
-          <td>
-            <button class="btn-mini">⬇</button>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-
-  </div>
+    <tbody>
+      <tr *ngFor="let r of payroll.records()">
+        <td>{{ r.month }}</td>
+        <td>{{ r.baseSalary | number }}</td>
+        <td class="green">{{ r.overtime | number }}</td>
+        <td class="red">{{ r.deductions | number }}</td>
+        <td><strong>{{ r.finalPay | number }}</strong></td>
+      </tr>
+    </tbody>
+  </table>
 
 </div>
