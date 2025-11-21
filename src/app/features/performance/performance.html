@@ -1,0 +1,21 @@
+<div class="perf-wrapper">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button [class.active]="tab=='self'" (click)="setTab('self')">Self Review</button>
+    <button [class.active]="tab=='manager'" (click)="setTab('manager')">Manager Review</button>
+    <button [class.active]="tab=='kpi'" (click)="setTab('kpi')">KPI</button>
+    <button [class.active]="tab=='skills'" (click)="setTab('skills')">Skills</button>
+    <button [class.active]="tab=='summary'" (click)="setTab('summary')">Summary</button>
+  </div>
+
+  <!-- Content -->
+  <div class="tab-content">
+    <app-self-review *ngIf="tab=='self'"></app-self-review>
+    <app-manager-review *ngIf="tab=='manager'"></app-manager-review>
+    <app-kpi-chart *ngIf="tab=='kpi'"></app-kpi-chart>
+    <app-radar-skills *ngIf="tab=='skills'"></app-radar-skills>
+    <app-summary *ngIf="tab=='summary'"></app-summary>
+  </div>
+
+</div>

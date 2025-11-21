@@ -1,0 +1,34 @@
+.perf-wrapper {
+  padding: 30px;
+  animation: fadeIn .4s ease-out;
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.tabs button {
+  padding: 12px 22px;
+  border-radius: 14px;
+  border: none;
+  background: #e6e9f0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .25s;
+}
+
+.tabs button.active {
+  background: linear-gradient(135deg, #7b2ff7, #00c6ff);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,.2);
+}
+
+.tab-content {
+  padding: 20px;
+  background: #ffffff88;
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.15);
+}
