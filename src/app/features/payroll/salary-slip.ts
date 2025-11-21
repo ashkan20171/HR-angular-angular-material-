@@ -1,6 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+interface SalaryRow {
+  title: string;
+  amount: number;
+  type: 'plus' | 'minus';
+}
+
+interface SalarySlipModel {
+  month: string;
+  rows: SalaryRow[];
+  finalSalary: number;
+}
+
 @Component({
   selector: 'app-salary-slip',
   standalone: true,
@@ -12,18 +24,35 @@ export class SalarySlip {
 
   userName = localStorage.getItem('userName') || '---';
 
-  slip = {
-    month: 'دی ۱۴۰۳',
-    rows: [
-      { title: 'حقوق پایه', amount: 18000000, type: 'plus' },
-      { title: 'اضافه‌کاری', amount: 2400000, type: 'plus' },
-      { title: 'حق مسکن', amount: 900000, type: 'plus' },
-      { title: 'حق بن', amount: 1100000, type: 'plus' },
+  slip: SalarySlipModel;
 
-      { title: 'بیمه تأمین اجتماعی', amount: -1700000, type: 'minus' },
-      { title: 'مالیات', amount: -1300000, type: 'minus' }
-    ],
-    finalSalary: 23000000
-  };
+  constructor() {
+
+    // ورودی خام بدون type
+    const rawRows = [
+      { title: 'حقوق پایه', amount: 18000000 },
+      { title: 'اضافه‌کاری', amount: 2400000 },
+      { title: 'حق مسکن', amount: 900000 },
+      { title: 'حق بن', amount: 1100000 },
+      { title: 'بیمه تأمین اجتماعی', amount: -1700000 },
+      { title: 'مالیات', amount: -1300000 }
+    ];
+
+    // تبدیل ورودی خام به مدل حقوقی استاندارد
+    const rows: SalaryRow[] = rawRows.map(r => ({
+      ...r,
+      type: r.amount >= 0 ? 'plus' : 'minus'
+    }));
+
+    // محاسبه حقوق نهایی
+    const finalSalary =
+      rows.reduce((sum, r) => sum + r.amount, 0);
+
+    this.slip = {
+      month: 'دی ۱۴۰۳',
+      rows,
+      finalSalary
+    };
+  }
 
 }
