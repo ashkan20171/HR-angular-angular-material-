@@ -1,0 +1,113 @@
+.request-wrapper {
+  padding: 25px;
+  direction: rtl;
+  font-family: "IRANSans", sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.btn-add {
+  padding: 10px 18px;
+  background: #2D6CDF;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.filters input,
+.filters select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.request-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.request-table th {
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.request-table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+}
+
+.status.pending { background: #FBBF24; }
+.status.manager-review { background: #3B82F6; }
+.status.hr-review { background: #9333EA; }
+.status.accepted { background: #10B981; }
+.status.rejected { background: #EF4444; }
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  width: 420px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+  width: 100%;
+  padding: 9px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.ok {
+  background: #2D6CDF;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+}
+
+.cancel {
+  background: #a1a1a1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+}

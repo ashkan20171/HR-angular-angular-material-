@@ -1,0 +1,75 @@
+<div class="request-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h2>مرکز درخواست‌ها</h2>
+    <button class="btn-add" (click)="openModal()">➕ درخواست جدید</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <input placeholder="جستجو..." [(ngModel)]="keyword" (input)="search()">
+
+    <select [(ngModel)]="status" (change)="search()">
+      <option value="all">همه وضعیت‌ها</option>
+      <option value="pending">در انتظار</option>
+      <option value="manager-review">در انتظار مدیر</option>
+      <option value="hr-review">در انتظار HR</option>
+      <option value="accepted">تأیید شده</option>
+      <option value="rejected">رد شده</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <table class="request-table">
+    <thead>
+      <tr>
+        <th>نوع</th>
+        <th>کاربر</th>
+        <th>تاریخ</th>
+        <th>توضیحات</th>
+        <th>وضعیت</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of filtered">
+        <td>{{ r.type }}</td>
+        <td>{{ r.user }}</td>
+        <td>{{ r.date }}</td>
+        <td>{{ r.desc }}</td>
+
+        <td>
+          <span class="status" [class]="r.status">
+            {{ r.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-box">
+      <h3>درخواست جدید</h3>
+
+      <label>نوع درخواست</label>
+      <select [(ngModel)]="newRequest.type">
+        <option value="">انتخاب کنید</option>
+        <option>مرخصی</option>
+        <option>اضافه‌کاری</option>
+        <option>ماموریت</option>
+        <option>درخواست اداری</option>
+      </select>
+
+      <label>توضیحات</label>
+      <textarea [(ngModel)]="newRequest.desc"></textarea>
+
+      <div class="actions">
+        <button class="cancel" (click)="closeModal()">لغو</button>
+        <button class="ok" (click)="submitRequest()">ثبت</button>
+      </div>
+    </div>
+  </div>
+
+</div>
