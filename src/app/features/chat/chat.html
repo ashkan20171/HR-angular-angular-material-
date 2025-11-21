@@ -1,0 +1,83 @@
+<div class="chat-wrapper">
+
+  <!-- Sidebar گفتگوها -->
+  <div class="chat-sidebar">
+
+    <div class="chat-header">
+      <h2>چت سازمانی</h2>
+      <div class="user-name">
+        {{ currentUser }}
+      </div>
+    </div>
+
+    <div class="conversation-list">
+      <div
+        class="conversation-item"
+        *ngFor="let c of conversations"
+        [class.active]="selectedConv?.id === c.id"
+        (click)="selectConversation(c)">
+
+        <div class="conv-title">{{ c.title }}</div>
+        <div class="conv-meta">
+          <span>اعضا: {{ c.participants.length }}</span>
+          <span class="badge" *ngIf="c.unreadCount > 0">
+            {{ c.unreadCount }}
+          </span>
+        </div>
+
+        <div class="conv-time">
+          آخرین پیام: {{ c.lastMessageAt }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- پنل اصلی چت -->
+  <div class="chat-main" *ngIf="selectedConv; else noConv">
+
+    <div class="chat-main-header">
+      <div>
+        <h3>{{ selectedConv.title }}</h3>
+        <p class="participants">
+          اعضا:
+          {{ selectedConv.participants.join('، ') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="chat-messages">
+
+      <div
+        class="msg-row"
+        *ngFor="let m of messages"
+        [class.mine]="isMine(m)">
+
+        <div class="msg-bubble">
+          <div class="msg-from">{{ m.from }}</div>
+          <div class="msg-text">{{ m.text }}</div>
+          <div class="msg-time">{{ m.time }}</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="chat-input">
+      <textarea
+        [(ngModel)]="newMessageText"
+        placeholder="پیامت را بنویس..."
+        (keydown.enter)="send(); $event.preventDefault()"></textarea>
+
+      <button (click)="send()">ارسال</button>
+    </div>
+
+  </div>
+
+  <ng-template #noConv>
+    <div class="chat-main empty">
+      یک گفتگو را از لیست انتخاب کنید
+    </div>
+  </ng-template>
+
+</div>

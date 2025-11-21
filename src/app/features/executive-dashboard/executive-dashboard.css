@@ -1,0 +1,195 @@
+.executive-dashboard {
+  padding: 30px;
+  font-family: IRANSans, sans-serif;
+  direction: rtl;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+
+/* KPI GRID */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.kpi-card {
+  background: #fff;
+  border-right: 6px solid;
+  padding: 18px;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.kpi-icon {
+  width: 55px;
+  height: 55px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.kpi-info h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+/* BAR CHART */
+.chart-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.chart-box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  flex: 1;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  height: 200px;
+}
+
+.bar {
+  width: 25px;
+  background: #0ea5e9;
+  border-radius: 6px;
+}
+
+.bar-chart.red .bar {
+  background: #ef4444;
+}
+
+
+
+/* DONUT CHART */
+.donut-box {
+  margin-bottom: 40px;
+}
+
+.donut-chart {
+  display: flex;
+  height: 25px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.slice {
+  height: 100%;
+}
+
+.legend {
+  margin-top: 10px;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  margin-bottom: 5px;
+}
+
+.legend .dot {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+
+
+/* PAYROLL BAR */
+.payroll-list .row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.progress {
+  flex: 1;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  margin: 0 10px;
+}
+
+.progress .fill {
+  height: 100%;
+  border-radius: 6px;
+  background: #6366f1;
+  transition: width .3s;
+}
+
+
+
+/* INSIGHTS */
+.insights-box {
+  margin: 40px 0;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.insights-box ul {
+  padding: 0;
+  list-style: none;
+}
+
+.insights-box li {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+
+
+/* RECRUITMENT FUNNEL */
+.funnel {
+  padding: 10px;
+}
+
+.step {
+  background: #e0f2fe;
+  padding: 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.final {
+  background: #bbf7d0;
+}
+
+
+
+/* DEPARTMENT STATUS */
+.department-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.department-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}

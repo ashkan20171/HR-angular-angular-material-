@@ -1,118 +1,87 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
 
-  // Login page (lazy)
+  // Login
   {
     path: 'login',
     loadComponent: () =>
       import('./features/login/login').then(m => m.Login)
   },
 
-  // Protected part of the app (with layout)
+  // Protected App Layout
   {
     path: '',
     loadComponent: () =>
-      import('./layout/dashboard-layout').then(m => m.DashboardLayout),
+      import('./layout/dashboard-layout')
+        .then(m => m.DashboardLayout),
     children: [
+
+      // Dashboard
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./features/dashboard/dashboard').then(m => m.Dashboard),
-        canMatch: [AuthGuard],
-        data: { permission: 'dashboard.view' }
+          import('./features/dashboard/dashboard').then(m => m.Dashboard)
       },
 
+      // Users
       {
-  path: 'users',
-  loadComponent: () =>
-    import('./features/users/users').then(m => m.Users),
-  canMatch: [AuthGuard],
-  data: { permission: 'users.view' }
-},
-{
-  path: 'users/add',
-  loadComponent: () =>
-    import('./features/users/add-user/add-user').then(m => m.AddUserComponent)
-},
-{
-  path: 'users/edit/:id',
-  loadComponent: () =>
-    import('./features/users/edit-user/edit-user').then(m => m.EditUserComponent)
-},
-{
-  path: 'profile',
-  loadComponent: () =>
-    import('./features/profile/profile').then(m => m.Profile),
-  canMatch: [AuthGuard],
-  data: { permission: 'profile.view' }
-},
-{
-  path: 'leave',
-  loadComponent: () =>
-    import('./features/leave/leave').then(m => m.Leave)
-},
-{
-  path: 'mission',
-  loadComponent: () =>
-    import('./features/mission/mission').then(m => m.Mission)
-},
-      // Default child route
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+        path: 'users',
+        loadComponent: () =>
+          import('./features/users/users').then(m => m.Users)
+      },
+
+      // Requests
+      {
+        path: 'requests',
+        loadComponent: () =>
+          import('./features/requests/requests').then(m => m.Requests)
+      },
+
+      // Leave Management
+      {
+        path: 'leave',
+        loadComponent: () =>
+          import('./features/leave/leave').then(m => m.Leave)
+      },
+
+      // Payroll
+      {
+        path: 'payroll',
+        loadComponent: () =>
+          import('./features/payroll/salary-slip').then(m => m.SalarySlip)
+      },
+
+
+      // Recruitment System
+      {
+        path: 'recruitment',
+        loadComponent: () =>
+          import('./features/recruitment/recruitment').then(m => m.Recruitment)
+      },
+      {
+        path: 'recruitment/new',
+        loadComponent: () =>
+          import('./features/recruitment/job-form/job-form').then(m => m.JobForm)
+      },
+      {
+        path: 'recruitment/:id',
+        loadComponent: () =>
+          import('./features/recruitment/job-detail/job-detail').then(m => m.JobDetail)
+      },
+
+      // Messages / Inbox
+      {
+        path: 'inbox',
+        loadComponent: () =>
+          import('./features/messages/inbox/inbox').then(m => m.Inbox)
+      },
+
     ]
   },
-  {
-  path: 'payroll',
-  loadComponent: () =>
-    import('./features/payroll/payroll').then(m => m.Payroll)
-},
-{
-  path: 'salary-slip/:id',
-  loadComponent: () =>
-    import('./features/payroll/salary-slip').then(m => m.SalarySlip)
-},
-{
-  path: 'notifications',
-  loadComponent: () =>
-    import('./features/notifications/notifications').then(m => m.Notifications)
-},
-{
-  path: 'attendance',
-  loadComponent: () =>
-    import('./features/attendance/attendance').then(m => m.Attendance)
-},
-{
-  path: 'requests',
-  loadComponent: () =>
-    import('./features/requests/requests').then(m => m.Requests)
-},
 
-{
-  path: 'performance',
-  loadComponent: () =>
-    import('./features/performance/performance').then(m => m.Performance)
-},
-{
-  path: 'messages',
-  loadComponent: () => import('./features/messages/inbox').then(m => m.Inbox)
-},
-{
-  path: 'recruitment',
-  loadComponent: () =>
-    import('./features/recruitment/recruitment').then(m => m.Recruitment)
-},
-{
-  path: 'recruitment/new',
-  loadComponent: () =>
-    import('./features/recruitment/job-form/job-form').then(m => m.JobForm)
-},
-{
-  path: 'recruitment/job/:id',
-  loadComponent: () =>
-    import('./features/recruitment/job-detail/job-detail').then(m => m.JobDetail)
-},
-
-  // 404 fallback
+  // Redirect to login
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' }
+
 ];

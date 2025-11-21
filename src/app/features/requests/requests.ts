@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/auth/auth.service';
 import { RequestService, HRRequest } from './request.service';
+import { RequestTypePipe } from './request-type.pipe';
+import { RequestStatusPipe } from './request-status.pipe';
 
 @Component({
   selector: 'app-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RequestTypePipe,
+    RequestStatusPipe],
   templateUrl: './requests.html',
   styleUrl: './requests.css'
 })

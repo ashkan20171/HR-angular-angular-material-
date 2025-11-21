@@ -1,0 +1,116 @@
+<div class="executive-dashboard">
+
+  <!-- عنوان -->
+  <h1 class="title">داشبورد مدیریتی کلان (Executive HR Dashboard)</h1>
+
+  <!-- KPI های کلان -->
+  <div class="kpi-grid">
+    <div class="kpi-card" *ngFor="let k of executiveKPIs" [style.borderColor]="k.color">
+      <div class="kpi-icon" [style.background]="k.color + '22'">
+        {{ k.icon }}
+      </div>
+      <div class="kpi-info">
+        <h3>{{ k.value }}</h3>
+        <p>{{ k.title }}</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- دو نمودار اول: Hiring vs Attrition -->
+  <div class="chart-row">
+
+    <!-- Hiring Trend -->
+    <div class="chart-box">
+      <h2>روند جذب نیروی انسانی</h2>
+      <div class="bar-chart">
+        <div class="bar" *ngFor="let v of hiringTrend" [style.height]="v * 4 + 'px'"></div>
+      </div>
+    </div>
+
+    <!-- Attrition Trend -->
+    <div class="chart-box">
+      <h2>روند خروج کارکنان</h2>
+      <div class="bar-chart red">
+        <div class="bar" *ngFor="let v of attritionTrend" [style.height]="v * 8 + 'px'"></div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- نمودار دونات توزیع عملکرد -->
+  <div class="chart-box donut-box">
+    <h2>توزیع امتیاز عملکرد کارکنان</h2>
+
+    <div class="donut-chart">
+      <div class="slice" *ngFor="let p of performanceDistribution"
+           [style.background]="p.color"
+           [style.flex]="p.value"></div>
+    </div>
+
+    <ul class="legend">
+      <li *ngFor="let p of performanceDistribution">
+        <span class="dot" [style.background]="p.color"></span>
+        {{ p.label }} ({{ p.value }})
+      </li>
+    </ul>
+  </div>
+
+
+
+  <!-- هزینه حقوق سازمان -->
+  <div class="chart-box">
+    <h2>هزینه حقوق و دستمزد واحدها</h2>
+
+    <div class="payroll-list">
+      <div class="row" *ngFor="let d of departmentPayroll">
+        <span>{{ d.department }}</span>
+        <div class="progress">
+          <div class="fill" [style.width]="d.cost + 'px'"></div>
+        </div>
+        <span class="value">{{ d.cost }}M</span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Insights هوشمند -->
+  <div class="insights-box">
+    <h2>بینش‌های کلان سازمان</h2>
+    <ul>
+      <li *ngFor="let i of insights">💡 {{ i }}</li>
+    </ul>
+  </div>
+
+
+
+  <!-- Recruitment Funnel -->
+  <div class="chart-box">
+    <h2>چرخه استخدام (Recruitment Funnel)</h2>
+
+    <div class="funnel">
+      <div class="step">رزومه‌های دریافتی — {{ recruitmentFunnel.applied }}</div>
+      <div class="step">غربال اولیه — {{ recruitmentFunnel.screened }}</div>
+      <div class="step">مصاحبه — {{ recruitmentFunnel.interview }}</div>
+      <div class="step">مصاحبه نهایی — {{ recruitmentFunnel.finalInterview }}</div>
+      <div class="step final">استخدام — {{ recruitmentFunnel.hired }}</div>
+    </div>
+  </div>
+
+
+
+  <!-- سلامت واحدها -->
+  <div class="department-grid">
+    <div class="department-card" *ngFor="let d of departmentsStatus">
+      <h3>{{ d.name }}</h3>
+      <p>کارکنان: {{ d.staff }}</p>
+      <p>امتیاز عملکرد: {{ d.score }}</p>
+      <p>غیبت: {{ d.absence }}</p>
+      <p>رضایت: {{ d.satisfaction }}</p>
+    </div>
+  </div>
+
+</div>
