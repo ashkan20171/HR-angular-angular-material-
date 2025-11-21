@@ -1,1 +1,43 @@
-<p>self-review works!</p>
+<div class="self-box">
+
+  <!-- اهداف -->
+  <section class="block">
+    <h2>اهداف سالانه</h2>
+
+    <div class="goal" *ngFor="let g of goals">
+      <span>{{ g.text }}</span>
+
+      <div class="progress-line">
+        <div class="progress" [style.width.%]="g.progress"></div>
+      </div>
+
+      <small>{{ g.progress }}%</small>
+    </div>
+  </section>
+
+  <!-- مهارت‌ها -->
+  <section class="block">
+    <h2>ارزیابی مهارت‌ها</h2>
+
+    <div class="skill" *ngFor="let s of skills">
+      <label>{{ s.title }}</label>
+
+      <select [(ngModel)]="s.score">
+        <option [value]="1">۱</option>
+        <option [value]="2">۲</option>
+        <option [value]="3">۳</option>
+        <option [value]="4">۴</option>
+        <option [value]="5">۵</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- کامنت -->
+  <section class="block">
+    <h2>توضیحات و تحلیل فردی</h2>
+
+    <textarea [(ngModel)]="comment"
+              placeholder="نقاط قوت، ضعف، رشد فردی، و تحلیل عملکرد این سال را بنویسید..."></textarea>
+  </section>
+
+</div>
