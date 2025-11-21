@@ -43,10 +43,14 @@ export class AuthService {
         'dashboard.view',
         'users.view',
         'requests.view',
+        'attendance.view',
+        'payroll.view',
         'profile.view'
       ],
       employee: [
         'dashboard.view',
+        'attendance.view',
+        'payroll.view',
         'profile.view'
       ]
     };

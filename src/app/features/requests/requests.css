@@ -1,114 +1,62 @@
 .requests-page {
-  padding: 20px;
-  animation: fadeIn .4s ease;
+  padding: 25px;
 }
 
-h1 {
-  font-size: 26px;
-  margin-bottom: 25px;
-}
-
-.filters {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.filters select,
-.search-input {
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-}
-
-.btn-new {
-  background: #4f46e5;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.table-wrapper {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-}
-
-table {
+.req-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-th {
-  text-align: right;
-  padding: 12px;
-  background: #f3f4f6;
+.req-table th,
+.req-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
 }
 
-td {
-  padding: 12px;
-  border-top: 1px solid #eee;
+.req-table tr:hover {
+  background: #f9fafb;
 }
 
-/* مودال */
-.modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  backdrop-filter: blur(5px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.status {
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
 }
 
-.modal-box {
-  background: white;
-  padding: 25px;
-  width: 350px;
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+.pending {
+  background: #fff3cd;
+  color: #b38b00;
 }
 
-.modal-box h2 {
-  margin-bottom: 20px;
+.approved {
+  background: #d1f7e2;
+  color: #0f8f48;
 }
 
-.modal-box select,
-.modal-box input,
-.modal-box textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
+.rejected {
+  background: #ffd6d6;
+  color: #c62828;
+}
+
+.actions button {
+  margin-right: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  border: none;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.btn-save {
+.approve {
   background: #10b981;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
+  color: #fff;
 }
 
-.btn-cancel {
-  background: #e11d48;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+.reject {
+  background: #ef4444;
+  color: #fff;
 }

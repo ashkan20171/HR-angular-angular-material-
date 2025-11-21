@@ -22,6 +22,9 @@ export class DashboardLayout {
   { title: 'داشبورد', icon: '📊', link: '/dashboard', permission: 'dashboard.view' },
   { title: 'کاربران', icon: '👥', link: '/users', permission: 'users.view' },
   { title: 'پروفایل', icon: '🙍‍♂️', link: '/profile', permission: 'profile.view' },
+  { title: 'حضور و غیاب', icon: '⏱️', link: '/attendance', permission: 'attendance.view' },
+  { title: 'حقوق و دستمزد', icon: '💵', link: '/payroll', permission: 'payroll.view' },
+  { title: 'درخواست‌ها', icon: '📝', link: '/requests', permission: 'requests.view' }
   
 ];
 

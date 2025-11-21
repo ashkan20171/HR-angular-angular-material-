@@ -1,84 +1,47 @@
 <div class="requests-page">
 
-  <h1>درخواست‌های من</h1>
+  <h1>درخواست‌های سازمانی</h1>
 
-  <!-- نوار فیلترها -->
-  <div class="filters">
+  <table class="req-table">
+    <thead>
+      <tr>
+        <th>نوع</th>
+        <th>کاربر</th>
+        <th>تاریخ</th>
+        <th>جزئیات</th>
+        <th>وضعیت</th>
+        <th *ngIf="auth.role !== 'employee'">عملیات</th>
+      </tr>
+    </thead>
 
-    <select [(ngModel)]="filter.type">
-      <option value="">نوع درخواست</option>
-      <option>مرخصی</option>
-      <option>ماموریت</option>
-      <option>اضافه‌کاری</option>
-    </select>
+    <tbody>
 
-    <select [(ngModel)]="filter.status">
-      <option value="">وضعیت</option>
-      <option value="pending">در انتظار</option>
-      <option value="accepted">تأیید شده</option>
-      <option value="rejected">رد شده</option>
-    </select>
+      <tr *ngFor="let r of req.requests()">
 
-    <input 
-      placeholder="جستجو در توضیحات..." 
-      [(ngModel)]="filter.search"
-      class="search-input">
+        <td>{{ r.type }}</td>
 
-    <button class="btn-new" (click)="openModal()">➕ درخواست جدید</button>
+        <td>{{ r.user }}</td>
 
-  </div>
+        <td>{{ r.createdAt }}</td>
 
-  <!-- جدول درخواست‌ها -->
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>نوع</th>
-          <th>تاریخ</th>
-          <th>وضعیت</th>
-          <th>توضیحات</th>
-        </tr>
-      </thead>
+        <td>{{ r.details }}</td>
 
-      <tbody>
-        <tr *ngFor="let r of filtered()">
-          <td>{{ r.type }}</td>
-          <td>{{ r.date | jalali }}</td>
-          <td [innerHTML]="r.status | leaveStatus"></td>
-          <td>{{ r.desc }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <td>
+          <span class="status" [class.pending]="r.status==='pending'"
+                [class.approved]="r.status==='approved'"
+                [class.rejected]="r.status==='rejected'">
+            {{ r.status }}
+          </span>
+        </td>
 
-  <!-- مودال -->
-  <div class="modal" *ngIf="showModal">
+        <td *ngIf="auth.role !== 'employee'" class="actions">
+          <button (click)="approve(r.id)" class="approve">تأیید</button>
+          <button (click)="reject(r.id)" class="reject">رد</button>
+        </td>
 
-    <div class="modal-box">
+      </tr>
 
-      <h2>درخواست جدید</h2>
-
-      <label>نوع</label>
-      <select [(ngModel)]="newReq.type">
-        <option value="">انتخاب کنید</option>
-        <option>مرخصی</option>
-        <option>ماموریت</option>
-        <option>اضافه‌کاری</option>
-      </select>
-
-      <label>تاریخ</label>
-      <input type="date" [(ngModel)]="newReq.date">
-
-      <label>توضیحات</label>
-      <textarea rows="3" [(ngModel)]="newReq.desc"></textarea>
-
-      <div class="modal-actions">
-        <button class="btn-cancel" (click)="closeModal()">لغو</button>
-        <button class="btn-save" (click)="submit()">ثبت</button>
-      </div>
-
-    </div>
-
-  </div>
+    </tbody>
+  </table>
 
 </div>

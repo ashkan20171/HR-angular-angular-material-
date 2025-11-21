@@ -72,6 +72,16 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./features/notifications/notifications').then(m => m.Notifications)
 },
+{
+  path: 'attendance',
+  loadComponent: () =>
+    import('./features/attendance/attendance').then(m => m.Attendance)
+},
+{
+  path: 'requests',
+  loadComponent: () =>
+    import('./features/requests/requests').then(m => m.Requests)
+},
 
   // 404 fallback
   { path: '**', redirectTo: 'login' }
