@@ -1,0 +1,84 @@
+<div class="requests-page">
+
+  <h1>درخواست‌های من</h1>
+
+  <!-- نوار فیلترها -->
+  <div class="filters">
+
+    <select [(ngModel)]="filter.type">
+      <option value="">نوع درخواست</option>
+      <option>مرخصی</option>
+      <option>ماموریت</option>
+      <option>اضافه‌کاری</option>
+    </select>
+
+    <select [(ngModel)]="filter.status">
+      <option value="">وضعیت</option>
+      <option value="pending">در انتظار</option>
+      <option value="accepted">تأیید شده</option>
+      <option value="rejected">رد شده</option>
+    </select>
+
+    <input 
+      placeholder="جستجو در توضیحات..." 
+      [(ngModel)]="filter.search"
+      class="search-input">
+
+    <button class="btn-new" (click)="openModal()">➕ درخواست جدید</button>
+
+  </div>
+
+  <!-- جدول درخواست‌ها -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>نوع</th>
+          <th>تاریخ</th>
+          <th>وضعیت</th>
+          <th>توضیحات</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let r of filtered()">
+          <td>{{ r.type }}</td>
+          <td>{{ r.date | jalali }}</td>
+          <td [innerHTML]="r.status | leaveStatus"></td>
+          <td>{{ r.desc }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- مودال -->
+  <div class="modal" *ngIf="showModal">
+
+    <div class="modal-box">
+
+      <h2>درخواست جدید</h2>
+
+      <label>نوع</label>
+      <select [(ngModel)]="newReq.type">
+        <option value="">انتخاب کنید</option>
+        <option>مرخصی</option>
+        <option>ماموریت</option>
+        <option>اضافه‌کاری</option>
+      </select>
+
+      <label>تاریخ</label>
+      <input type="date" [(ngModel)]="newReq.date">
+
+      <label>توضیحات</label>
+      <textarea rows="3" [(ngModel)]="newReq.desc"></textarea>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="closeModal()">لغو</button>
+        <button class="btn-save" (click)="submit()">ثبت</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
