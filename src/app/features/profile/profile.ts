@@ -1,24 +1,44 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, User } from '../users/user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './profile.html',
-  styleUrl: './profile.css'
+  styleUrl: './profile.css',
+  imports: [CommonModule, FormsModule]
 })
 export class Profile {
 
-  user!: User;
+  // اطلاعات کاربر
+  user = {
+    name: localStorage.getItem('userName') || 'کاربر سیستم',
+    role: localStorage.getItem('role') || 'employee',
+    email: 'user@example.com',
+    phone: '09120000000',
+    avatar: localStorage.getItem('avatar') || '/assets/default-avatar.png'
+  };
 
-  constructor(private users: UserService) {
-    const username = localStorage.getItem('logged_user') || 'ali';
-    this.user = this.users.getAll().find(x => x.username === username)!;
+  // آپلود عکس
+  onUpload(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.user.avatar = reader.result as string;
+
+      // ذخیره در LocalStorage
+      localStorage.setItem('avatar', this.user.avatar);
+    };
+
+    reader.readAsDataURL(file);
   }
 
-  edit() {
-    alert('در نسخه نهایی این صفحه به ویرایش پروفایل متصل می‌شود!');
+  // ذخیره تغییرات
+  save() {
+    localStorage.setItem('userName', this.user.name);
+    alert('تغییرات با موفقیت ذخیره شد');
   }
 }

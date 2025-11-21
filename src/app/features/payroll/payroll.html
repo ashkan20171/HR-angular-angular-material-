@@ -1,0 +1,81 @@
+<div class="payroll-page">
+
+  <h1>فیش حقوقی</h1>
+
+  <!-- فیش ماه جاری -->
+  <div class="current-box">
+
+    <h2>{{ currentPayslip.month }}</h2>
+
+    <div class="grid">
+
+      <div class="item">
+        <span>حقوق پایه</span>
+        <strong>{{ format(currentPayslip.basic) }} تومان</strong>
+      </div>
+
+      <div class="item">
+        <span>مزایا</span>
+        <strong>{{ format(currentPayslip.bonus) }} تومان</strong>
+      </div>
+
+      <div class="item">
+        <span>اضافه‌کاری</span>
+        <strong>{{ format(currentPayslip.overtime) }} تومان</strong>
+      </div>
+
+      <div class="item minus">
+        <span>بیمه</span>
+        <strong>{{ format(currentPayslip.insurance) }} تومان</strong>
+      </div>
+
+      <div class="item minus">
+        <span>مالیات</span>
+        <strong>{{ format(currentPayslip.tax) }} تومان</strong>
+      </div>
+
+    </div>
+
+    <div class="net-box">
+      <span>خالص پرداختی</span>
+      <strong>{{ format(currentPayslip.net) }} تومان</strong>
+    </div>
+
+    <button class="btn-download" (click)="downloadPDF()">
+      ⬇ دانلود PDF رسمی
+    </button>
+
+  </div>
+
+
+
+  <!-- تاریخچه -->
+  <div class="history-box">
+
+    <h2>سوابق فیش‌های حقوقی</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ماه</th>
+          <th>خالص پرداختی</th>
+          <th>دانلود</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let h of history">
+          <td>{{ h.month }}</td>
+          <td>{{ format(h.net) }} تومان</td>
+          <td>
+            <button class="btn-mini">⬇</button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+</div>

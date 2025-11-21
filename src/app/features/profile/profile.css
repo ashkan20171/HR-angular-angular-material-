@@ -1,78 +1,88 @@
-.profile-container {
-  display: flex;
-  justify-content: center;
-  padding: 50px 20px;
+.profile-page {
+  padding: 20px;
 }
 
-.profile-card {
-  width: 430px;
-  background: white;
-  border-radius: 22px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-  padding: 35px;
+h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.profile-box {
+  display: flex;
+  gap: 30px;
+  background: #fff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.avatar-section {
   text-align: center;
-  animation: fadeIn 0.6s;
-}
-
-.avatar-box {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
 }
 
 .avatar {
-  width: 95px;
-  height: 95px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: white;
-  font-size: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
+  object-fit: cover;
+  border: 4px solid #e5e7eb;
 }
 
-.name {
-  font-size: 26px;
+.upload-btn {
+  display: inline-block;
   margin-top: 10px;
-  color: #333;
+  background: #4f46e5;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.role {
-  font-size: 16px;
-  margin-top: 4px;
-  color: #666;
+.upload-btn input {
+  display: none;
 }
 
-.info-list {
-  margin-top: 25px;
-  text-align: left;
+.info-section {
+  flex: 1;
 }
 
-.info-item {
-  background: #f8f8ff;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
+.info-section label {
+  margin-top: 12px;
   font-size: 14px;
-}
-
-.label {
-  font-weight: 600;
+  display: block;
   color: #555;
 }
 
-.edit-btn {
-  margin-top: 25px;
+.info-section input {
   width: 100%;
-  padding: 14px;
-  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-top: 4px;
+}
+
+.disabled {
+  background: #f3f4f6;
+  color: #666;
+}
+
+.btn-save {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background: #0ea5e9;
   border: none;
-  border-radius: 12px;
   color: white;
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  font-size: 15px;
+  border-radius: 10px;
   cursor: pointer;
+}
+
+.qr-section {
+  text-align: center;
+}
+
+.qr {
+  width: 130px;
+  height: 130px;
+  border-radius: 10px;
 }
