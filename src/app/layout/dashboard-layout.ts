@@ -14,6 +14,7 @@ export class DashboardLayout {
 
   userName = localStorage.getItem('userName') || 'کاربر';
   userRole = localStorage.getItem('role') || 'Employee';
+  showNotif: any;
 
   constructor(private router: Router, public notif: NotificationService) {}
 
@@ -28,6 +29,14 @@ export class DashboardLayout {
   
   
 ];
+
+  toggleNotif() {
+    this.showNotif = !this.showNotif;
+  }
+
+  markAsRead(id: number) {
+    this.notif.markAsRead(id);
+  }
 
   logout() {
     localStorage.clear();

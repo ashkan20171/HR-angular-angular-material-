@@ -1,66 +1,23 @@
 <div class="recruitment">
 
-  <h2>سیستم مدیریت استخدام</h2>
+  <div class="header">
+    <h1>استخدام</h1>
+    <button class="btn-add" (click)="newJob()">➕ ایجاد موقعیت شغلی</button>
+  </div>
 
-  <div class="grid">
+  <div class="jobs-grid">
+    <div class="job-card" *ngFor="let j of jobs" (click)="openJob(j.id)">
 
-    <!-- Jobs list -->
-    <div class="card job-list">
-      <div class="header-row">
-        <h3>موقعیت‌های شغلی</h3>
-        <button class="btn-main">➕ موقعیت جدید</button>
-      </div>
-<app-pipeline *ngIf="selectedJob" [jobId]="selectedJob"></app-pipeline>
-      <div class="job-item" 
-           *ngFor="let j of service.jobs"
-           [class.active]="selectedJob === j.id"
-           (click)="selectJob(j.id)">
+      <h3>{{ j.title }}</h3>
+      <span class="dept">{{ j.department }}</span>
 
-        <h4>{{ j.title }}</h4>
-        <span class="dept">{{ j.department }}</span>
-        <span class="status" [class.closed]="j.status==='closed'">
-          {{ j.status==='open' ? 'فعال' : 'بسته' }}
-        </span>
-
-        <div class="footer">
-          <span>نیاز: {{ j.need }} نفر</span>
-          <span>ددلاین: {{ j.deadline }}</span>
-        </div>
+      <div class="status" [class.open]="j.status==='open'"
+                         [class.paused]="j.status==='paused'"
+                         [class.closed]="j.status==='closed'">
+        {{ j.status }}
       </div>
 
     </div>
-
-    <!-- Applicants -->
-    <div class="card applicants" *ngIf="selectedJob">
-
-      <h3>متقاضیان شغل انتخاب شده</h3>
-
-      <table class="app-table">
-        <thead>
-          <tr>
-            <th>نام</th>
-            <th>مهارت‌ها</th>
-            <th>مرحله فعلی</th>
-            <th>رزومه</th>
-            <th></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let a of service.getApplicantsByJob(selectedJob)">
-            <td>{{ a.name }}</td>
-            <td>{{ a.skills.join(', ') }}</td>
-            <td>مرحله {{ a.stage }}</td>
-            <td><a [href]="a.resume" target="_blank">دانلود</a></td>
-            <td>
-              <button class="btn-small">Pipeline</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-
   </div>
 
 </div>

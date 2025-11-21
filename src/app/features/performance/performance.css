@@ -1,75 +1,57 @@
 .performance {
-  direction: rtl;
-  padding: 25px;
-  font-family: IRANSans;
-}
-
-h2 {
-  margin-bottom: 20px;
-  color: #2563eb;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 400px auto;
-  gap: 20px;
-}
-
-.card {
-  background: #fff;
   padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  direction: rtl;
 }
 
-.card.full {
-  grid-column: span 2;
-}
-
-.form-group {
+h1, h2 {
+  font-weight: 700;
   margin-bottom: 15px;
-}
-
-label {
-  font-size: 14px;
-  display: block;
-  margin-bottom: 4px;
-}
-
-input[type=range] {
-  width: 100%;
-}
-
-.rate {
-  font-weight: bold;
-  color: #1e3a8a;
-}
-
-textarea {
-  width: 100%;
-  height: 90px;
-  margin-top: 8px;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.btn {
-  width: 100%;
-  padding: 12px;
-  margin-top: 18px;
-  background: #2563eb;
-  color: #fff;
-  border-radius: 12px;
-  border: none;
 }
 
 table {
   width: 100%;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
   border-collapse: collapse;
+}
+
+thead {
+  background: #f0f4ff;
 }
 
 th, td {
   padding: 12px;
-  text-align: center;
   border-bottom: 1px solid #eee;
+}
+
+select, textarea {
+  width: 100%;
+  padding: 7px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+}
+
+.btn {
+  padding: 10px 20px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn.manager {
+  background: #28a745;
+}
+
+.final-score {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  background: #e8fff3;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #b2f0d0;
 }

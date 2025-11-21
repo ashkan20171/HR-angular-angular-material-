@@ -1,64 +1,68 @@
 <div class="performance">
 
-  <h2>ارزیابی عملکرد کارکنان</h2>
+  <h1>ارزیابی عملکرد دوره {{ record.period }}</h1>
 
-  <div class="grid">
+  <h2>مرحله ۱: خودارزیابی</h2>
 
-    <div class="card">
-      <h3>فرم ارزیابی</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>KPI</th>
+        <th>اهمیت</th>
+        <th>امتیاز شما (۱–۵)</th>
+      </tr>
+    </thead>
 
-      <div class="form-group" *ngFor="
-          let field of [
-            {label:'ارتباطات', key:'communication'},
-            {label:'کار تیمی', key:'teamwork'},
-            {label:'خلاقیت', key:'creativity'},
-            {label:'دقت', key:'accuracy'},
-            {label:'سرعت', key:'speed'},
-            {label:'مسئولیت‌پذیری', key:'responsibility'},
-            {label:'نظم', key:'discipline'}
-          ]">
+    <tbody>
+      <tr *ngFor="let k of record.kpis; let i=index">
+        <td>{{ k.title }}</td>
+        <td>{{ k.weight }}%</td>
+        <td>
+          <select [(ngModel)]="record.evaluations[i].selfScore">
+            <option value="">انتخاب</option>
+            <option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{ s }}</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-        <label>{{ field.label }}</label>
-        <input type="range" min="1" max="5" [(ngModel)]="evaluation[field.key]">
-        <span class="rate">{{ evaluation[field.key] }}</span>
+  <button class="btn" (click)="submitSelf()">ثبت خودارزیابی</button>
 
-      </div>
+  <hr>
 
-      <label>نظر مدیر</label>
-      <textarea [(ngModel)]="evaluation.comment"></textarea>
+  <h2>مرحله ۲: ارزیابی مدیر</h2>
 
-      <button class="btn" (click)="save()">ثبت ارزیابی</button>
+  <table>
+    <thead>
+      <tr>
+        <th>KPI</th>
+        <th>امتیاز مدیر</th>
+        <th>نظر مدیر</th>
+      </tr>
+    </thead>
 
-      <div class="average-box">
-        <span>میانگین نهایی:</span>
-        <strong>{{ average }}</strong>
-      </div>
+    <tbody>
+      <tr *ngFor="let k of record.kpis; let i=index">
+        <td>{{ k.title }}</td>
+        <td>
+          <select [(ngModel)]="record.evaluations[i].managerScore">
+            <option value="">انتخاب</option>
+            <option *ngFor="let s of [1,2,3,4,5]" [value]="s">{{ s }}</option>
+          </select>
+        </td>
+        <td>
+          <textarea rows="2"
+            [(ngModel)]="record.evaluations[i].comment"></textarea>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-    </div>
+  <button class="btn manager" (click)="submitManager()">ثبت نهایی</button>
 
-    <div class="card full">
-      <h3>تاریخچه ارزیابی‌ها</h3>
-
-      <table>
-        <thead>
-          <tr>
-            <th>تاریخ</th>
-            <th>میانگین</th>
-            <th>نظر مدیر</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let e of evaluations">
-            <td>{{ e.date }}</td>
-            <td>{{ e.average }}</td>
-            <td>{{ e.comment || '-' }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
-
+  <div *ngIf="record.finalScore" class="final-score">
+    امتیاز نهایی: {{ record.finalScore }} از ۵
   </div>
 
 </div>

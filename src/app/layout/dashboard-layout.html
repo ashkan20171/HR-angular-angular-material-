@@ -14,10 +14,19 @@
         <li>
           <a [routerLink]="item.link">{{ item.icon }} {{ item.title }}</a>
         </li>
-          <li *ngIf="auth.hasPermission('performance.view')">
-         <a routerLink="/performance" routerLinkActive="active">📈 ارزیابی عملکرد</a>
+        <li>
+          <a routerLink="/performance" routerLinkActive="active">
+  📈 ارزیابی عملکرد
+</a>
+</li>
+       <li>
+        <a routerLink="/messages" routerLinkActive="active">💬 پیام‌ها</a>
        </li>
-
+       <li>
+<a routerLink="/recruitment" routerLinkActive="active">
+  💼 استخدام
+</a>
+</li>
       </ng-container>
 
     </nav>
@@ -28,12 +37,14 @@
   <div class="content-area">
 
     <header class="header">
-    <div class="notif-bell" routerLink="/notifications">
-  🔔
-  <span class="badge" *ngIf="notif.unreadCount() > 0">
-    {{ notif.unreadCount() }}
-  </span>
-   </div>
+    <div class="notif-icon" routerLink="/notifications">
+  🔔 <span class="badge">{{ notif.unreadCount() }}</span>
+</div>
+
+  </div>
+
+</div>
+
       <div class="user-box">
         <span class="name">{{ userName }}</span>
         <span class="role">({{ userRole }})</span>

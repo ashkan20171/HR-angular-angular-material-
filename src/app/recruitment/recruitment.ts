@@ -1,22 +1,26 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { RecruitmentService } from './recruitment.service';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-recruitment',
   standalone: true,
   templateUrl: './recruitment.html',
   styleUrl: './recruitment.css',
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule]
 })
 export class Recruitment {
 
-  selectedJob: number | null = null;
+  jobs = this.service.getJobs();
 
-  constructor(public service: RecruitmentService) {}
+  constructor(private service: RecruitmentService, private router: Router) {}
 
-  selectJob(id: number) {
-    this.selectedJob = id;
+  openJob(id: number) {
+    this.router.navigate(['/recruitment/job', id]);
+  }
+
+  newJob() {
+    this.router.navigate(['/recruitment/new']);
   }
 }

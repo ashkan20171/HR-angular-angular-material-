@@ -2,51 +2,53 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PerformanceService } from './performance.service';
+import { PerformanceRecord } from './performance.model';
 
 @Component({
   selector: 'app-performance',
   standalone: true,
-  imports: [CommonModule, FormsModule],
   templateUrl: './performance.html',
-  styleUrl: './performance.css'
+  styleUrl: './performance.css',
+  imports: [CommonModule, FormsModule]
 })
 export class Performance {
 
-  evaluation = {
-    communication: 3,
-    teamwork: 3,
-    creativity: 3,
-    accuracy: 3,
-    speed: 3,
-    responsibility: 3,
-    discipline: 3,
-    comment: ''
-  };
+  record!: PerformanceRecord;
+  user = localStorage.getItem('userName') || 'کارمند';
 
-  evaluations = this.service.all();
-
-  constructor(private service: PerformanceService) {}
-
-  get average() {
-    const v = this.evaluation;
-    return Math.round(
-      (v.communication +
-        v.teamwork +
-        v.creativity +
-        v.accuracy +
-        v.speed +
-        v.responsibility +
-        v.discipline) / 7
-    );
+  constructor(private perf: PerformanceService) {
+    this.initRecord();
   }
 
-  save() {
-    this.service.addEvaluation({
-      ...this.evaluation,
-      average: this.average,
-      date: new Date().toLocaleDateString('fa-IR')
-    });
+  initRecord() {
+    this.record = {
+      id: Date.now(),
+      user: this.user,
+      period: '1403-Q4',
+      kpis: [
+        { id: 1, title: 'کیفیت انجام کار', weight: 40 },
+        { id: 2, title: 'تعهد به زمان‌بندی', weight: 25 },
+        { id: 3, title: 'روحیه همکاری تیمی', weight: 20 },
+        { id: 4, title: 'نوآوری و بهبود', weight: 15 }
+      ],
+      evaluations: []
+    };
 
-    this.evaluation.comment = '';
+    this.record.evaluations = this.record.kpis.map(k => ({
+      kpiId: k.id,
+      selfScore: null,
+      managerScore: null,
+      comment: ''
+    }));
+  }
+
+  submitSelf() {
+    alert('خودارزیابی ثبت شد');
+    this.perf.saveRecord(this.record);
+  }
+
+  submitManager() {
+    this.perf.calculateFinalScore(this.record);
+    alert('ارزیابی مدیریتی ثبت شد');
   }
 }

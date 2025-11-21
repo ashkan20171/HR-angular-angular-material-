@@ -1,99 +1,51 @@
 .recruitment {
-  direction: rtl;
-  padding: 25px;
-  font-family: IRANSans;
-}
-
-h2 {
-  margin-bottom: 20px;
-  color: #0f62fe;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: 350px auto;
-  gap: 20px;
-}
-
-.card {
-  background: #fff;
-  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  direction: rtl;
 }
 
-.header-row {
+.header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  align-items: center;
 }
 
-.btn-main {
-  background: #0f62fe;
-  color: #fff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-}
-
-.job-item {
-  padding: 15px;
-  border: 1px solid #eee;
-  margin-bottom: 10px;
+.btn-add {
+  padding: 10px 20px;
+  background: #0e60ff;
+  color: white;
   border-radius: 10px;
+  border: none;
   cursor: pointer;
 }
 
-.job-item.active {
-  border-color: #0f62fe;
-  background: #e8f0fe;
+.jobs-grid {
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  margin-top: 20px;
 }
 
-.job-item h4 {
-  margin: 0;
+.job-card {
+  padding: 20px;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.dept {
-  font-size: 12px;
-  opacity: 0.6;
+.job-card:hover {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
 .status {
-  float: left;
-  font-size: 12px;
-  background: #c7f3cb;
-  color: #067d13;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-
-.status.closed {
-  background: #ffd8d8;
-  color: #b80000;
-}
-
-.footer {
   margin-top: 10px;
+  padding: 5px 12px;
+  border-radius: 8px;
   font-size: 13px;
-  opacity: 0.8;
+  width: fit-content;
 }
 
-.app-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.app-table th,
-.app-table td {
-  padding: 12px;
-  text-align: center;
-  border-bottom: 1px solid #eee;
-}
-
-.btn-small {
-  padding: 6px 10px;
-  background: #0f62fe;
-  color: #fff;
-  border-radius: 6px;
-  border: none;
-}
+.status.open { background: #e3ffe6; color: #0b8a13; }
+.status.paused { background: #fff3cd; color: #a97900; }
+.status.closed { background: #ffe6e6; color: #cc0000; }

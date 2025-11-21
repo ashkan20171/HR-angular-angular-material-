@@ -89,21 +89,29 @@ export const routes: Routes = [
 },
 
 {
-  path: 'request-new',
-  loadComponent: () =>
-    import('./features/requests/request-new').then(m => m.RequestNew)
-},
-{
-  path: 'requests-manager',
-  loadComponent: () =>
-    import('./features/requests-manager/requests-manager').then(m => m.RequestsManager)
-},
-{
   path: 'performance',
   loadComponent: () =>
     import('./features/performance/performance').then(m => m.Performance)
 },
-
+{
+  path: 'messages',
+  loadComponent: () => import('./features/messages/inbox').then(m => m.Inbox)
+},
+{
+  path: 'recruitment',
+  loadComponent: () =>
+    import('./features/recruitment/recruitment').then(m => m.Recruitment)
+},
+{
+  path: 'recruitment/new',
+  loadComponent: () =>
+    import('./features/recruitment/job-form/job-form').then(m => m.JobForm)
+},
+{
+  path: 'recruitment/job/:id',
+  loadComponent: () =>
+    import('./features/recruitment/job-detail/job-detail').then(m => m.JobDetail)
+},
 
   // 404 fallback
   { path: '**', redirectTo: 'login' }

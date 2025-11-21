@@ -1,0 +1,16 @@
+<div class="messages">
+
+  <h2>پیام‌ها</h2>
+
+  <div class="msg-list">
+    <div class="msg-item" *ngFor="let m of list" (click)="openChat(m.from)">
+      <div class="avatar">{{ m.from[0] }}</div>
+      <div class="text">
+        <p class="from">{{ m.from }}</p>
+        <p class="msg">{{ m.text }}</p>
+      </div>
+      <span class="time">{{ m.time }}</span>
+    </div>
+  </div>
+
+</div>
