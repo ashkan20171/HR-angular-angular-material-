@@ -1,0 +1,68 @@
+<div class="salary-page">
+
+  <div class="header">
+    <h2>درخواست افزایش حقوق</h2>
+    <button class="add-btn" (click)="openModal()">➕ ثبت درخواست جدید</button>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr>
+          <th>کاربر</th>
+          <th>حقوق فعلی</th>
+          <th>درخواست جدید</th>
+          <th>تاریخ</th>
+          <th>دلیل</th>
+          <th>وضعیت</th>
+          <th>اقدام</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let r of salaryService.getAll()">
+
+          <td>{{ r.user }}</td>
+          <td>{{ r.currentSalary | number }}</td>
+          <td>{{ r.requestedSalary | number }}</td>
+          <td>{{ r.date }}</td>
+
+          <td>{{ r.reason }}</td>
+
+          <td>
+            <span class="status" [class]="r.status">
+              {{ r.status | raiseStatus }}
+            </span>
+          </td>
+
+          <td class="actions">
+            <button (click)="changeStatus(r.id,'accepted')">✔️</button>
+            <button (click)="changeStatus(r.id,'rejected')">❌</button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    
+    <h3>ثبت درخواست جدید</h3>
+
+    <input type="text" placeholder="نام کاربر" [(ngModel)]="newRequest.user">
+    <input type="number" placeholder="حقوق فعلی" [(ngModel)]="newRequest.currentSalary">
+    <input type="number" placeholder="حقوق پیشنهادی" [(ngModel)]="newRequest.requestedSalary">
+
+    <textarea placeholder="دلیل درخواست" [(ngModel)]="newRequest.reason"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn-save" (click)="submit()">ثبت</button>
+      <button class="btn-cancel" (click)="closeModal()">انصراف</button>
+    </div>
+
+  </div>
+</div>
