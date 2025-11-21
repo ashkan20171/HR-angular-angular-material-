@@ -1,66 +1,75 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-interface SalaryItem {
+interface Payslip {
   month: string;
   base: number;
+  housing: number;
+  child: number;
+  benefit: number;
   overtime: number;
-  bonus: number;
+  absencePenalty: number;
   tax: number;
   insurance: number;
-  final: number;
+  total: number;
 }
 
 @Component({
   selector: 'app-payroll',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './payroll.html',
-  styleUrl: './payroll.css'
+  styleUrl: './payroll.css',
+  imports: [CommonModule, FormsModule]
 })
 export class Payroll {
 
-  // اطلاعات ماه جاری
-  current = {
-    month: "دی ۱۴۰۳",
-    base: 18_000_000,
-    overtime: 1_200_000,
-    bonus: 500_000,
-    tax: 2_100_000,
-    insurance: 900_000
+  // حقوق کارمند
+  salary = {
+    base: 12000000,         // حقوق پایه
+    childCount: 0,          // حق اولاد
+    overtimeHours: 0,
+    absenceHours: 0
   };
 
-  constructor() {}
+  result: Payslip | null = null;
 
-  get finalSalary() {
-    const c = this.current;
-    return (c.base + c.overtime + c.bonus) - (c.tax + c.insurance);
+  // لیست فیش‌های صادر شده
+  payslips: Payslip[] = [];
+
+  constructor() {
+    const saved = localStorage.getItem('payslips');
+    if (saved) this.payslips = JSON.parse(saved);
   }
 
-  // تاریخچه حقوق
-  history: SalaryItem[] = [
-    {
-      month: "آذر ۱۴۰۳",
-      base: 18_000_000,
-      overtime: 900_000,
-      bonus: 250_000,
-      tax: 2_050_000,
-      insurance: 900_000,
-      final: 16_200_000
-    },
-    {
-      month: "آبان ۱۴۰۳",
-      base: 17_500_000,
-      overtime: 1_300_000,
-      bonus: 0,
-      tax: 1_960_000,
-      insurance: 870_000,
-      final: 15_970_000
-    }
-  ];
+  calculate() {
+    const base = this.salary.base;
+    const housing = 900000;    // حق مسکن
+    const child = this.salary.childCount * 700000;
+    const benefit = 1100000;   // بن کارگری
 
-  // خروجی PDF (فعلاً Mock)
-  downloadPDF() {
-    alert("فیش حقوقی PDF در نسخه نهایی دانلود می‌شود.");
+    const overtime = this.salary.overtimeHours * (base / 220) * 1.4;
+    const absencePenalty = this.salary.absenceHours * (base / 220);
+
+    const insurance = base * 0.07;
+    const tax = base > 10000000 ? (base - 10000000) * 0.1 : 0;
+
+    const total = base + housing + child + benefit + overtime - absencePenalty - tax - insurance;
+
+    this.result = {
+      month: new Date().toLocaleDateString('fa-IR'),
+      base,
+      housing,
+      child,
+      benefit,
+      overtime: Math.round(overtime),
+      absencePenalty: Math.round(absencePenalty),
+      insurance: Math.round(insurance),
+      tax: Math.round(tax),
+      total: Math.round(total)
+    };
+
+    this.payslips.unshift(this.result);
+    localStorage.setItem('payslips', JSON.stringify(this.payslips));
   }
 }

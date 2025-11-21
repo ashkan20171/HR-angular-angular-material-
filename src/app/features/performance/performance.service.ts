@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 
-export interface Review {
-  id: number;
-  employee: string;
-  period: string;
-  score: number;
-  desc: string;
+export interface Evaluation {
+  date: string;
+  communication: number;
+  teamwork: number;
+  creativity: number;
+  accuracy: number;
+  speed: number;
+  responsibility: number;
+  discipline: number;
+  average: number;
+  comment: string;
 }
 
 @Injectable({
@@ -13,32 +18,19 @@ export interface Review {
 })
 export class PerformanceService {
 
-  private reviews: Review[] = [
-    { id: 1, employee: 'علی رضایی', period: 'زمستان ۱۴۰۳', score: 92, desc: '' },
-    { id: 2, employee: 'مریم کاظمی', period: 'پاییز ۱۴۰۳', score: 78, desc: '' },
-    { id: 3, employee: 'سارا محمدی', period: 'تابستان ۱۴۰۳', score: 65, desc: '' }
-  ];
+  evaluations: Evaluation[] = [];
 
-  getAll() {
-    return [...this.reviews];
+  constructor() {
+    const saved = localStorage.getItem('evaluations');
+    if (saved) this.evaluations = JSON.parse(saved);
   }
 
-  getOne(id: number) {
-    return this.reviews.find(r => r.id === id)!;
+  addEvaluation(ev: Evaluation) {
+    this.evaluations.unshift(ev);
+    localStorage.setItem('evaluations', JSON.stringify(this.evaluations));
   }
 
-  add(item: Review) {
-    item.id = Date.now();
-    this.reviews.unshift(item);
+  all() {
+    return this.evaluations;
   }
-
-  update(item: Review) {
-    const i = this.reviews.findIndex(r => r.id === item.id);
-    if (i !== -1) this.reviews[i] = item;
-  }
-
-  remove(id: number) {
-    this.reviews = this.reviews.filter(r => r.id !== id);
-  }
-
 }

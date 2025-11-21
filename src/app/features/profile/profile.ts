@@ -11,34 +11,57 @@ import { FormsModule } from '@angular/forms';
 })
 export class Profile {
 
-  // اطلاعات کاربر
-  user = {
-    name: localStorage.getItem('userName') || 'کاربر سیستم',
-    role: localStorage.getItem('role') || 'employee',
+  // اطلاعات شخصی
+  personal = {
+    name: localStorage.getItem('userName') || 'کاربر',
     email: 'user@example.com',
     phone: '09120000000',
-    avatar: localStorage.getItem('avatar') || '/assets/default-avatar.png'
+    birth: '',
+    marital: 'single',
+    avatar: '/assets/default-avatar.png'
   };
 
-  // آپلود عکس
-  onUpload(event: any) {
+  // اطلاعات سازمانی
+  job = {
+    code: 'EMP-1024',
+    position: 'کارشناس منابع انسانی',
+    department: 'منابع انسانی',
+    type: 'تمام وقت',
+    hired: '۱۴۰۱/۰۴/۲۳',
+    manager: 'سرپرست: خانم کریمی'
+  };
+
+  // تغییر رمز
+  password = {
+    old: '',
+    new: '',
+    confirm: '',
+  };
+
+  // پیش‌نمایش عکس
+  avatarPreview = this.personal.avatar;
+
+  onAvatarChange(event: any) {
     const file = event.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
-    reader.onload = () => {
-      this.user.avatar = reader.result as string;
-
-      // ذخیره در LocalStorage
-      localStorage.setItem('avatar', this.user.avatar);
-    };
-
+    reader.onload = () => this.avatarPreview = reader.result as string;
     reader.readAsDataURL(file);
   }
 
-  // ذخیره تغییرات
-  save() {
-    localStorage.setItem('userName', this.user.name);
-    alert('تغییرات با موفقیت ذخیره شد');
+  changePassword() {
+    if (!this.password.old || !this.password.new || !this.password.confirm) {
+      alert('تمام فیلدها الزامی است');
+      return;
+    }
+
+    if (this.password.new !== this.password.confirm) {
+      alert('رمز جدید و تکرار آن یکسان نیست');
+      return;
+    }
+
+    alert('رمز عبور با موفقیت تغییر کرد');
+    this.password = { old: '', new: '', confirm: '' };
   }
+
 }

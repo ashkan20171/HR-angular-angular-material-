@@ -1,49 +1,92 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-interface DailyRecord {
+interface AttendanceRecord {
   date: string;
-  enter: string;
-  exit: string;
-  late: number;
+  in: string | null;
+  out: string | null;
+  workHours: number;
   overtime: number;
-  status: 'on-time' | 'late' | 'absent' | 'remote';
+  delay: number;
 }
 
 @Component({
   selector: 'app-attendance',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './attendance.html',
-  styleUrl: './attendance.css'
+  styleUrl: './attendance.css',
+  imports: [CommonModule]
 })
-export class Attendance implements OnInit {
+export class Attendance {
 
-  today = {
-    date: '۱۴۰۳/۱۱/۲۳',
-    enter: '08:59',
-    exit: '16:35',
-    status: 'on-time'
-  };
+  today = new Date().toLocaleDateString('fa-IR');
 
-  weekly: DailyRecord[] = [
-    { date: 'شنبه',    enter: '08:58', exit: '16:30', late: 0, overtime: 15, status: 'on-time' },
-    { date: 'یکشنبه',  enter: '09:12', exit: '16:30', late: 12, overtime: 0,  status: 'late' },
-    { date: 'دوشنبه',  enter: '—',    exit: '—',    late: 0, overtime: 0,  status: 'absent' },
-    { date: 'سه‌شنبه', enter: '08:45', exit: '17:10', late: 0, overtime: 40, status: 'on-time' },
-    { date: 'چهارشنبه',enter: '09:05', exit: '16:40', late: 5, overtime: 10, status: 'remote' },
-  ];
+  punchInTime: string | null = null;
+  punchOutTime: string | null = null;
 
-  constructor() {}
+  workedHoursToday = 0;
+  overtimeToday = 0;
+  delayToday = 0;
 
-  ngOnInit(): void {}
+  // گزارش ماهانه
+  monthRecords: AttendanceRecord[] = [];
 
-  getStatusClass(s: string) {
-    return {
-      'on-time': 'status-on',
-      'late': 'status-late',
-      'absent': 'status-absent',
-      'remote': 'status-remote'
-    }[s] || '';
+  constructor() {
+    const saved = localStorage.getItem('attendance');
+    if (saved) {
+      this.monthRecords = JSON.parse(saved);
+    }
   }
+
+  punchIn() {
+    if (this.punchInTime) return alert('شما قبلاً ورود زده‌اید!');
+    this.punchInTime = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  punchOut() {
+    if (!this.punchInTime) return alert('ابتدا باید ورود ثبت کنید!');
+    if (this.punchOutTime) return alert('شما قبلاً خروج زده‌اید!');
+
+    this.punchOutTime = new Date().toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+
+    this.calculateWork();
+    this.saveRecord();
+  }
+
+  calculateWork() {
+    const s = this.timeToMinutes(this.punchInTime!);
+    const e = this.timeToMinutes(this.punchOutTime!);
+
+    const diff = e - s;
+    this.workedHoursToday = +(diff / 60).toFixed(2);
+
+    // 8 ساعت رسمی
+    if (diff > 8 * 60) {
+      this.overtimeToday = +((diff - 480) / 60).toFixed(2);
+    }
+
+    // تأخیر: ورود بعد از ساعت 9 صبح
+    if (s > 9 * 60) {
+      this.delayToday = +((s - 540) / 60).toFixed(2);
+    }
+  }
+
+  saveRecord() {
+    this.monthRecords.unshift({
+      date: this.today,
+      in: this.punchInTime,
+      out: this.punchOutTime,
+      workHours: this.workedHoursToday,
+      overtime: this.overtimeToday,
+      delay: this.delayToday
+    });
+
+    localStorage.setItem('attendance', JSON.stringify(this.monthRecords));
+  }
+
+  timeToMinutes(t: string) {
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  }
+
 }

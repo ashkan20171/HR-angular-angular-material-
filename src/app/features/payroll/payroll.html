@@ -1,75 +1,76 @@
 <div class="payroll-wrapper">
 
-  <h2 class="title">حقوق و دستمزد</h2>
+  <h2>محاسبه حقوق و دستمزد</h2>
 
-  <!-- کارت حقوق ماه جاری -->
-  <div class="salary-card">
-    <h3>حقوق ماه جاری – {{ current.month }}</h3>
+  <div class="grid">
 
-    <div class="row">
-      <span>حقوق پایه:</span>
-      <strong>{{ current.base | number }}</strong>
+    <div class="card">
+      <h3>فرم اطلاعات حقوق</h3>
+
+      <label>حقوق پایه (تومان)</label>
+      <input type="number" [(ngModel)]="salary.base">
+
+      <label>تعداد فرزند</label>
+      <input type="number" [(ngModel)]="salary.childCount">
+
+      <label>ساعات اضافه‌کاری</label>
+      <input type="number" [(ngModel)]="salary.overtimeHours">
+
+      <label>ساعات غیبت / کسری</label>
+      <input type="number" [(ngModel)]="salary.absenceHours">
+
+      <button class="btn" (click)="calculate()">محاسبه</button>
     </div>
 
-    <div class="row">
-      <span>اضافه‌کاری:</span>
-      <strong>{{ current.overtime | number }}</strong>
+    <div class="card" *ngIf="result">
+      <h3>نتیجه حقوق ماه جاری</h3>
+
+      <p><strong>حقوق پایه:</strong> {{ result.base | number }}</p>
+      <p><strong>حق مسکن:</strong> {{ result.housing | number }}</p>
+      <p><strong>حق اولاد:</strong> {{ result.child | number }}</p>
+      <p><strong>بن کارگری:</strong> {{ result.benefit | number }}</p>
+
+      <p class="plus"><strong>اضافه‌کاری:</strong> {{ result.overtime | number }}</p>
+      <p class="minus"><strong>کسری کار:</strong> {{ result.absencePenalty | number }}</p>
+
+      <p class="minus"><strong>بیمه:</strong> {{ result.insurance | number }}</p>
+      <p class="minus"><strong>مالیات:</strong> {{ result.tax | number }}</p>
+
+      <h2 class="final">
+        جمع پرداختی: {{ result.total | number }} تومان
+      </h2>
+
     </div>
 
-    <div class="row">
-      <span>مزایا / پاداش:</span>
-      <strong>{{ current.bonus | number }}</strong>
-    </div>
-
-    <div class="row minus">
-      <span>مالیات:</span>
-      <strong>{{ current.tax | number }}</strong>
-    </div>
-
-    <div class="row minus">
-      <span>بیمه:</span>
-      <strong>{{ current.insurance | number }}</strong>
-    </div>
-
-    <div class="final-salary">
-      جمع پرداختی:
-      <strong>{{ finalSalary | number }} تومان</strong>
-    </div>
-
-    <button class="btn-download" (click)="downloadPDF()">
-      دریافت فیش حقوقی PDF
-    </button>
   </div>
 
-  <!-- تاریخچه پرداخت‌ها -->
-  <div class="table-box">
-    <h3>تاریخچه حقوق</h3>
+  <div class="card table-card">
+    <h3>فیش‌های حقوقی صادر شده</h3>
 
     <table>
       <thead>
         <tr>
           <th>ماه</th>
-          <th>پایه</th>
+          <th>حقوق پایه</th>
           <th>اضافه‌کاری</th>
-          <th>پاداش</th>
           <th>مالیات</th>
           <th>بیمه</th>
-          <th>خالص پرداخت</th>
+          <th>پرداختی</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let row of history">
-          <td>{{ row.month }}</td>
-          <td>{{ row.base | number }}</td>
-          <td>{{ row.overtime | number }}</td>
-          <td>{{ row.bonus | number }}</td>
-          <td>{{ row.tax | number }}</td>
-          <td>{{ row.insurance | number }}</td>
-          <td class="final">{{ row.final | number }}</td>
+        <tr *ngFor="let p of payslips">
+          <td>{{ p.month }}</td>
+          <td>{{ p.base | number }}</td>
+          <td class="plus">{{ p.overtime | number }}</td>
+          <td class="minus">{{ p.tax | number }}</td>
+          <td class="minus">{{ p.insurance | number }}</td>
+          <td class="final">{{ p.total | number }}</td>
         </tr>
       </tbody>
     </table>
+
   </div>
 
 </div>

@@ -1,43 +1,71 @@
-<div class="profile-page">
+<div class="profile-wrapper">
 
-  <h1>پروفایل من</h1>
+  <h2 class="title">پروفایل کاربری</h2>
 
-  <div class="profile-box">
+  <div class="grid">
 
-    <!-- عکس پروفایل -->
-    <div class="avatar-section">
-      <img [src]="user.avatar" class="avatar" />
+    <!-- اطلاعات شخصی -->
+    <div class="card">
 
-      <label class="upload-btn">
-        تغییر عکس
-        <input type="file" accept="image/*" (change)="onUpload($event)">
-      </label>
-    </div>
+      <h3>اطلاعات شخصی</h3>
 
-    <!-- اطلاعات -->
-    <div class="info-section">
-      
+      <div class="avatar-box">
+        <img [src]="avatarPreview" class="avatar">
+        <label class="upload-btn">
+          تغییر عکس
+          <input type="file" accept="image/*" (change)="onAvatarChange($event)">
+        </label>
+      </div>
+
       <label>نام و نام خانوادگی</label>
-      <input [(ngModel)]="user.name" />
+      <input type="text" [(ngModel)]="personal.name">
 
       <label>ایمیل</label>
-      <input [(ngModel)]="user.email" />
+      <input type="email" [(ngModel)]="personal.email">
 
-      <label>شماره تماس</label>
-      <input [(ngModel)]="user.phone" />
+      <label>شماره موبایل</label>
+      <input type="text" [(ngModel)]="personal.phone">
 
-      <label>نقش کاربری</label>
-      <input [value]="user.role" disabled class="disabled" />
+      <label>تاریخ تولد</label>
+      <input type="date" [(ngModel)]="personal.birth">
 
-      <button class="btn-save" (click)="save()">
-        💾 ذخیره تغییرات
-      </button>
+      <label>وضعیت تأهل</label>
+      <select [(ngModel)]="personal.marital">
+        <option value="single">مجرد</option>
+        <option value="married">متأهل</option>
+      </select>
+
     </div>
 
-    <!-- QR -->
-    <div class="qr-section">
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data={{user.name}}" class="qr" />
-      <p>QR پروفایل</p>
+    <!-- اطلاعات سازمانی -->
+    <div class="card">
+
+      <h3>اطلاعات سازمانی</h3>
+
+      <p><strong>کد پرسنلی:</strong> {{ job.code }}</p>
+      <p><strong>سمت:</strong> {{ job.position }}</p>
+      <p><strong>دپارتمان:</strong> {{ job.department }}</p>
+      <p><strong>نوع همکاری:</strong> {{ job.type }}</p>
+      <p><strong>تاریخ استخدام:</strong> {{ job.hired }}</p>
+      <p><strong>{{ job.manager }}</strong></p>
+
+    </div>
+
+    <!-- تغییر رمز عبور -->
+    <div class="card">
+
+      <h3>تغییر رمز عبور</h3>
+
+      <label>رمز فعلی</label>
+      <input type="password" [(ngModel)]="password.old">
+
+      <label>رمز جدید</label>
+      <input type="password" [(ngModel)]="password.new">
+
+      <label>تکرار رمز جدید</label>
+      <input type="password" [(ngModel)]="password.confirm">
+
+      <button class="save-btn" (click)="changePassword()">ثبت تغییرات</button>
     </div>
 
   </div>

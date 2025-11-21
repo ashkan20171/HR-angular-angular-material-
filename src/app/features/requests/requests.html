@@ -1,0 +1,94 @@
+<div class="requests-wrapper">
+
+  <h2 class="title">درخواست‌ها</h2>
+
+  <!-- نوار ابزار بالا -->
+  <div class="toolbar">
+
+    <input class="search" placeholder="جستجو..." [(ngModel)]="filter">
+
+    <select class="filter" [(ngModel)]="typeFilter">
+      <option value="all">همه</option>
+      <option value="leave">مرخصی</option>
+      <option value="overtime">اضافه‌کاری</option>
+      <option value="mission">ماموریت</option>
+      <option value="loan">وام</option>
+      <option value="advance">مساعده</option>
+    </select>
+
+    <button class="btn-add" (click)="openModal()">+ ثبت درخواست جدید</button>
+  </div>
+
+  <!-- جدول -->
+  <table class="requests-table">
+    <thead>
+      <tr>
+        <th>کاربر</th>
+        <th>نوع</th>
+        <th>تاریخ</th>
+        <th>توضیحات</th>
+        <th>وضعیت</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of list">
+        <td>{{ r.user }}</td>
+        <td>{{ r.type | requestType }}</td>
+        <td>{{ r.date }}</td>
+        <td>{{ r.desc || '-' }}</td>
+
+        <td>
+          <span class="status" [ngClass]="r.status">
+            {{ r.status | requestStatus }}
+          </span>
+        </td>
+
+        <td class="actions">
+
+          <!-- فقط مدیر -->
+          <button *ngIf="auth.role === 'manager'" (click)="approve(r.id)">✔ مدیر</button>
+
+          <!-- فقط HR -->
+          <button *ngIf="auth.role === 'admin'" (click)="hrApprove(r.id)">✔ HR</button>
+
+          <!-- همه -->
+          <button class="reject" (click)="reject(r.id)">✖</button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- مودال -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+
+      <h3>ثبت درخواست جدید</h3>
+
+      <label>نوع درخواست</label>
+      <select [(ngModel)]="newRequest.type">
+        <option value="">انتخاب...</option>
+        <option value="leave">مرخصی</option>
+        <option value="overtime">اضافه‌کاری</option>
+        <option value="mission">ماموریت</option>
+        <option value="loan">وام</option>
+        <option value="advance">مساعده</option>
+      </select>
+
+      <label>تاریخ</label>
+      <input type="date" [(ngModel)]="newRequest.date">
+
+      <label>توضیحات</label>
+      <textarea rows="3" [(ngModel)]="newRequest.desc"></textarea>
+
+      <div class="modal-actions">
+        <button (click)="submitRequest()">ثبت</button>
+        <button class="close" (click)="closeModal()">بستن</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

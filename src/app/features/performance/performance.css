@@ -1,66 +1,66 @@
-.performance-wrapper {
-  padding: 25px;
+.performance {
   direction: rtl;
-  font-family: "IRANSans", sans-serif;
+  padding: 25px;
+  font-family: IRANSans;
 }
 
-.title {
-  font-size: 22px;
-  margin-bottom: 25px;
-  font-weight: bold;
+h2 {
+  margin-bottom: 20px;
+  color: #2563eb;
 }
 
-.kpi-row {
+.grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 30px;
+  grid-template-columns: 400px auto;
+  gap: 20px;
 }
 
-.kpi-card {
-  background: white;
-  padding: 18px;
-  border-radius: 14px;
-  border: 2px solid;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.kpi-card .icon {
-  padding: 12px;
-  border-radius: 12px;
-  font-size: 22px;
-}
-
-.kpi-card h3 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.charts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin-bottom: 30px;
-}
-
-.chart-box {
-  background: white;
-  border-radius: 14px;
-  padding: 15px;
-}
-
-.chart-box img {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 12px;
-}
-
-.table-box {
-  background: white;
-  border-radius: 14px;
+.card {
+  background: #fff;
   padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.card.full {
+  grid-column: span 2;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input[type=range] {
+  width: 100%;
+}
+
+.rate {
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+textarea {
+  width: 100%;
+  height: 90px;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 18px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 12px;
+  border: none;
 }
 
 table {
@@ -68,28 +68,8 @@ table {
   border-collapse: collapse;
 }
 
-th {
-  background: #f1f5f9;
-  padding: 12px;
-}
-
-td {
+th, td {
   padding: 12px;
   text-align: center;
-  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
-
-.good {
-  background: #ecfdf5;
-}
-
-.mid {
-  background: #fef9c3;
-}
-
-.bad {
-  background: #fee2e2;
-}
-
-.up { color: #16a34a; }
-.down { color: #dc2626; }
