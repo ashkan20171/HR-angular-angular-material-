@@ -10,57 +10,70 @@
 
     <nav class="menu">
 
-      <ng-container *ngFor="let item of menu">
-        <li>
-          <a [routerLink]="item.link">{{ item.icon }} {{ item.title }}</a>
+      <!-- منو بر اساس نقش -->
+      <ul>
+        <li *ngFor="let item of menu">
+          <a [routerLink]="item.link" routerLinkActive="active">
+            {{ item.icon }} {{ item.title }}
+          </a>
         </li>
+
+        <!-- آیتم‌های ثابت -->
         <li>
           <a routerLink="/performance" routerLinkActive="active">
-  📈 ارزیابی عملکرد
-</a>
-</li>
-       <li>
-        <a routerLink="/messages" routerLinkActive="active">💬 پیام‌ها</a>
-       </li>
-       <li>
-<a routerLink="/recruitment" routerLinkActive="active">
-  💼 استخدام
-</a>
-</li>
-<li>
-  <a routerLink="/chat" routerLinkActive="active">
-  💬 چت سازمانی
-</a>
-</li>
-      </ng-container>
+            📈 ارزیابی عملکرد
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/messages" routerLinkActive="active">
+            💬 پیام‌ها
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/recruitment" routerLinkActive="active">
+            💼 استخدام
+          </a>
+        </li>
+
+        <li>
+          <a routerLink="/chat" routerLinkActive="active">
+            💬 چت سازمانی
+          </a>
+        </li>
+      </ul>
 
     </nav>
 
   </aside>
 
-  <!-- Content -->
+  <!-- Content wrapper -->
   <div class="content-area">
 
+    <!-- Header -->
     <header class="header">
-    <div class="notif-icon" routerLink="/notifications">
-  🔔 <span class="badge">{{ notif.unreadCount() }}</span>
-</div>
 
-  </div>
+      <!-- Notifications -->
+      <div class="notif-icon" routerLink="/notifications">
+        🔔
+        <span class="badge">{{ notif.unreadCount() }}</span>
+      </div>
 
-</div>
-
+      <!-- User info -->
       <div class="user-box">
         <span class="name">{{ userName }}</span>
         <span class="role">({{ userRole }})</span>
       </div>
 
+      <!-- Logout -->
       <button class="logout-btn" (click)="logout()">
         خروج
       </button>
 
     </header>
 
+    <!-- Page content -->
     <main class="main">
       <router-outlet></router-outlet>
     </main>
