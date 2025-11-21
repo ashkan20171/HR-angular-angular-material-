@@ -1,29 +1,33 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { RequestService } from './request.service';
-import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-requests',
   standalone: true,
-  imports: [CommonModule],
   templateUrl: './requests.html',
-  styleUrl: './requests.css'
+  styleUrl: './requests.css',
+  imports: [CommonModule, RouterModule]
 })
 export class Requests {
 
+  user = localStorage.getItem('userName') || 'کاربر';
+
   constructor(
     public req: RequestService,
-    public auth: AuthService
+    private router: Router
   ) {}
 
-  approve(id: number) {
-    if (this.auth.role !== 'admin' && this.auth.role !== 'manager') return;
-    this.req.updateStatus(id, 'approved');
+  newRequest() {
+    this.router.navigate(['/request-new']);
   }
 
-  reject(id: number) {
-    if (this.auth.role !== 'admin' && this.auth.role !== 'manager') return;
-    this.req.updateStatus(id, 'rejected');
+  statusLabel(s: string) {
+    return s === 'approved'
+      ? 'تأیید شده'
+      : s === 'rejected'
+      ? 'رد شده'
+      : 'در انتظار';
   }
 }

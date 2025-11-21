@@ -1,68 +1,36 @@
 <div class="payroll-page">
 
-  <h1>حقوق و دستمزد</h1>
+  <h1>فیش‌های حقوقی</h1>
 
-  <!-- حقوق ماه جاری -->
-  <div class="current-pay">
-    <h2>فیش حقوق ماه جاری</h2>
-
-    <div class="box">
-      <div>
-        <p>حقوق پایه</p>
-        <strong>{{ payroll.latest().baseSalary | number }}</strong>
-      </div>
-
-      <div>
-        <p>اضافه‌کاری</p>
-        <strong class="green">{{ payroll.latest().overtime | number }}</strong>
-      </div>
-
-      <div>
-        <p>کسورات</p>
-        <strong class="red">{{ payroll.latest().deductions | number }}</strong>
-      </div>
-
-      <div>
-        <p>مالیات</p>
-        <strong class="red">{{ payroll.latest().tax | number }}</strong>
-      </div>
-
-      <div>
-        <p>بیمه</p>
-        <strong class="red">{{ payroll.latest().insurance | number }}</strong>
-      </div>
-
-      <div class="final">
-        <p>خالص پرداختی</p>
-        <strong>{{ payroll.latest().finalPay | number }}</strong>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- تاریخچه -->
-  <h2>تاریخچه فیش‌ها</h2>
-
-  <table class="records-table">
+  <table class="pay-table">
     <thead>
       <tr>
         <th>ماه</th>
         <th>حقوق پایه</th>
-        <th>اضافه‌کاری</th>
-        <th>کسورات</th>
-        <th>خالص پرداختی</th>
+        <th>جمع مزایا</th>
+        <th>جمع کسورات</th>
+        <th>حقوق نهایی</th>
+        <th></th>
       </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let r of payroll.records()">
-        <td>{{ r.month }}</td>
-        <td>{{ r.baseSalary | number }}</td>
-        <td class="green">{{ r.overtime | number }}</td>
-        <td class="red">{{ r.deductions | number }}</td>
-        <td><strong>{{ r.finalPay | number }}</strong></td>
+      <tr *ngFor="let p of pay.payroll()">
+        <td>{{ p.month }}</td>
+        <td>{{ p.baseSalary | number }}</td>
+
+        <td>{{ p.rows.filter(r => r.type==='plus').reduce((t,r)=>t+r.amount,0) | number }}</td>
+
+        <td>{{ p.rows.filter(r => r.type==='minus').reduce((t,r)=>t+r.amount,0) | number }}</td>
+
+        <td class="final">{{ p.finalSalary | number }}</td>
+
+        <td>
+          <button class="btn" (click)="openSlip(p.id)">مشاهده فیش</button>
+        </td>
       </tr>
     </tbody>
+
   </table>
 
 </div>

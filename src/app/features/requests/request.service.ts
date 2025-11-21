@@ -1,20 +1,16 @@
 import { Injectable, signal } from '@angular/core';
-import { HRRequest } from './request-types';
+import { RequestItem } from './request.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class RequestService {
 
   private key = 'hr_requests';
-  requests = signal<HRRequest[]>([]);
+  requests = signal<RequestItem[]>([]);
 
   constructor() {
     const saved = localStorage.getItem(this.key);
     if (saved) {
       this.requests.set(JSON.parse(saved));
-    } else {
-      this.seed();
     }
   }
 
@@ -22,44 +18,28 @@ export class RequestService {
     localStorage.setItem(this.key, JSON.stringify(this.requests()));
   }
 
-  private seed() {
-    const sample: HRRequest[] = [
-      {
-        id: 1,
-        type: 'مرخصی',
-        createdAt: '۱۴۰۳/۱۰/۲۵',
-        user: 'علی رضایی',
-        details: 'مرخصی استحقاقی',
-        status: 'pending'
-      },
-      {
-        id: 2,
-        type: 'اضافه‌کاری',
-        createdAt: '۱۴۰۳/۱۰/۲۴',
-        user: 'سارا محمدی',
-        details: '۳ ساعت اضافه‌کاری',
-        status: 'approved'
-      }
-    ];
-
-    this.requests.set(sample);
+  add(req: RequestItem) {
+    this.requests.set([req, ...this.requests()]);
     this.save();
   }
 
-  add(req: HRRequest) {
-    const list = this.requests();
-    req.id = list.length ? list[list.length - 1].id + 1 : 1;
-
-    this.requests.set([req, ...list]);
-    this.save();
+  approve(id: number) {
+    this.updateStatus(id, 'approved');
   }
 
-  updateStatus(id: number, status: 'approved' | 'rejected') {
+  reject(id: number) {
+    this.updateStatus(id, 'rejected');
+  }
+
+  private updateStatus(id: number, st: any) {
     const list = this.requests().map(r =>
-      r.id === id ? { ...r, status } : r
+      r.id === id ? { ...r, status: st } : r
     );
-
     this.requests.set(list);
     this.save();
+  }
+
+  getMine(userName: string) {
+    return this.requests().filter(r => r.userName === userName);
   }
 }

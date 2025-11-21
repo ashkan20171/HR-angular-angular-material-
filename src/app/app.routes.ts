@@ -68,6 +68,11 @@ export const routes: Routes = [
     import('./features/payroll/payroll').then(m => m.Payroll)
 },
 {
+  path: 'salary-slip/:id',
+  loadComponent: () =>
+    import('./features/payroll/salary-slip').then(m => m.SalarySlip)
+},
+{
   path: 'notifications',
   loadComponent: () =>
     import('./features/notifications/notifications').then(m => m.Notifications)
@@ -81,6 +86,17 @@ export const routes: Routes = [
   path: 'requests',
   loadComponent: () =>
     import('./features/requests/requests').then(m => m.Requests)
+},
+
+{
+  path: 'request-new',
+  loadComponent: () =>
+    import('./features/requests/request-new').then(m => m.RequestNew)
+},
+{
+  path: 'requests-manager',
+  loadComponent: () =>
+    import('./features/requests-manager/requests-manager').then(m => m.RequestsManager)
 },
 
   // 404 fallback

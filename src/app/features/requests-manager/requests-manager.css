@@ -1,26 +1,30 @@
-.req-page {
+.manager-page {
   padding: 20px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
+h1 {
   margin-bottom: 20px;
 }
 
-.btn-add {
-  background: #4f46e5;
-  color: white;
-  border: none;
-  padding: 8px 14px;
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filters select,
+.filters input {
+  padding: 8px 12px;
   border-radius: 8px;
+  border: 1px solid #ccc;
+  min-width: 160px;
 }
 
 .req-table {
   width: 100%;
+  border-collapse: collapse;
   background: white;
   border-radius: 12px;
-  border-collapse: collapse;
 }
 
 .req-table th, .req-table td {
@@ -44,4 +48,22 @@
 
 .status.rejected {
   background: #ef4444;
+}
+
+.actions button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+.btn-yes {
+  background: #10b981;
+  color: white;
+}
+
+.btn-no {
+  background: #ef4444;
+  color: white;
 }

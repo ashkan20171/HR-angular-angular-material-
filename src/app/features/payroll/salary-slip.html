@@ -1,0 +1,37 @@
+<div class="slip-page" *ngIf="slip">
+
+  <h1>فیش حقوقی – {{ slip.month }}</h1>
+
+  <div class="block">
+    <h3>مشخصات</h3>
+    <p>نام کاربر: {{ localStorage.getItem('userName') }}</p>
+    <p>ماه: {{ slip.month }}</p>
+  </div>
+
+  <div class="block">
+    <h3>مزایا و کسورات</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>عنوان</th>
+          <th>مبلغ</th>
+          <th>نوع</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let r of slip.rows">
+          <td>{{ r.title }}</td>
+          <td>{{ r.amount | number }}</td>
+          <td>{{ r.type === 'plus' ? 'مزایا' : 'کسورات' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="final-box">
+    حقوق نهایی: {{ slip.finalSalary | number }} تومان
+  </div>
+
+</div>

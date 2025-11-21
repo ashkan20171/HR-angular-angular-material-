@@ -37,6 +37,7 @@ export class AuthService {
         'users.view',
         'users.edit',
         'requests.view',
+        'payroll.view',
         'profile.view'
       ],
       manager: [

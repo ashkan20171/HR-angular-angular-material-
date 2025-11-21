@@ -1,64 +1,50 @@
 import { Injectable, signal } from '@angular/core';
+import { PayrollRecord, SalaryRow } from './payroll.model';
 
-export interface PayrollRecord {
-  month: string;
-  baseSalary: number;
-  overtime: number;
-  deductions: number;
-  tax: number;
-  insurance: number;
-  finalPay: number;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class PayrollService {
 
-  private key = 'payroll';
-  records = signal<PayrollRecord[]>([]);
+  private key = 'hr_payroll';
+  payroll = signal<PayrollRecord[]>([]);
 
   constructor() {
     const saved = localStorage.getItem(this.key);
     if (saved) {
-      this.records.set(JSON.parse(saved));
+      this.payroll.set(JSON.parse(saved));
     } else {
-      // نمونه اولیه
-      this.seedData();
+      this.seed();
     }
   }
 
   private save() {
-    localStorage.setItem(this.key, JSON.stringify(this.records()));
+    localStorage.setItem(this.key, JSON.stringify(this.payroll()));
   }
 
-  private seedData() {
-    const sample = [
+  private seed() {
+    const sample: PayrollRecord[] = [
       {
+        id: 1,
         month: 'دی ۱۴۰۳',
-        baseSalary: 15000000,
-        overtime: 1200000,
-        deductions: 300000,
-        tax: 800000,
-        insurance: 750000,
-        finalPay: 15000000 + 1200000 - 300000 - 800000 - 750000
-      },
-      {
-        month: 'آذر ۱۴۰۳',
-        baseSalary: 15000000,
-        overtime: 900000,
-        deductions: 150000,
-        tax: 760000,
-        insurance: 750000,
-        finalPay: 15000000 + 900000 - 150000 - 760000 - 750000
+        baseSalary: 18000000,
+        rows: [
+          { title: 'حق مسکن', amount: 900000, type: 'plus' },
+          { title: 'بن کارگری', amount: 1100000, type: 'plus' },
+          { title: 'بیمه تأمین اجتماعی', amount: 1300000, type: 'minus' }
+        ],
+        finalSalary: 18000000 + 900000 + 1100000 - 1300000
       }
     ];
 
-    this.records.set(sample);
+    this.payroll.set(sample);
     this.save();
   }
 
-  latest() {
-    return this.records()[0];
+  getRecord(id: number) {
+    return this.payroll().find(p => p.id === id) || null;
+  }
+
+  addRecord(record: PayrollRecord) {
+    this.payroll.set([...this.payroll(), record]);
+    this.save();
   }
 }

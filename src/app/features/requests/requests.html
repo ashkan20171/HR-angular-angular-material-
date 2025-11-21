@@ -1,46 +1,31 @@
-<div class="requests-page">
+<div class="req-page">
 
-  <h1>درخواست‌های سازمانی</h1>
+  <div class="header">
+    <h1>درخواست‌های من</h1>
+    <button class="btn-add" (click)="newRequest()">➕ درخواست جدید</button>
+  </div>
 
   <table class="req-table">
     <thead>
       <tr>
         <th>نوع</th>
-        <th>کاربر</th>
-        <th>تاریخ</th>
-        <th>جزئیات</th>
+        <th>عنوان</th>
+        <th>تاریخ ثبت</th>
         <th>وضعیت</th>
-        <th *ngIf="auth.role !== 'employee'">عملیات</th>
       </tr>
     </thead>
 
     <tbody>
-
-      <tr *ngFor="let r of req.requests()">
-
+      <tr *ngFor="let r of req.getMine(user)">
         <td>{{ r.type }}</td>
-
-        <td>{{ r.user }}</td>
-
+        <td>{{ r.title }}</td>
         <td>{{ r.createdAt }}</td>
-
-        <td>{{ r.details }}</td>
-
         <td>
-          <span class="status" [class.pending]="r.status==='pending'"
-                [class.approved]="r.status==='approved'"
-                [class.rejected]="r.status==='rejected'">
-            {{ r.status }}
+          <span class="status" [class]="r.status">
+            {{ statusLabel(r.status) }}
           </span>
         </td>
-
-        <td *ngIf="auth.role !== 'employee'" class="actions">
-          <button (click)="approve(r.id)" class="approve">تأیید</button>
-          <button (click)="reject(r.id)" class="reject">رد</button>
-        </td>
-
       </tr>
-
     </tbody>
   </table>
 
