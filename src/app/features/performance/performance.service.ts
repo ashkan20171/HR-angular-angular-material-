@@ -1,39 +1,44 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+export interface Review {
+  id: number;
+  employee: string;
+  period: string;
+  score: number;
+  desc: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class PerformanceService {
 
-  getEmployeeSummary() {
-    return {
-      name: 'اشکان رضایی',
-      position: 'کارشناس منابع انسانی'
-    };
+  private reviews: Review[] = [
+    { id: 1, employee: 'علی رضایی', period: 'زمستان ۱۴۰۳', score: 92, desc: '' },
+    { id: 2, employee: 'مریم کاظمی', period: 'پاییز ۱۴۰۳', score: 78, desc: '' },
+    { id: 3, employee: 'سارا محمدی', period: 'تابستان ۱۴۰۳', score: 65, desc: '' }
+  ];
+
+  getAll() {
+    return [...this.reviews];
   }
 
-  getRadarData() {
-    return {
-      labels: ['تعهد', 'تیم‌ورک', 'سرعت', 'کیفیت', 'خلاقیت'],
-      values: [80, 65, 90, 70, 85]
-    };
+  getOne(id: number) {
+    return this.reviews.find(r => r.id === id)!;
   }
 
-  getKpis() {
-    return [
-      { title: 'تعهد سازمانی', value: 80 },
-      { title: 'تکمیل وظایف', value: 95 },
-      { title: 'رعایت قوانین', value: 88 },
-      { title: 'کار تیمی', value: 78 },
-      { title: 'خلاقیت', value: 85 }
-    ];
+  add(item: Review) {
+    item.id = Date.now();
+    this.reviews.unshift(item);
   }
 
-  getFeedback() {
-    return [
-      {
-        text: 'عملکرد کلی بسیار خوب بوده است و همکاری بالایی با تیم داشته‌اید.',
-        by: 'مدیر مستقیم',
-        date: '۱۴۰۳/۰۸/۱۲'
-      }
-    ];
+  update(item: Review) {
+    const i = this.reviews.findIndex(r => r.id === item.id);
+    if (i !== -1) this.reviews[i] = item;
   }
+
+  remove(id: number) {
+    this.reviews = this.reviews.filter(r => r.id !== id);
+  }
+
 }

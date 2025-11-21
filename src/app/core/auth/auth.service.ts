@@ -38,6 +38,9 @@ export class AuthService {
         'users.edit',
         'requests.view',
         'payroll.view',
+        'performance.view',
+        'performance.add',
+        'performance.edit',
         'profile.view'
       ],
       manager: [
@@ -46,14 +49,19 @@ export class AuthService {
         'requests.view',
         'attendance.view',
         'payroll.view',
+        'performance.view',
+        'performance.add',
+        'performance.edit',
         'profile.view'
       ],
       employee: [
         'dashboard.view',
         'attendance.view',
         'payroll.view',
+        'performance.view',
         'profile.view'
-      ]
+      ],
+      
     };
 
     return permissions[role].includes(permission);

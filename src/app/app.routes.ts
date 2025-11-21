@@ -98,6 +98,12 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./features/requests-manager/requests-manager').then(m => m.RequestsManager)
 },
+{
+  path: 'performance',
+  loadComponent: () =>
+    import('./features/performance/performance').then(m => m.Performance)
+},
+
 
   // 404 fallback
   { path: '**', redirectTo: 'login' }

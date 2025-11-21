@@ -14,6 +14,10 @@
         <li>
           <a [routerLink]="item.link">{{ item.icon }} {{ item.title }}</a>
         </li>
+          <li *ngIf="auth.hasPermission('performance.view')">
+         <a routerLink="/performance" routerLinkActive="active">📈 ارزیابی عملکرد</a>
+       </li>
+
       </ng-container>
 
     </nav>

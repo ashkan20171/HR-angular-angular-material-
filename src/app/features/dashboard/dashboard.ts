@@ -26,5 +26,10 @@ export class Dashboard {
     { user: 'مریم', type: 'اضافه‌کاری', date: '۱۴۰۳/۱۰/۲۲', status: 'accepted' },
     { user: 'سارا', type: 'ماموریت', date: '۱۴۰۳/۱۰/۲۱', status: 'rejected' }
   ];
-
+performanceStats = {
+  excellent: 12,
+  good: 34,
+  normal: 9,
+  weak: 2
+};
 }

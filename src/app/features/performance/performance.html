@@ -1,21 +1,78 @@
-<div class="perf-wrapper">
+<div class="performance">
 
-  <!-- Tabs -->
-  <div class="tabs">
-    <button [class.active]="tab=='self'" (click)="setTab('self')">Self Review</button>
-    <button [class.active]="tab=='manager'" (click)="setTab('manager')">Manager Review</button>
-    <button [class.active]="tab=='kpi'" (click)="setTab('kpi')">KPI</button>
-    <button [class.active]="tab=='skills'" (click)="setTab('skills')">Skills</button>
-    <button [class.active]="tab=='summary'" (click)="setTab('summary')">Summary</button>
+  <h1 class="title">ارزیابی عملکرد کارکنان</h1>
+
+  <!-- فیلترها -->
+  <div class="filters">
+    <input type="text" class="input" placeholder="جستجو کارمند..." [(ngModel)]="search">
+
+    <select class="input" [(ngModel)]="selectedPeriod">
+      <option value="">دوره ارزیابی</option>
+      <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
+    </select>
+
+    <button class="btn-primary" (click)="openAddModal()">➕ ثبت ارزیابی</button>
   </div>
 
-  <!-- Content -->
-  <div class="tab-content">
-    <app-self-review *ngIf="tab=='self'"></app-self-review>
-    <app-manager-review *ngIf="tab=='manager'"></app-manager-review>
-    <app-kpi-chart *ngIf="tab=='kpi'"></app-kpi-chart>
-    <app-radar-skills *ngIf="tab=='skills'"></app-radar-skills>
-    <app-summary *ngIf="tab=='summary'"></app-summary>
+  <!-- جدول -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>کارمند</th>
+        <th>دوره</th>
+        <th>امتیاز</th>
+        <th>وضعیت</th>
+        <th>عملیات</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let r of filtered()">
+        <td>{{ r.employee }}</td>
+        <td>{{ r.period }}</td>
+        <td>{{ r.score }} / 100</td>
+        <td>
+          <span class="status" [ngClass]="r.score >= 85 ? 'excellent' :
+                                           r.score >= 70 ? 'good' :
+                                           r.score >= 50 ? 'normal' : 'weak' ">
+            {{ getStatus(r.score) }}
+          </span>
+        </td>
+        <td>
+          <button class="btn-icon" (click)="edit(r.id)">✏️</button>
+          <button class="btn-icon danger" (click)="remove(r.id)">🗑️</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <!-- مودال -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-box">
+
+      <h2>{{ editMode ? 'ویرایش ارزیابی' : 'ثبت ارزیابی جدید' }}</h2>
+
+      <label>نام کارمند</label>
+      <input class="input" [(ngModel)]="form.employee">
+
+      <label>دوره ارزیابی</label>
+      <select class="input" [(ngModel)]="form.period">
+        <option *ngFor="let p of periods" [value]="p">{{ p }}</option>
+      </select>
+
+      <label>امتیاز</label>
+      <input class="input" type="number" min="0" max="100" [(ngModel)]="form.score">
+
+      <label>توضیحات</label>
+      <textarea class="input" rows="3" [(ngModel)]="form.desc"></textarea>
+
+      <div class="modal-actions">
+        <button class="btn-primary" (click)="save()">ثبت</button>
+        <button class="btn-secondary" (click)="closeModal()">لغو</button>
+      </div>
+
+    </div>
   </div>
 
 </div>

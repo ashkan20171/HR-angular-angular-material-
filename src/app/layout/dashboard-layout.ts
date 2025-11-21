@@ -24,7 +24,8 @@ export class DashboardLayout {
   { title: 'پروفایل', icon: '🙍‍♂️', link: '/profile', permission: 'profile.view' },
   { title: 'حضور و غیاب', icon: '⏱️', link: '/attendance', permission: 'attendance.view' },
   { title: 'حقوق و دستمزد', icon: '💵', link: '/payroll', permission: 'payroll.view' },
-  { title: 'درخواست‌ها', icon: '📝', link: '/requests', permission: 'requests.view' }
+  { title: 'درخواست‌ها', icon: '📝', link: '/requests', permission: 'requests.view' },
+  
   
 ];
 
