@@ -1,15 +1,14 @@
-<div class="slip-page" *ngIf="slip">
+<div id="salary-slip-box" class="slip-page">
 
-  <h1>فیش حقوقی – {{ slip.month }}</h1>
+  <h1 class="title">فیش حقوقی – {{ slip.month }}</h1>
 
-  <div class="block">
-    <h3>مشخصات</h3>
-    <p>نام کاربر: {{ userName }}</p>
-    <p>ماه: {{ slip.month }}</p>
+  <div class="user-section card">
+    <h3>مشخصات کارمند</h3>
+    <p>نام: <strong>{{ userName }}</strong></p>
   </div>
 
-  <div class="block">
-    <h3>مزایا و کسورات</h3>
+  <div class="rows card">
+    <h3>جزئیات پرداخت</h3>
 
     <table>
       <thead>
@@ -19,19 +18,35 @@
           <th>نوع</th>
         </tr>
       </thead>
-
       <tbody>
-        <tr *ngFor="let r of slip.rows">
+
+        <tr *ngFor="let r of slip.rows" 
+            [class.plus-row]="r.type === 'plus'" 
+            [class.minus-row]="r.type === 'minus'">
+
           <td>{{ r.title }}</td>
           <td>{{ r.amount | number }}</td>
-          <td>{{ r.type === 'plus' ? 'مزایا' : 'کسورات' }}</td>
+
+          <td class="type-cell">
+            <span class="icon"
+              [class.icon-plus]="r.type === 'plus'"
+              [class.icon-minus]="r.type === 'minus'"></span>
+            {{ r.type === 'plus' ? 'مزایا' : 'کسورات' }}
+          </td>
+
         </tr>
+
       </tbody>
     </table>
   </div>
 
-  <div class="final-box">
-    حقوق نهایی: {{ slip.finalSalary | number }} تومان
+  <div class="final-box card">
+    حقوق نهایی:
+    <strong>{{ slip.finalSalary | number }}</strong> تومان
   </div>
+
+  <button class="btn-download" (click)="downloadPDF()">
+    دریافت PDF فیش حقوقی
+  </button>
 
 </div>

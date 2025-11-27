@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface SalaryRow {
   title: string;
@@ -28,7 +30,6 @@ export class SalarySlip {
 
   constructor() {
 
-    // ورودی خام بدون type
     const rawRows = [
       { title: 'حقوق پایه', amount: 18000000 },
       { title: 'اضافه‌کاری', amount: 2400000 },
@@ -38,15 +39,12 @@ export class SalarySlip {
       { title: 'مالیات', amount: -1300000 }
     ];
 
-    // تبدیل ورودی خام به مدل حقوقی استاندارد
     const rows: SalaryRow[] = rawRows.map(r => ({
       ...r,
       type: r.amount >= 0 ? 'plus' : 'minus'
     }));
 
-    // محاسبه حقوق نهایی
-    const finalSalary =
-      rows.reduce((sum, r) => sum + r.amount, 0);
+    const finalSalary = rows.reduce((sum, r) => sum + r.amount, 0);
 
     this.slip = {
       month: 'دی ۱۴۰۳',
@@ -55,4 +53,20 @@ export class SalarySlip {
     };
   }
 
+  async downloadPDF() {
+    const element = document.getElementById('salary-slip-box');
+    if (!element) return;
+
+    const canvas = await html2canvas(element);
+    const img = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgProps = pdf.getImageProperties(img);
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    pdf.addImage(img, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('salary-slip.pdf');
+  }
 }
