@@ -60,16 +60,14 @@ export class AuthService {
         'payroll.view',
         'performance.view',
         'profile.view'
-      ],
-      
+      ]
     };
 
     return permissions[role].includes(permission);
   }
 
-  // ⭐ متد جدید و صحیح login با خروجی true/false
+  // متد جدید و صحیح login با خروجی true/false
   login(username: string, password: string): boolean {
-
     const user = this.users.find(
       u => u.username === username && u.password === password
     );

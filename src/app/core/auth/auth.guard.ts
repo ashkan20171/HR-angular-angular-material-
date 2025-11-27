@@ -1,19 +1,19 @@
-import { inject } from '@angular/core';
-import { CanMatchFn, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 
-export const AuthGuard: CanMatchFn = (route) => {
-  const auth = inject(AuthService);
-  const router = inject(Router);
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
 
-  const requiredPermission = route.data?.['permission'];
+  constructor(private router: Router) {}
 
-  if (!requiredPermission) return true;
-
-  if (auth.hasPermission(requiredPermission)) {
+  canActivate(): boolean {
+    const userName = localStorage.getItem('userName');
+    if (!userName) {
+      this.router.navigate(['/login']);
+      return false;
+    }
     return true;
   }
-
-  router.navigate(['/403']);
-  return false;
-};
+}
