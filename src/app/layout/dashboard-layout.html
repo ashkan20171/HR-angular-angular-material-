@@ -1,7 +1,7 @@
 <div class="layout">
 
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" [class.right]="currentDirection === 'rtl'" [class.left]="currentDirection === 'ltr'">
 
     <div class="logo">
       <span>⚡</span>
@@ -9,14 +9,15 @@
     </div>
 
     <nav class="menu">
-
       <!-- منو بر اساس نقش -->
       <ul>
-        <li *ngFor="let item of menu">
-          <a [routerLink]="item.link" routerLinkActive="active">
-            {{ item.icon }} {{ item.title }}
-          </a>
-        </li>
+        <ng-container *ngFor="let item of menu">
+          <li *ngIf="auth.hasPermission(item.permission)">
+            <a [routerLink]="item.link" routerLinkActive="active">
+              {{ item.icon }} {{ item.title }}
+            </a>
+          </li>
+        </ng-container>
 
         <!-- آیتم‌های ثابت -->
         <li>
@@ -43,7 +44,6 @@
           </a>
         </li>
       </ul>
-
     </nav>
 
   </aside>
