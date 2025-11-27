@@ -18,9 +18,7 @@ export class DashboardLayout {
   showNotif: any;
   currentDirection: 'rtl' | 'ltr' = 'rtl';  // متغیر تعیین جهت متن
 
-  // تغییر سطح دسترسی auth به public
-  constructor(private router: Router, public notif: NotificationService, public auth: AuthService) {}  // تغییر به public
-
+  // اضافه کردن منو برای هر نقش
   menu = [
     { title: 'داشبورد', icon: '📊', link: '/dashboard', permission: 'dashboard.view' },
     { title: 'کاربران', icon: '👥', link: '/users', permission: 'users.view' },
@@ -29,6 +27,8 @@ export class DashboardLayout {
     { title: 'حقوق و دستمزد', icon: '💵', link: '/payroll', permission: 'payroll.view' },
     { title: 'درخواست‌ها', icon: '📝', link: '/requests', permission: 'requests.view' }
   ];
+
+  constructor(private router: Router, public notif: NotificationService, public auth: AuthService) {}
 
   toggleNotif() {
     this.showNotif = !this.showNotif;

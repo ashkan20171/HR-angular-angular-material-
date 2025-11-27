@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export type Role = 'admin' | 'manager' | 'employee';
+export type Role = 'admin' | 'manager' | 'employee' | 'hr' | 'accounting';
 
 export interface AppUser {
   username: string;
@@ -17,7 +17,9 @@ export class AuthService {
   private users: AppUser[] = [
     { username: 'admin', password: '1234', role: 'admin' },
     { username: 'manager', password: '2222', role: 'manager' },
-    { username: 'employee', password: '3333', role: 'employee' }
+    { username: 'employee', password: '3333', role: 'employee' },
+    { username: 'hruser', password: '4444', role: 'hr' },       // منابع انسانی
+    { username: 'accountinguser', password: '5555', role: 'accounting' } // حسابداری
   ];
 
   constructor() {}
@@ -60,10 +62,28 @@ export class AuthService {
         'payroll.view',
         'performance.view',
         'profile.view'
+      ],
+      hr: [ // منابع انسانی
+        'dashboard.view',
+        'users.view',
+        'users.edit',
+        'requests.view',
+        'attendance.view',
+        'payroll.view',
+        'performance.view',
+        'performance.add',
+        'profile.view'
+      ],
+      accounting: [ // حسابداری
+        'dashboard.view',
+        'payroll.view',
+        'payroll.add',
+        'payroll.view-details',
+        'profile.view'
       ]
     };
 
-    return permissions[role].includes(permission);
+    return permissions[role]?.includes(permission);
   }
 
   // متد جدید و صحیح login با خروجی true/false
