@@ -3,20 +3,17 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class ChatAiService {
 
-  async answer(question: string): Promise<string> {
+  async answer(msg: string): Promise<string> {
 
-    if (question.includes('مرخصی')) {
-      return 'برای ثبت مرخصی به بخش "درخواست‌ها" بروید یا از منوی سریع استفاده کنید.';
-    }
+    if (msg.includes('مرخصی'))
+      return 'برای ثبت مرخصی از منوی درخواست‌ها استفاده کنید.';
 
-    if (question.includes('حقوق')) {
-      return 'حقوق شما بر اساس پایه حقوق، مزایا و کسورات محاسبه شده است.';
-    }
+    if (msg.includes('حقوق'))
+      return 'حقوق شما بر اساس پایه حقوق، مزایا و کسورات محاسبه می‌شود.';
 
-    if (question.includes('ارزیابی')) {
-      return 'ارزیابی عملکرد ماه جاری در حال پردازش است.';
-    }
+    if (msg.includes('ارزیابی'))
+      return 'آخرین وضعیت ارزیابی عملکرد شما در بخش Performance قابل مشاهده است.';
 
-    return 'متوجه شدم — لطفاً کمی دقیق‌تر توضیح دهید.';
+    return 'متوجه شدم. لطفاً بیشتر توضیح بدهید.';
   }
 }

@@ -14,6 +14,12 @@ export const routes: Routes = [
       { path: 'leave', loadComponent: () => import('./features/leave/leave').then(m => m.Leave), canActivate: [AuthGuard] },
       { path: 'payroll', loadComponent: () => import('./features/payroll/salary-slip').then(m => m.SalarySlip), canActivate: [AuthGuard] },
       { path: 'recruitment', loadComponent: () => import('./features/recruitment/recruitment').then(m => m.Recruitment), canActivate: [AuthGuard] },
+      {
+  path: 'chat',
+  loadComponent: () =>
+    import('./features/chat/chat').then(m => m.Chat)
+},
+
     ]
   },
 

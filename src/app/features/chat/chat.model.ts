@@ -4,6 +4,7 @@ export interface ChatUser {
   avatar: string;
   role: string;
   online: boolean;
+  lastSeen?: Date;   // اضافه شد
 }
 
 export interface Message {
@@ -12,8 +13,13 @@ export interface Message {
   senderId: number;
   text?: string;
   fileUrl?: string;
+  fileName?: string;
+  fileType?: string;
+  imageUrl?: string;
+  audioUrl?: string;
+  duration?: number;
   timestamp: Date;
-  ai?: boolean;
+  ai?: boolean; // پیام از طرف هوش مصنوعی؟
 }
 
 export interface ChatRoom {
@@ -21,5 +27,6 @@ export interface ChatRoom {
   name: string;
   users: number[];
   isGroup: boolean;
-  lastMessage?: string;
+  lastMessage?: string;      // آخرین پیام
+  lastMessageTime?: Date;    // زمان آخرین پیام
 }

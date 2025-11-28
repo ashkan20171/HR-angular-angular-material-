@@ -1,40 +1,38 @@
 <div class="chat-container">
-
-  <!-- Sidebar -->
   <div class="sidebar">
     <h3>گفتگوها</h3>
-
     <div class="chat-item"
          *ngFor="let c of chat.chats"
-         (click)="selectChat(c.id)"
-         [class.active]="c.id === selectedChatId">
-
-      <span>{{ c.name }}</span>
+         [class.active]="selectedChatId === c.id"
+         (click)="selectChat(c.id)">
+      <div class="chat-title">{{ c.name }}</div>
+      <div class="last-message">{{ c.lastMessage || 'بدون پیام' }}</div>
     </div>
-
-    <!-- AI Chat -->
     <div class="chat-item ai" (click)="selectChat(999)">
       🤖 دستیار هوشمند HR
     </div>
   </div>
 
-  <!-- Chat window -->
   <div class="chat-window" *ngIf="selectedChatId">
-
-    <div class="messages">
-      <div class="msg"
-           *ngFor="let m of chat.getMessages(selectedChatId)"
-           [class.me]="m.senderId === 1"
-           [class.ai]="m.ai">
-        {{ m.text }}
-      </div>
+    <div class="msg" *ngFor="let m of chat.getMessages(selectedChatId)" [class.me]="m.senderId === 1" [class.ai]="m.ai">
+      <div *ngIf="m.text">{{ m.text }}</div>
+      <img *ngIf="m.imageUrl" [src]="m.imageUrl" class="chat-image" />
+      <a *ngIf="m.fileUrl" [href]="m.fileUrl" download="{{m.fileName}}" class="file-box">📎 {{ m.fileName }}</a>
+      <audio *ngIf="m.audioUrl" [src]="m.audioUrl" controls class="audio-player"></audio>
     </div>
 
     <div class="chat-input">
-      <input [(ngModel)]="inputText" placeholder="پیام بنویسید..." />
+      <input type="file" accept="image/*" #imagePicker hidden (change)="sendImage(imagePicker.files)" />
+      <button class="icon-btn" (click)="imagePicker.click()">🖼️</button>
+
+      <input type="file" #filePicker hidden (change)="sendFile(filePicker.files)" />
+      <button class="icon-btn" (click)="filePicker.click()">📎</button>
+
+      <button class="icon-btn record-btn" *ngIf="!recording" (click)="startRecording()">🎤</button>
+      <button class="icon-btn stop-btn" *ngIf="recording" (click)="stopRecording()">⏹️</button>
+
+      <input [(ngModel)]="messageText" placeholder="پیام..." />
       <button (click)="send()">ارسال</button>
     </div>
-
   </div>
-
 </div>
