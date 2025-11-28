@@ -1,46 +1,49 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ChatService, Conversation, ChatMessage } from '../../core/services/chat.service';
+import { ChatService } from './chat.service';
+import { ChatAiService } from './chat-ai.service';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './chat.html',
-  styleUrl: './chat.css',
-  imports: [CommonModule, FormsModule]
+  styleUrl: './chat.css'
 })
 export class Chat {
 
-  currentUser = localStorage.getItem('userName') || 'اشکان';
+  selectedChatId: number | null = null;
+  inputText = '';
 
-  conversations: Conversation[] = [];
-  messages: ChatMessage[] = [];
-  selectedConv: Conversation | null = null;
+  constructor(
+    public chat: ChatService,
+    private ai: ChatAiService
+  ) {}
 
-  newMessageText = '';
-
-  constructor(private chat: ChatService) {
-    this.conversations = this.chat.getConversations();
+  selectChat(id: number) {
+    this.selectedChatId = id;
   }
 
-  selectConversation(conv: Conversation) {
-    this.selectedConv = conv;
-    this.messages = this.chat.getMessages(conv.id);
-    this.chat.markConversationRead(conv.id);
-  }
+  async send() {
+    if (!this.inputText.trim() || !this.selectedChatId) return;
 
-  isMine(msg: ChatMessage) {
-    return msg.from === this.currentUser;
-  }
+    // پیام کاربر
+    this.chat.sendMessage(this.selectedChatId, 1, this.inputText);
 
-  send() {
-    if (!this.selectedConv) return;
-    if (!this.newMessageText.trim()) return;
+    // اگر چت با AI بود
+    if (this.selectedChatId === 999) {
+      const response = await this.ai.answer(this.inputText);
 
-    this.chat.sendMessage(this.selectedConv.id, this.currentUser, this.newMessageText);
+      this.chat.messages.push({
+        id: Date.now() + 1,
+        chatId: 999,
+        senderId: -1,
+        ai: true,
+        text: response,
+        timestamp: new Date()
+      });
+    }
 
-    this.messages = this.chat.getMessages(this.selectedConv.id);
-    this.newMessageText = '';
+    this.inputText = '';
   }
 }

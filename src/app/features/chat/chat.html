@@ -1,83 +1,40 @@
-<div class="chat-wrapper">
+<div class="chat-container">
 
-  <!-- Sidebar گفتگوها -->
-  <div class="chat-sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>گفتگوها</h3>
 
-    <div class="chat-header">
-      <h2>چت سازمانی</h2>
-      <div class="user-name">
-        {{ currentUser }}
-      </div>
+    <div class="chat-item"
+         *ngFor="let c of chat.chats"
+         (click)="selectChat(c.id)"
+         [class.active]="c.id === selectedChatId">
+
+      <span>{{ c.name }}</span>
     </div>
 
-    <div class="conversation-list">
-      <div
-        class="conversation-item"
-        *ngFor="let c of conversations"
-        [class.active]="selectedConv?.id === c.id"
-        (click)="selectConversation(c)">
-
-        <div class="conv-title">{{ c.title }}</div>
-        <div class="conv-meta">
-          <span>اعضا: {{ c.participants.length }}</span>
-          <span class="badge" *ngIf="c.unreadCount > 0">
-            {{ c.unreadCount }}
-          </span>
-        </div>
-
-        <div class="conv-time">
-          آخرین پیام: {{ c.lastMessageAt }}
-        </div>
-      </div>
+    <!-- AI Chat -->
+    <div class="chat-item ai" (click)="selectChat(999)">
+      🤖 دستیار هوشمند HR
     </div>
-
   </div>
 
-  <!-- پنل اصلی چت -->
-  <div class="chat-main" *ngIf="selectedConv; else noConv">
+  <!-- Chat window -->
+  <div class="chat-window" *ngIf="selectedChatId">
 
-    <div class="chat-main-header">
-      <div>
-        <h3>{{ selectedConv.title }}</h3>
-        <p class="participants">
-          اعضا:
-          {{ selectedConv.participants.join('، ') }}
-        </p>
+    <div class="messages">
+      <div class="msg"
+           *ngFor="let m of chat.getMessages(selectedChatId)"
+           [class.me]="m.senderId === 1"
+           [class.ai]="m.ai">
+        {{ m.text }}
       </div>
-    </div>
-
-    <div class="chat-messages">
-
-      <div
-        class="msg-row"
-        *ngFor="let m of messages"
-        [class.mine]="isMine(m)">
-
-        <div class="msg-bubble">
-          <div class="msg-from">{{ m.from }}</div>
-          <div class="msg-text">{{ m.text }}</div>
-          <div class="msg-time">{{ m.time }}</div>
-        </div>
-
-      </div>
-
     </div>
 
     <div class="chat-input">
-      <textarea
-        [(ngModel)]="newMessageText"
-        placeholder="پیامت را بنویس..."
-        (keydown.enter)="send(); $event.preventDefault()"></textarea>
-
+      <input [(ngModel)]="inputText" placeholder="پیام بنویسید..." />
       <button (click)="send()">ارسال</button>
     </div>
 
   </div>
-
-  <ng-template #noConv>
-    <div class="chat-main empty">
-      یک گفتگو را از لیست انتخاب کنید
-    </div>
-  </ng-template>
 
 </div>
