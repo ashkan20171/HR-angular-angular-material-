@@ -39,7 +39,7 @@ export class Login implements OnInit {
     private auth: AuthService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -48,7 +48,7 @@ export class Login implements OnInit {
     this.setSeasonBackground();
   }
 
-  setSeasonBackground() {
+  setSeasonBackground(): void {
     const m = new Date().getMonth() + 1;
 
     this.currentBg =
@@ -58,27 +58,31 @@ export class Login implements OnInit {
       '/assets/bg/winter.jpg';
   }
 
-  changeLang(lang: string) {
+  changeLang(lang: string): void {
     this.translate.use(lang);
     this.currentDirection = lang === 'fa' ? 'rtl' : 'ltr';
   }
 
-  onCaptchaResolved(token: string | null) {
+  onCaptchaResolved(token: string | null): void {
     this.captchaOk = !!token;
   }
 
-  onSubmit() {
-    if (this.loginForm.invalid || !this.captchaOk) return;
+  onSubmit(): void {
+    // اگر فرم یا کپچا معتبر نیست
+    if (this.loginForm.invalid || !this.captchaOk) {
+      return;
+    }
 
     const { username, password } = this.loginForm.value;
 
     const success = this.auth.login(username, password);
 
     if (!success) {
-      alert('نام کاربری یا رمز اشتباه است');
+      alert('نام کاربری یا رمز عبور اشتباه است');
       return;
     }
 
-    this.router.navigate(['/dashboard']);
+    // مسیر صحیح داشبورد
+    this.router.navigate(['/app/dashboard']);
   }
 }

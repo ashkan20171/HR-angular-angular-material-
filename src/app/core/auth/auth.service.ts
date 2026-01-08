@@ -13,13 +13,13 @@ export interface AppUser {
 })
 export class AuthService {
 
-  // لیست کاربران واقعی سیستم
+  // لیست کاربران سیستم
   private users: AppUser[] = [
     { username: 'admin', password: '1234', role: 'admin' },
     { username: 'manager', password: '2222', role: 'manager' },
     { username: 'employee', password: '3333', role: 'employee' },
-    { username: 'hruser', password: '4444', role: 'hr' },       // منابع انسانی
-    { username: 'accountinguser', password: '5555', role: 'accounting' } // حسابداری
+    { username: 'hruser', password: '4444', role: 'hr' },
+    { username: 'accountinguser', password: '5555', role: 'accounting' }
   ];
 
   constructor() {}
@@ -27,6 +27,11 @@ export class AuthService {
   // نقش فعلی کاربر
   get role(): Role {
     return (localStorage.getItem('role') as Role) || 'employee';
+  }
+
+  // بررسی لاگین بودن کاربر
+  get isLoggedIn(): boolean {
+    return !!localStorage.getItem('authToken');
   }
 
   // بررسی دسترسی‌ها
@@ -63,7 +68,7 @@ export class AuthService {
         'performance.view',
         'profile.view'
       ],
-      hr: [ // منابع انسانی
+      hr: [
         'dashboard.view',
         'users.view',
         'users.edit',
@@ -74,7 +79,7 @@ export class AuthService {
         'performance.add',
         'profile.view'
       ],
-      accounting: [ // حسابداری
+      accounting: [
         'dashboard.view',
         'payroll.view',
         'payroll.add',
@@ -86,22 +91,28 @@ export class AuthService {
     return permissions[role]?.includes(permission);
   }
 
-  // متد جدید و صحیح login با خروجی true/false
+  // لاگین
   login(username: string, password: string): boolean {
     const user = this.users.find(
       u => u.username === username && u.password === password
     );
 
-    if (!user) return false;
+    if (!user) {
+      return false;
+    }
 
-    // ذخیره اطلاعات
+    // ذخیره اطلاعات کاربر
+    localStorage.setItem('authToken', 'logged-in'); // برای AuthGuard
     localStorage.setItem('userName', user.username);
     localStorage.setItem('role', user.role);
 
     return true;
   }
 
-  logout() {
-    localStorage.clear();
+  // لاگ‌اوت
+  logout(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('role');
   }
 }
