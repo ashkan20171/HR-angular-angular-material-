@@ -9,38 +9,21 @@
     </div>
 
     <nav class="menu">
-      <!-- منو بر اساس نقش -->
       <ul>
+
+        <!-- منو بر اساس نقش -->
         <ng-container *ngFor="let item of menu">
           <li *ngIf="auth.hasPermission(item.permission)">
-            <a [routerLink]="item.link" routerLinkActive="active">
+            <a
+              [routerLink]="item.link"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
               {{ item.icon }} {{ item.title }}
             </a>
           </li>
         </ng-container>
 
-        <!-- آیتم‌های ثابت -->
-        <li>
-          <a routerLink="/performance" routerLinkActive="active">
-            📈 ارزیابی عملکرد
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/messages" routerLinkActive="active">
-            💬 پیام‌ها
-          </a>
-        </li>
-
-        <li>
-          <a routerLink="/recruitment" routerLinkActive="active">
-            💼 استخدام
-          </a>
-        </li>
-
-        <li>
-  <a routerLink="/chat" routerLinkActive="active">💬 چت سازمانی</a>
-     </li>
       </ul>
     </nav>
 
@@ -52,11 +35,13 @@
     <!-- Header -->
     <header class="header">
 
-      <!-- Notifications -->
-      <div class="notif-icon" routerLink="/notifications">
+      <!-- (اختیاری) اگر واقعاً route notifications نداری، این بخش رو حذف کن -->
+      <!--
+      <div class="notif-icon" routerLink="notifications">
         🔔
         <span class="badge">{{ notif.unreadCount() }}</span>
       </div>
+      -->
 
       <!-- User info -->
       <div class="user-box">

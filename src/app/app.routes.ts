@@ -15,18 +15,20 @@ export const routes: Routes = [
       import('./layout/dashboard-layout').then((m) => m.DashboardLayout),
     canActivate: [AuthGuard],
     children: [
+      // ✅ پیش‌فرض /app
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
       {
         path: 'dashboard',
         loadComponent: () =>
           import('./features/dashboard/dashboard').then((m) => m.Dashboard),
-        canActivate: [AuthGuard],
       },
 
       {
         path: 'users',
         loadComponent: () =>
           import('./features/users/users').then((m) => m.Users),
-        canActivate: [AuthGuard, RoleGuard],
+        canActivate: [RoleGuard],
         data: { roles: ['admin'] },
       },
 
@@ -34,31 +36,27 @@ export const routes: Routes = [
         path: 'requests',
         loadComponent: () =>
           import('./features/requests/requests').then((m) => m.Requests),
-        canActivate: [AuthGuard],
       },
 
       {
         path: 'leave',
         loadComponent: () =>
           import('./features/leave/leave').then((m) => m.Leave),
-        canActivate: [AuthGuard],
       },
 
       {
         path: 'payroll',
         loadComponent: () =>
           import('./features/payroll/salary-slip').then((m) => m.SalarySlip),
-        canActivate: [AuthGuard, RoleGuard],
+        canActivate: [RoleGuard],
         data: { roles: ['admin', 'accounting'] },
       },
 
       {
         path: 'recruitment',
         loadComponent: () =>
-          import('./features/recruitment/recruitment').then(
-            (m) => m.Recruitment
-          ),
-        canActivate: [AuthGuard, RoleGuard],
+          import('./features/recruitment/recruitment').then((m) => m.Recruitment),
+        canActivate: [RoleGuard],
         data: { roles: ['admin', 'hr'] },
       },
 
@@ -66,7 +64,6 @@ export const routes: Routes = [
         path: 'chat',
         loadComponent: () =>
           import('./features/chat/chat').then((m) => m.Chat),
-        canActivate: [AuthGuard],
       },
     ],
   },
