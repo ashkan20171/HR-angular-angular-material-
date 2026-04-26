@@ -1,1 +1,56 @@
-<p>job-form works!</p>
+<div class="page">
+  <div class="top">
+    <div>
+      <h1>ایجاد موقعیت شغلی</h1>
+      <p class="sub">فرم ساده، سریع و استاندارد</p>
+    </div>
+    <button class="btn ghost" (click)="cancel()">بازگشت</button>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <label>عنوان</label>
+      <input class="input" [(ngModel)]="job.title" placeholder="مثلاً Frontend Developer" />
+    </div>
+
+    <div class="grid">
+      <div class="row">
+        <label>دپارتمان</label>
+        <input class="input" [(ngModel)]="job.department" placeholder="Engineering / HR / ..." />
+      </div>
+
+      <div class="row">
+        <label>سطح</label>
+        <select class="input" [(ngModel)]="job.level">
+          <option>Junior</option>
+          <option>Mid</option>
+          <option>Senior</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>وضعیت</label>
+        <select class="input" [(ngModel)]="job.status">
+          <option value="open">open</option>
+          <option value="paused">paused</option>
+          <option value="closed">closed</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <label>حقوق</label>
+        <input class="input" [(ngModel)]="job.salary" placeholder="€50k-€70k" />
+      </div>
+    </div>
+
+    <div class="row">
+      <label>توضیحات</label>
+      <textarea class="input" rows="5" [(ngModel)]="job.description" placeholder="توضیحات کوتاه موقعیت..."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" (click)="save()" [disabled]="saving">💾 ذخیره</button>
+      <button class="btn ghost" (click)="cancel()">انصراف</button>
+    </div>
+  </div>
+</div>

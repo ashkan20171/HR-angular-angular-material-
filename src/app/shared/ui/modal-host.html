@@ -1,0 +1,26 @@
+<div class="modal-backdrop" *ngIf="modal.state().open" (click)="onBackdropClick()" aria-hidden="false">
+  <div #modalEl
+       class="modal"
+       role="dialog"
+       aria-modal="true"
+       [attr.aria-labelledby]="'modal-title'"
+       [attr.aria-describedby]="'modal-body'"
+       tabindex="-1"
+       (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">{{ modal.state().title }}</div>
+      <button class="modal-x" (click)="act(false)" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body">{{ modal.state().body }}</div>
+    <div class="modal-actions">
+      <button *ngFor="let a of modal.state().actions"
+              class="btn"
+              [class.primary]="a.kind==='primary'"
+              [class.danger]="a.kind==='danger'"
+              [class.ghost]="a.kind==='ghost'"
+              (click)="act(a.value)">
+        {{ a.label }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+.loader-bar{
+  position: fixed;
+  top:0; left:0; right:0;
+  height:3px;
+  z-index: 9998;
+  background: transparent;
+}
+.loader-bar__inner{
+  height:100%;
+  width:40%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #22c55e);
+  border-radius: 0 12px 12px 0;
+  animation: loaderMove 1.0s ease-in-out infinite;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+}
+@keyframes loaderMove{
+  0%{ transform: translateX(-40%); opacity:.7 }
+  50%{ transform: translateX(80%); opacity:1 }
+  100%{ transform: translateX(140%); opacity:.7 }
+}

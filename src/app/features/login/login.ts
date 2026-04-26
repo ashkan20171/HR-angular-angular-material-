@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RecaptchaModule } from 'ng-recaptcha';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth/auth.service';
+import { LanguageService } from '../../core/i18n/language.service';
 
 @Component({
   selector: 'app-login',
@@ -30,12 +31,10 @@ export class Login implements OnInit {
   loginForm!: FormGroup;
   captchaOk = false;
   currentBg = '';
-  currentDirection: 'rtl' | 'ltr' = 'rtl';
-
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private translate: TranslateService,
+    private language: LanguageService,
     private auth: AuthService
   ) {}
 
@@ -58,9 +57,8 @@ export class Login implements OnInit {
       '/assets/bg/winter.jpg';
   }
 
-  changeLang(lang: string): void {
-    this.translate.use(lang);
-    this.currentDirection = lang === 'fa' ? 'rtl' : 'ltr';
+  changeLang(lang: 'fa' | 'en'): void {
+    this.language.setLanguage(lang);
   }
 
   onCaptchaResolved(token: string | null): void {

@@ -1,0 +1,42 @@
+<div class="job">
+  <div class="top">
+    <button class="btn-back" (click)="back()">← بازگشت</button>
+    <div class="info">
+      <div class="title">{{ job()?.title || 'موقعیت شغلی' }}</div>
+      <div class="sub">{{ job()?.department }} • {{ job()?.level }} • {{ job()?.status }}</div>
+    </div>
+  </div>
+
+  <div class="search" *ngIf="applicants().length>0">
+    <input class="input" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event)" placeholder="جستجوی متقاضی (نام، ایمیل، مهارت...)" />
+    <span class="count">{{ applicants().length }} نفر</span>
+  </div>
+
+  <app-empty-state
+    *ngIf="applicants().length===0"
+    title="هنوز متقاضی‌ای برای این موقعیت ثبت نشده"
+    message="برای نمایش برد کانبان، از صفحه استخدام «داده دمو» را اضافه کن یا بعداً از بک‌اند متقاضی‌ها را می‌گیریم."
+  ></app-empty-state>
+
+  <div class="board" cdkDropListGroup *ngIf="applicants().length>0">
+    <div class="col" *ngFor="let col of stageMeta">
+      <div class="col-head">
+        <div class="col-title">{{ col.label }}</div>
+        <div class="col-hint">{{ col.hint }}</div>
+      </div>
+
+      <div
+        class="drop"
+        cdkDropList
+        [cdkDropListData]="columns()[col.key]"
+        (cdkDropListDropped)="drop($event, col.key)"
+      >
+        <div class="card" *ngFor="let a of columns()[col.key]" cdkDrag @fadeUp>
+          <div class="name">{{ a.name }}</div>
+          <div class="meta">{{ a.experience }} • {{ a.skills.join('، ') }}</div>
+          <div class="contact">{{ a.email }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

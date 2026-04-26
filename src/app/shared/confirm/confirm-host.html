@@ -1,0 +1,18 @@
+<div class="overlay" *ngIf="state() as s" @fade (click)="onBackdrop()">
+  <div class="dialog" @pop (click)="$event.stopPropagation()">
+    <div class="head">
+      <div class="title">{{ s.title }}</div>
+    </div>
+
+    <div class="body">
+      <p>{{ s.message }}</p>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" (click)="confirm.cancel()">{{ s.cancelText }}</button>
+      <button class="btn" [class.danger]="s.kind==='danger'" (click)="confirm.confirm()">
+        {{ s.confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

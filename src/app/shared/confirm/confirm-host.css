@@ -1,0 +1,64 @@
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  padding: 18px;
+  direction: rtl;
+}
+
+.dialog{
+  width: min(520px, 100%);
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: 0 20px 60px rgba(0,0,0,.28);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.head{
+  padding: 16px 18px 10px;
+}
+
+.title{
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.body{
+  padding: 0 18px 14px;
+  color: rgba(0,0,0,.72);
+  line-height: 1.8;
+}
+
+.actions{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.btn{
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #0e60ff;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+}
+.btn:hover{ filter: brightness(.98); }
+
+.btn.ghost{
+  background: rgba(255,255,255,.7);
+  color: rgba(0,0,0,.75);
+}
+
+.btn.danger{
+  background: #d7263d;
+  border-color: rgba(215,38,61,.35);
+}

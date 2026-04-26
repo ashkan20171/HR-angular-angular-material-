@@ -1,0 +1,55 @@
+<div class="new" dir="rtl">
+  <div class="top">
+    <button class="btn-back" (click)="back()">← بازگشت</button>
+    <div>
+      <div class="title">ایجاد موقعیت شغلی</div>
+      <div class="sub">فرم سریع برای ساخت موقعیت (فعلاً فرانت / LocalStorage)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <label>
+      <span>عنوان</span>
+      <input [(ngModel)]="model.title" placeholder="مثلاً Frontend Developer" />
+    </label>
+
+    <label>
+      <span>دپارتمان</span>
+      <input [(ngModel)]="model.department" placeholder="مثلاً Software" />
+    </label>
+
+    <div class="row">
+      <label>
+        <span>سطح</span>
+        <select [(ngModel)]="model.level">
+          <option>Junior</option>
+          <option>Mid</option>
+          <option>Senior</option>
+        </select>
+      </label>
+
+      <label>
+        <span>وضعیت</span>
+        <select [(ngModel)]="model.status">
+          <option value="open">open</option>
+          <option value="paused">paused</option>
+          <option value="closed">closed</option>
+        </select>
+      </label>
+    </div>
+
+    <label>
+      <span>حقوق</span>
+      <input [(ngModel)]="model.salary" placeholder="مثلاً €55k–€75k" />
+    </label>
+
+    <label>
+      <span>توضیحات</span>
+      <textarea [(ngModel)]="model.description" rows="5" placeholder="شرح مختصر موقعیت..."></textarea>
+    </label>
+
+    <div class="actions">
+      <button class="btn" (click)="save()">💾 ذخیره</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+.toast-wrap{
+  position: fixed;
+  top: 16px;
+  inset-inline-end: 16px;
+  display: grid;
+  gap: 10px;
+  z-index: 9999;
+  width: min(360px, calc(100vw - 32px));
+}
+
+.toast{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  background: rgba(22, 26, 34, .78);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 16px 30px rgba(0,0,0,.25);
+  backdrop-filter: blur(10px);
+  animation: pop .22s ease-out;
+}
+
+.toast .left{display:flex; gap:10px; align-items:flex-start;}
+.toast .icon{width: 28px; height: 28px; display:grid; place-items:center; border-radius: 10px; background: rgba(255,255,255,.08)}
+.toast .content{display:grid; gap:3px;}
+.toast .title{font-weight: 700; font-size: 13px; opacity: .95;}
+.toast .msg{font-size: 13px; opacity: .9; line-height: 1.35;}
+
+.toast .close{
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.85);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 10px;
+}
+.toast .close:hover{background: rgba(255,255,255,.10)}
+
+.toast.success{border-color: rgba(46, 204, 113, .35)}
+.toast.info{border-color: rgba(52, 152, 219, .35)}
+.toast.warning{border-color: rgba(241, 196, 15, .35)}
+.toast.error{border-color: rgba(231, 76, 60, .35)}
+
+@keyframes pop{
+  from{transform: translateY(-6px); opacity: 0}
+  to{transform: translateY(0); opacity: 1}
+}

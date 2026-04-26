@@ -1,0 +1,9 @@
+<div class="toast-stack" aria-live="polite" aria-relevant="additions" aria-atomic="true">
+  <div class="toast" *ngFor="let t of toast.toasts()" [class]="t.type" role="status">
+    <div class="toast-body">
+      <div class="toast-title" *ngIf="t.title">{{ t.title }}</div>
+      <div class="toast-message">{{ t.message }}</div>
+    </div>
+    <button class="toast-close" (click)="dismiss(t.id)" aria-label="Close">✕</button>
+  </div>
+</div>

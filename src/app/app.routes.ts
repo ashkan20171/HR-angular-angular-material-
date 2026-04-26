@@ -59,6 +59,27 @@ export const routes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['admin', 'hr'] },
       },
+      {
+        path: 'recruitment/new',
+        loadComponent: () =>
+          import('./features/recruitment/job-form/job-form').then((m) => m.JobForm),
+        canActivate: [RoleGuard],
+        data: { roles: ['admin', 'hr'] },
+      },
+      {
+        path: 'recruitment/:id',
+        loadComponent: () =>
+          import('./features/recruitment/job-detail/job-detail').then((m) => m.JobDetail),
+        canActivate: [RoleGuard],
+        data: { roles: ['admin', 'hr'] },
+      },
+      {
+        path: 'recruitment/applicant/:id',
+        loadComponent: () =>
+          import('./features/recruitment/profile/applicant-profile').then((m) => m.ApplicantProfile),
+        canActivate: [RoleGuard],
+        data: { roles: ['admin', 'hr'] },
+      },
 
       {
         path: 'chat',

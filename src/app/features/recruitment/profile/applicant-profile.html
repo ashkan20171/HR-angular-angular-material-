@@ -1,56 +1,73 @@
-<div class="profile">
+<div class="profile" *ngIf="applicant">
 
   <div class="top">
-
-    <div class="info-box">
-      <h2>{{ applicant.name }}</h2>
-      <p class="email">{{ applicant.email }}</p>
-
-      <div class="skills">
-        <span *ngFor="let s of applicant.skills">{{ s }}</span>
-      </div>
-
-      <div class="stage">
-        مرحله فعلی:
-        <strong>{{ applicant.stageName }}</strong>
-      </div>
-    </div>
-
-    <div class="resume-box">
-      <h3>رزومه</h3>
-      <iframe [src]="applicant.resume | safeUrl" class="resume"></iframe>
-    </div>
-
+    <button class="btn ghost" (click)="back()">← بازگشت</button>
   </div>
 
-  <!-- Timeline -->
-  <h3 class="title">تایم‌لاین استخدام</h3>
-  <div class="timeline">
-    <div class="item" *ngFor="let t of applicant.history">
-      <div class="dot"></div>
-      <div class="content">
-        <h4>{{ t.title }}</h4>
-        <span class="date">{{ t.date }}</span>
+  <div class="grid">
+    <div class="card">
+      <div class="head">
+        <div class="avatar">👤</div>
+        <div>
+          <h2>{{ applicant.name }}</h2>
+          <div class="sub">{{ applicant.email }}</div>
+          <div class="sub" *ngIf="applicant.phone">{{ applicant.phone }}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="k">وضعیت</div>
+        <div class="v">
+          <span class="badge" [class.new]="applicant.status==='new'"
+                [class.review]="applicant.status==='review'"
+                [class.interview]="applicant.status==='interview'"
+                [class.accepted]="applicant.status==='accepted'"
+                [class.rejected]="applicant.status==='rejected'">{{ applicant.status }}</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="k">تجربه</div>
+        <div class="v">{{ applicant.experience }}</div>
+      </div>
+
+      <div class="row">
+        <div class="k">مهارت‌ها</div>
+        <div class="v skills">
+          <span class="skill" *ngFor="let s of applicant.skills">{{ s }}</span>
+          <span class="muted" *ngIf="!applicant.skills?.length">—</span>
+        </div>
+      </div>
+
+      <div class="row" *ngIf="applicant.resumeUrl">
+        <div class="k">رزومه</div>
+        <div class="v">
+          <a [href]="applicant.resumeUrl" target="_blank" rel="noopener">مشاهده</a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Notes -->
-  <h3 class="title">یادداشت‌های HR</h3>
+    <div class="card">
+      <h3>یادداشت‌ها</h3>
 
-  <div class="add-note">
-    <textarea [(ngModel)]="noteText" placeholder="یادداشت جدید..."></textarea>
-    <button (click)="addNote()">ثبت یادداشت</button>
-  </div>
-
-  <div class="note-list">
-    <div class="note" *ngFor="let n of notes; let i = index">
-      <div class="text">{{ n.text }}</div>
-      <div class="footer">
-        <span>{{ n.date }}</span>
-        <button (click)="deleteNote(i)">حذف</button>
+      <div class="note-box">
+        <textarea class="input" rows="3" [(ngModel)]="noteText" placeholder="یادداشت جدید..."></textarea>
+        <button class="btn primary" (click)="addNote()">ثبت</button>
       </div>
+
+      <div class="notes" *ngIf="notes.length>0; else empty">
+        <div class="note" *ngFor="let n of notes; let i=index">
+          <div class="note-top">
+            <div class="date">{{ n.date | persianDate:{dateStyle:'medium', timeStyle:'short'} }}</div>
+            <button class="x" (click)="deleteNote(i)">✕</button>
+          </div>
+          <div class="text">{{ n.text }}</div>
+        </div>
+      </div>
+
+      <ng-template #empty>
+        <div class="empty">هنوز یادداشتی ثبت نشده.</div>
+      </ng-template>
     </div>
   </div>
-
 </div>

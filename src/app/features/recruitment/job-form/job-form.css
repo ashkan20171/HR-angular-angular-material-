@@ -1,0 +1,52 @@
+.page{ padding: 18px; }
+.top{ display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+h1{ margin:0; font-size: 26px; }
+.sub{ margin:6px 0 0 0; opacity:.7; }
+.card{
+  margin-top: 14px;
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(255,255,255,0.86);
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+body.dark .card{
+  background: rgba(20,20,20,0.60);
+  border-color: rgba(255,255,255,0.10);
+}
+.row{ display:flex; flex-direction:column; gap:8px; margin-bottom: 12px; }
+label{ font-weight: 700; font-size: 13px; opacity:.85; }
+.input{
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(255,255,255,0.65);
+  outline:none;
+}
+body.dark .input{
+  background: rgba(10,10,10,0.55);
+  border-color: rgba(255,255,255,0.12);
+  color:#eee;
+}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top: 10px;
+}
+.btn{
+  border:none;
+  cursor:pointer;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.06);
+}
+body.dark .btn{ background: rgba(255,255,255,0.08); color:#eee; }
+.btn.primary{ background: #2563eb; color:#fff; }
+.btn.ghost{ background: transparent; border:1px solid rgba(0,0,0,0.12); }
+body.dark .btn.ghost{ border-color: rgba(255,255,255,0.18); }

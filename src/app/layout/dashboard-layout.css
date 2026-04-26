@@ -105,3 +105,14 @@
 }
 
 
+
+
+/* ===== Global RTL/LTR support ===== */
+:host-context(body.rtl) .layout { direction: rtl; }
+:host-context(body.ltr) .layout { direction: ltr; }
+
+:host-context(body.rtl) .logo span { margin-left: 10px; margin-right: 0; }
+:host-context(body.ltr) .logo span { margin-right: 10px; margin-left: 0; }
+
+:host-context(body.rtl) .sidebar { border-left: 1px solid rgba(255,255,255,.08); border-right: none; }
+:host-context(body.ltr) .sidebar { border-right: 1px solid rgba(255,255,255,.08); border-left: none; }

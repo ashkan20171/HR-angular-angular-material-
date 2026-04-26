@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../features/notifications/notification.service';
 import { AuthService } from '../core/auth/auth.service';
+import { LanguageService } from '../core/i18n/language.service';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -15,9 +16,7 @@ export class DashboardLayout {
 
   userName = localStorage.getItem('userName') || 'کاربر';
   userRole = localStorage.getItem('role') || 'employee';
-  currentDirection: 'rtl' | 'ltr' = 'rtl';
-
-  // ✅ فقط routeهایی که در app.routes.ts تعریف شده‌اند
+// ✅ فقط routeهایی که در app.routes.ts تعریف شده‌اند
   menu = [
     { title: 'داشبورد', icon: '📊', link: 'dashboard', permission: 'dashboard.view' },
     { title: 'کاربران', icon: '👥', link: 'users', permission: 'users.view' },
@@ -29,9 +28,10 @@ export class DashboardLayout {
   ];
 
   constructor(
-    private router: Router,
+private router: Router,
     public notif: NotificationService,
-    public auth: AuthService
+    public auth: AuthService,
+    public language: LanguageService
   ) {}
 
   logout(): void {

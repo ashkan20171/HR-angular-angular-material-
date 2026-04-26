@@ -1,23 +1,145 @@
 <div class="recruitment">
-
   <div class="header">
-    <h1>استخدام</h1>
-    <button class="btn-add" (click)="newJob()">➕ ایجاد موقعیت شغلی</button>
+    <div class="title">
+      <h1>استخدام</h1>
+      <p class="subtitle">مدیریت موقعیت‌های شغلی و کاندیدها</p>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn ghost" (click)="seedDemo()">✨ داده دمو</button>
+      <button class="btn ghost" (click)="exportCsv()" [disabled]="filtered.length===0">⬇️ CSV</button>
+      <button class="btn primary" (click)="newJob()">➕ ایجاد موقعیت</button>
+    </div>
   </div>
 
-  <div class="jobs-grid">
-    <div class="job-card" *ngFor="let j of jobs" (click)="openJob(j.id)">
+  <div class="toolbar">
+    <div class="search">
+      <span class="icon">🔎</span>
+      <input class="input" [(ngModel)]="q" placeholder="جستجو (عنوان، دپارتمان، سطح)..." />
+    </div>
 
-      <h3>{{ j.title }}</h3>
-      <span class="dept">{{ j.department }}</span>
+    <select class="input" [(ngModel)]="status">
+      <option value="">همه وضعیت‌ها</option>
+      <option value="open">open</option>
+      <option value="paused">paused</option>
+      <option value="closed">closed</option>
+    </select>
 
-      <div class="status" [class.open]="j.status==='open'"
-                         [class.paused]="j.status==='paused'"
-                         [class.closed]="j.status==='closed'">
-        {{ j.status }}
+    <select class="input" [(ngModel)]="department">
+      <option value="">همه دپارتمان‌ها</option>
+      <option *ngFor="let d of departments" [value]="d">{{ d }}</option>
+    </select>
+
+    <select class="input" [(ngModel)]="level">
+      <option value="">همه سطوح</option>
+      <option *ngFor="let l of levels" [value]="l">{{ l }}</option>
+    </select>
+
+    <select class="input" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+      <option [ngValue]="6">6 / صفحه</option>
+      <option [ngValue]="8">8 / صفحه</option>
+      <option [ngValue]="12">12 / صفحه</option>
+      <option [ngValue]="20">20 / صفحه</option>
+    </select>
+
+    <button class="btn ghost" (click)="clearFilters()">پاکسازی</button>
+
+    <div class="spacer"></div>
+
+    <div class="view-toggle">
+      <button class="seg" [class.active]="viewMode==='cards'" (click)="setView('cards')">🧩 کارت</button>
+      <button class="seg" [class.active]="viewMode==='table'" (click)="setView('table')">📋 جدول</button>
+    </div>
+  </div>
+
+  <div class="meta">
+    <span>{{ filtered.length }} نتیجه</span>
+    <span class="dot">•</span>
+    <span>صفحه {{ page }} از {{ totalPages }}</span>
+  </div>
+
+  <div class="empty" *ngIf="filtered.length===0">
+    <div class="empty-emoji">🧠</div>
+    <div class="empty-title">چیزی پیدا نشد</div>
+    <div class="empty-desc">فیلترها را تغییر بده یا داده دمو اضافه کن.</div>
+    <button class="btn primary" (click)="seedDemo()">اضافه کردن داده دمو</button>
+  </div>
+
+  <!-- Cards view -->
+  <div class="jobs-grid" *ngIf="filtered.length>0 && viewMode==='cards'">
+    <div class="job-card" *ngFor="let j of paged"
+         role="button"
+         tabindex="0"
+         [attr.aria-label]="'باز کردن موقعیت: ' + j.title"
+         (click)="openJob(j.id)"
+         (keydown.enter)="openJob(j.id)"
+         (keydown.space)="openJob(j.id); $event.preventDefault()">
+      <div class="job-top">
+        <h3>{{ j.title }}</h3>
+        <button class="icon-btn" title="حذف" (click)="deleteJob(j, $event)" [attr.aria-label]="'حذف ' + j.title">🗑️</button>
       </div>
 
+      <div class="chips">
+        <span class="chip">{{ j.department }}</span>
+        <span class="chip">{{ j.level }}</span>
+        <span class="chip salary">{{ j.salary }}</span>
+      </div>
+
+      <div class="status" [class.open]="j.status==='open'"
+           [class.paused]="j.status==='paused'"
+           [class.closed]="j.status==='closed'">
+        {{ j.status }}
+      </div>
     </div>
+  </div>
+
+  <!-- Table view -->
+  <div class="table-wrap" *ngIf="filtered.length>0 && viewMode==='table'">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>عنوان</th>
+          <th>دپارتمان</th>
+          <th>سطح</th>
+          <th>حقوق</th>
+          <th>وضعیت</th>
+          <th style="width:120px">عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let j of paged"
+            role="button"
+            tabindex="0"
+            (click)="openJob(j.id)"
+            (keydown.enter)="openJob(j.id)"
+            (keydown.space)="openJob(j.id); $event.preventDefault()">
+          <td class="td-title">{{ j.title }}</td>
+          <td>{{ j.department }}</td>
+          <td>{{ j.level }}</td>
+          <td>{{ j.salary }}</td>
+          <td>
+            <span class="badge" [class.open]="j.status==='open'"
+                  [class.paused]="j.status==='paused'"
+                  [class.closed]="j.status==='closed'">{{ j.status }}</span>
+          </td>
+          <td>
+            <button class="btn tiny ghost" (click)="deleteJob(j, $event)" [attr.aria-label]="'حذف ' + j.title">حذف</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination" *ngIf="filtered.length>0">
+    <button class="btn ghost" (click)="prevPage()" [disabled]="page===1">قبلی</button>
+    <div class="pages">
+      <button class="page" *ngFor="let n of [].constructor(totalPages); let i=index"
+              [class.active]="page===i+1"
+              (click)="page=i+1">
+        {{ i+1 }}
+      </button>
+    </div>
+    <button class="btn ghost" (click)="nextPage()" [disabled]="page===totalPages">بعدی</button>
   </div>
 
 </div>

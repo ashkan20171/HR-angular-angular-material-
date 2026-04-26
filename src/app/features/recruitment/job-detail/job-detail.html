@@ -1,1 +1,78 @@
-<p>job-detail works!</p>
+<div class="page" *ngIf="job">
+  <div class="top">
+    <div class="left">
+      <button class="btn ghost" (click)="back()">← بازگشت</button>
+      <div>
+        <h1>{{ job.title }}</h1>
+        <div class="meta">
+          <span class="chip">{{ job.department }}</span>
+          <span class="chip">{{ job.level }}</span>
+          <span class="chip salary">{{ job.salary }}</span>
+          <span class="badge" [class.open]="job.status==='open'"
+                [class.paused]="job.status==='paused'"
+                [class.closed]="job.status==='closed'">{{ job.status }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="search">
+        <span>🔎</span>
+        <input [(ngModel)]="q" placeholder="جستجوی کاندید (نام/ایمیل/مهارت)" />
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="col" *ngFor="let c of columns" (dragover)="allowDrop($event)" (drop)="onDrop($event, c.key)">
+      <div class="col-head">
+        <div>
+          <div class="col-title">{{ c.title }}</div>
+          <div class="col-hint">{{ c.hint }}</div>
+        </div>
+        <div class="count">{{ listFor(c.key).length }}</div>
+      </div>
+
+      <div class="cards">
+        <div class="card" *ngFor="let a of listFor(c.key)"
+             draggable="true"
+             (dragstart)="onDragStart($event, a.id)"
+             (click)="openApplicant(a)">
+          <div class="card-top">
+            <div class="name">{{ a.name }}</div>
+            <button class="x" title="حذف" (click)="removeApplicant(a, $event)">✕</button>
+          </div>
+          <div class="sub">{{ a.email }}</div>
+          <div class="skills" *ngIf="a.skills?.length">
+            <span class="skill" *ngFor="let s of a.skills.slice(0,4)">{{ s }}</span>
+            <span class="skill more" *ngIf="a.skills.length>4">+{{ a.skills.length-4 }}</span>
+          </div>
+        </div>
+
+        <div class="empty" *ngIf="listFor(c.key).length===0">
+          خالی
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="add">
+    <div class="add-title">➕ اضافه کردن کاندید</div>
+
+    <div class="grid">
+      <input class="input" [(ngModel)]="aName" placeholder="نام" />
+      <input class="input" [(ngModel)]="aEmail" placeholder="ایمیل" />
+      <input class="input" [(ngModel)]="aPhone" placeholder="تلفن" />
+      <input class="input" [(ngModel)]="aExp" placeholder="تجربه (مثلاً 3 سال)" />
+    </div>
+
+    <div class="grid">
+      <input class="input" [(ngModel)]="aSkills" placeholder="مهارت‌ها (با کاما جدا کن) مثل Angular, TS, UI" />
+      <input class="input" [(ngModel)]="aResume" placeholder="لینک رزومه (اختیاری)" />
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" (click)="addApplicant()">افزودن</button>
+    </div>
+  </div>
+</div>

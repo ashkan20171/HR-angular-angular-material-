@@ -1,0 +1,30 @@
+.new{padding: 18px;}
+.top{display:flex; align-items:center; gap:12px; margin-bottom: 14px;}
+.btn-back{border:none; background: rgba(255,255,255,.70); border:1px solid rgba(0,0,0,.10); padding:10px 12px; border-radius: 14px; cursor:pointer}
+.btn-back:hover{filter: brightness(.98)}
+.title{font-weight: 900; font-size: 18px}
+.sub{opacity:.8; font-size: 13px; margin-top:2px}
+
+.card{max-width: 720px; border-radius: 20px; padding: 16px; background: rgba(255,255,255,.60); border: 1px solid rgba(0,0,0,.10); display:grid; gap: 12px}
+
+label{display:grid; gap:6px}
+label span{font-size: 12px; opacity:.8; font-weight: 800}
+input, select, textarea{
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12);
+  padding: 10px 12px;
+  outline: none;
+  background: rgba(255,255,255,.85);
+}
+textarea{resize: vertical}
+
+.row{display:grid; grid-template-columns: 1fr 1fr; gap: 12px}
+
+.actions{display:flex; justify-content:flex-end; margin-top: 4px}
+.btn{border:none; cursor:pointer; padding: 11px 14px; border-radius: 14px; background: rgba(79, 70, 229, .92); color:#fff; font-weight:900}
+.btn:hover{filter: brightness(1.05)}
+
+@media (max-width: 720px){
+  .row{grid-template-columns: 1fr}
+}

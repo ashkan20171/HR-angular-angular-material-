@@ -9,6 +9,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { CustomTranslateLoader } from './app/core/services/translate-loader';
 import { importProvidersFrom } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { LanguageService } from './app/core/i18n/language.service';
 
 bootstrapApplication(App, {
   providers: [
@@ -25,8 +26,13 @@ bootstrapApplication(App, {
       })
     )
   ]
-}).then(appRef => {
+})
+.then(appRef => {
   const translate = appRef.injector.get(TranslateService);
+  translate.addLangs(['fa', 'en']);
   translate.setDefaultLang('fa');
-  translate.use('fa');
-});
+
+  const language = appRef.injector.get(LanguageService);
+  language.init();
+})
+.catch(err => console.error(err));
