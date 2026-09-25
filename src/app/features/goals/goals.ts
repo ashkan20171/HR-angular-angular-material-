@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-goals',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Goals {
+ config:EnterprisePageConfig={title:{fa:'اهداف و OKR',en:'Goals & OKRs'},subtitle:{fa:'مدیریت اهداف فردی، تیمی و سازمانی',en:'Manage individual, team and company goals'},item:{fa:'مورد',en:'item'},icon:'track_changes',kpisFa:[["اهداف فعال", "42", "فصل جاری"], ["در مسیر", "31", "74٪"], ["در معرض ریسک", "7", "نیازمند توجه"], ["میانگین پیشرفت", "68٪", "+6٪"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["بهبود رضایت کارکنان", "People · Q4", "78٪"], ["کاهش زمان استخدام", "Talent · Q4", "64٪"], ["اتوماسیون فرآیندهای HR", "Operations · Q4", "82٪"], ["برنامه توسعه رهبران", "L&D · Q4", "49٪"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-documents',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Documents {
+ config:EnterprisePageConfig={title:{fa:'اسناد و قراردادها',en:'Documents & contracts'},subtitle:{fa:'کنترل قراردادها، مدارک کارکنان و تاریخ‌های انقضا',en:'Manage contracts, employee documents and expiry dates'},item:{fa:'مورد',en:'item'},icon:'folder_open',kpisFa:[["قرارداد فعال", "119", "93٪ کارکنان"], ["در انتظار امضا", "9", "نیازمند اقدام"], ["انقضا تا ۳۰ روز", "6", "یادآوری"], ["اسناد کامل", "94٪", "Compliance"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["قرارداد استخدام", "نسخه ۱۴۰۵ · 119 سند", "فعال"], ["NDA و محرمانگی", "124 سند", "98٪"], ["مدارک هویتی", "پروفایل کارکنان", "96٪"], ["الحاقیه حقوق", "دوره شهریور", "در انتظار"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

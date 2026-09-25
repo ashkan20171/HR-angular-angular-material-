@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-employee-360',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Employee360 {
+ config:EnterprisePageConfig={title:{fa:'پروفایل ۳۶۰',en:'Employee 360'},subtitle:{fa:'نمای یکپارچه عملکرد، مهارت، حضور و بازخورد',en:'Unified view of performance, skills, attendance and feedback'},item:{fa:'مورد',en:'item'},icon:'person_pin',kpisFa:[["امتیاز تعامل", "8.6", "از 10"], ["اهداف تکمیل\u200cشده", "12", "سال جاری"], ["مهارت\u200cهای تاییدشده", "18", "پروفایل"], ["بازخوردهای جدید", "7", "30 روز"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["عملکرد و اهداف", "آخرین ارزیابی: عالی", "92٪"], ["یادگیری و مهارت", "3 دوره فعال", "76٪"], ["حضور و تعهد", "نرخ حضور 97٪", "97٪"], ["بازخورد 360", "8 پاسخ ثبت شده", "86٪"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

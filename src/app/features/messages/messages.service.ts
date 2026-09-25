@@ -7,8 +7,10 @@ export class MessagesService {
   private messages = signal<Message[]>([]);
 
   constructor() {
-    const stored = localStorage.getItem('messages');
-    if (stored) this.messages.set(JSON.parse(stored));
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem('messages');
+      if (stored) this.messages.set(JSON.parse(stored));
+    }
   }
 
   list(user: string) {
@@ -27,17 +29,21 @@ export class MessagesService {
       read: false
     };
 
-    this.messages().push(m);
+    this.messages.update(items => [...items, m]);
     this.save();
   }
 
   markRead(id: number) {
     const m = this.messages().find(x => x.id === id);
-    if (m) m.read = true;
-    this.save();
+    if (m) {
+      this.messages.update(items => items.map(item => item.id === id ? { ...item, read: true } : item));
+      this.save();
+    }
   }
 
   save() {
-    localStorage.setItem('messages', JSON.stringify(this.messages()));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('messages', JSON.stringify(this.messages()));
+    }
   }
 }

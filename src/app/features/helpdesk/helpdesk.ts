@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-helpdesk',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Helpdesk {
+ config:EnterprisePageConfig={title:{fa:'میز خدمت HR',en:'HR help desk'},subtitle:{fa:'مدیریت تیکت‌ها و درخواست‌های منابع انسانی',en:'Manage HR tickets and employee service requests'},item:{fa:'مورد',en:'item'},icon:'support_agent',kpisFa:[["تیکت باز", "23", "در جریان"], ["SLA امروز", "96٪", "هدف 95٪"], ["میانگین پاسخ", "1.8h", "-12٪"], ["رضایت", "4.7", "از 5"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["HR-1042 · بیمه تکمیلی", "در انتظار HR", "متوسط"], ["HR-1041 · اصلاح فیش حقوقی", "در حال بررسی", "بالا"], ["HR-1039 · گواهی اشتغال", "پاسخ داده شد", "عادی"], ["HR-1037 · مرخصی", "ارجاع به مدیر", "متوسط"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

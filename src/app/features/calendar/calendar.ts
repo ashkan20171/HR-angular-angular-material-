@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-calendar',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Calendar {
+ config:EnterprisePageConfig={title:{fa:'تقویم سازمانی',en:'Company calendar'},subtitle:{fa:'رویدادها، تعطیلات و برنامه‌های سازمانی',en:'Events, holidays and company schedules'},item:{fa:'مورد',en:'item'},icon:'event',kpisFa:[["رویدادهای این ماه", "14", "سازمانی"], ["تعطیلات پیش\u200cرو", "3", "60 روز"], ["جلسات HR", "9", "این هفته"], ["تولد/سالگرد", "11", "این ماه"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["جلسه All Hands", "۲ مهر · ۱۰:۰۰", "سازمانی"], ["روز تیم منابع انسانی", "۶ مهر · ۱۴:۰۰", "رویداد"], ["تعطیلی رسمی", "۱۳ مهر", "تعطیل"], ["ارزیابی فصلی", "۱۸ مهر · ۹:۰۰", "HR"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

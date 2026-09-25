@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { RecaptchaModule } from 'ng-recaptcha';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../core/auth/auth.service';
 import { LanguageService } from '../../core/i18n/language.service';
@@ -22,7 +21,6 @@ import { LanguageService } from '../../core/i18n/language.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    RecaptchaModule,
     TranslateModule
   ]
 })
@@ -61,11 +59,11 @@ export class Login implements OnInit {
     this.language.setLanguage(lang);
   }
 
-  onCaptchaResolved(token: string | null): void {
-    this.captchaOk = !!token;
+  onHumanVerificationChange(event: Event): void {
+    this.captchaOk = (event.target as HTMLInputElement).checked;
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     // اگر فرم یا کپچا معتبر نیست
     if (this.loginForm.invalid || !this.captchaOk) {
       return;
@@ -73,10 +71,10 @@ export class Login implements OnInit {
 
     const { username, password } = this.loginForm.value;
 
-    const success = this.auth.login(username, password);
+    const success = await this.auth.login(username, password);
 
     if (!success) {
-      alert('نام کاربری یا رمز عبور اشتباه است');
+      alert(this.language.currentLanguage === 'fa' ? 'نام کاربری یا رمز عبور اشتباه است' : 'Incorrect username or password');
       return;
     }
 

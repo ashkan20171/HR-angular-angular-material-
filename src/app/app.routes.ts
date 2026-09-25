@@ -1,94 +1,114 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 import { RoleGuard } from './core/auth/role.guard';
+import { PermissionGuard } from './core/auth/permission.guard';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./features/login/login').then((m) => m.Login),
-  },
-
+  { path: 'login', loadComponent: () => import('./features/login/login').then(m => m.Login) },
   {
     path: 'app',
-    loadComponent: () =>
-      import('./layout/dashboard-layout').then((m) => m.DashboardLayout),
+    loadComponent: () => import('./layout/dashboard-layout').then(m => m.DashboardLayout),
     canActivate: [AuthGuard],
     children: [
-      // ✅ پیش‌فرض /app
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./features/dashboard/dashboard').then((m) => m.Dashboard),
-      },
-
-      {
-        path: 'users',
-        loadComponent: () =>
-          import('./features/users/users').then((m) => m.Users),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin'] },
-      },
-
-      {
-        path: 'requests',
-        loadComponent: () =>
-          import('./features/requests/requests').then((m) => m.Requests),
-      },
-
-      {
-        path: 'leave',
-        loadComponent: () =>
-          import('./features/leave/leave').then((m) => m.Leave),
-      },
-
-      {
-        path: 'payroll',
-        loadComponent: () =>
-          import('./features/payroll/salary-slip').then((m) => m.SalarySlip),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin', 'accounting'] },
-      },
-
-      {
-        path: 'recruitment',
-        loadComponent: () =>
-          import('./features/recruitment/recruitment').then((m) => m.Recruitment),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin', 'hr'] },
-      },
-      {
-        path: 'recruitment/new',
-        loadComponent: () =>
-          import('./features/recruitment/job-form/job-form').then((m) => m.JobForm),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin', 'hr'] },
-      },
-      {
-        path: 'recruitment/:id',
-        loadComponent: () =>
-          import('./features/recruitment/job-detail/job-detail').then((m) => m.JobDetail),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin', 'hr'] },
-      },
-      {
-        path: 'recruitment/applicant/:id',
-        loadComponent: () =>
-          import('./features/recruitment/profile/applicant-profile').then((m) => m.ApplicantProfile),
-        canActivate: [RoleGuard],
-        data: { roles: ['admin', 'hr'] },
-      },
-
-      {
-        path: 'chat',
-        loadComponent: () =>
-          import('./features/chat/chat').then((m) => m.Chat),
-      },
+      { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard) },
+      { path: 'executive', loadComponent: () => import('./features/executive-dashboard/executive-dashboard').then(m => m.ExecutiveDashboard), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'users', loadChildren: () => import('./features/users/users.routes').then(m => m.USER_ROUTES), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'attendance', loadComponent: () => import('./features/attendance/attendance').then(m => m.Attendance) },
+      { path: 'requests', loadComponent: () => import('./features/requests/requests').then(m => m.Requests) },
+      { path: 'leave', loadComponent: () => import('./features/leave/leave').then(m => m.Leave) },
+      { path: 'mission', loadComponent: () => import('./features/mission/mission').then(m => m.Mission) },
+      { path: 'overtime', loadComponent: () => import('./features/overtime/overtime').then(m => m.Overtime) },
+      { path: 'payroll', loadComponent: () => import('./features/payroll/payroll').then(m => m.Payroll), canActivate: [RoleGuard], data: { roles: ['admin', 'accounting', 'hr'] } },
+      { path: 'salary-slip', loadComponent: () => import('./features/payroll/salary-slip').then(m => m.SalarySlip) },
+      { path: 'salary', loadComponent: () => import('./features/salary/salary').then(m => m.Salary), canActivate: [RoleGuard], data: { roles: ['admin', 'accounting', 'hr'] } },
+      { path: 'performance', loadComponent: () => import('./features/performance/performance').then(m => m.Performance) },
+      { path: 'recruitment', loadComponent: () => import('./features/recruitment/recruitment').then(m => m.Recruitment), canActivate: [RoleGuard], data: { roles: ['admin', 'hr'] } },
+      { path: 'recruitment/new', loadComponent: () => import('./features/recruitment/recruitment-new').then(m => m.RecruitmentNew), canActivate: [RoleGuard], data: { roles: ['admin', 'hr'] } },
+      { path: 'recruitment/:id', loadComponent: () => import('./features/recruitment/recruitment-job').then(m => m.RecruitmentJob), canActivate: [RoleGuard], data: { roles: ['admin', 'hr'] } },
+      { path: 'messages', loadComponent: () => import('./features/messages/messages').then(m => m.Messages) },
+      { path: 'notifications', loadComponent: () => import('./features/notifications/notifications').then(m => m.Notifications) },
+      { path: 'profile', loadComponent: () => import('./features/profile/profile').then(m => m.Profile) },
+      { path: 'directory', loadComponent: () => import('./features/employee-directory/employee-directory').then(m => m.EmployeeDirectory) },
+      { path: 'organization', loadComponent: () => import('./features/organization/organization').then(m => m.Organization), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'onboarding', loadComponent: () => import('./features/onboarding/onboarding').then(m => m.Onboarding), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'documents', loadComponent: () => import('./features/documents/documents').then(m => m.Documents), canActivate: [RoleGuard], data: { roles: ['admin', 'hr'] } },
+      { path: 'assets', loadComponent: () => import('./features/assets/assets').then(m => m.Assets), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'learning', loadComponent: () => import('./features/learning/learning').then(m => m.Learning) },
+      { path: 'expenses', loadComponent: () => import('./features/expenses/expenses').then(m => m.Expenses) },
+      { path: 'audit', loadComponent: () => import('./features/audit/audit').then(m => m.AuditLog), canActivate: [RoleGuard], data: { roles: ['admin', 'hr'] } },
+      { path: 'shifts', loadComponent: () => import('./features/shifts/shifts').then(m => m.Shifts), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'calendar', loadComponent: () => import('./features/calendar/calendar').then(m => m.Calendar) },
+      { path: 'goals', loadComponent: () => import('./features/goals/goals').then(m => m.Goals) },
+      { path: 'employee-360', loadComponent: () => import('./features/employee-360/employee-360').then(m => m.Employee360) },
+      { path: 'talent', loadComponent: () => import('./features/talent/talent').then(m => m.Talent), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'surveys', loadComponent: () => import('./features/surveys/surveys').then(m => m.Surveys) },
+      { path: 'recognition', loadComponent: () => import('./features/recognition/recognition').then(m => m.Recognition) },
+      { path: 'helpdesk', loadComponent: () => import('./features/helpdesk/helpdesk').then(m => m.Helpdesk) },
+      { path: 'loans', loadComponent: () => import('./features/loans/loans').then(m => m.Loans) },
+      { path: 'approvals', loadComponent: () => import('./features/approvals/approvals').then(m => m.Approvals), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr', 'accounting'] } },
+      { path: 'analytics', loadComponent: () => import('./features/analytics/analytics').then(m => m.Analytics), canActivate: [RoleGuard], data: { roles: ['admin', 'manager', 'hr'] } },
+      { path: 'chat', loadComponent: () => import('./features/chat/chat').then(m => m.Chat) },
+      { path: 'access-control', loadComponent: () => import('./features/access-control/access-control').then(m => m.AccessControl), canActivate: [PermissionGuard], data: { permission: 'roles.manage' } },
+      { path: 'admin-settings', loadComponent: () => import('./features/admin-settings/admin-settings').then(m => m.AdminSettings), canActivate: [PermissionGuard], data: { permission: 'settings.manage' } },
+      { path: 'security-center', loadComponent: () => import('./features/security-center/security-center').then(m => m.SecurityCenter), canActivate: [PermissionGuard], data: { permission: 'security.manage' } },
+      { path: 'delegation', loadComponent: () => import('./features/delegation/delegation').then(m => m.Delegation), canActivate: [PermissionGuard], data: { permission: 'delegation.manage' } },
+      { path: 'reports', loadComponent: () => import('./features/report-center/report-center').then(m => m.ReportCenter), canActivate: [PermissionGuard], data: { permission: 'reports.view' } },
+      { path: 'workflow-builder', loadComponent: () => import('./features/workflow-builder/workflow-builder').then(m => m.WorkflowBuilder), canActivate: [PermissionGuard], data: { permission: 'workflows.manage' } },
+      { path: 'notification-preferences', loadComponent: () => import('./features/notification-preferences/notification-preferences').then(m => m.NotificationPreferences) },
+      { path: 'saved-views', loadComponent: () => import('./features/saved-views/saved-views').then(m => m.SavedViews) },
+      { path: 'timesheets', loadComponent: () => import('./features/timesheets/timesheets').then(m => m.Timesheets), canActivate: [PermissionGuard], data: { permission: 'timesheets.view' } },
+      { path: 'skills-matrix', loadComponent: () => import('./features/skills-matrix/skills-matrix').then(m => m.SkillsMatrix), canActivate: [PermissionGuard], data: { permission: 'skills.view' } },
+      { path: 'lifecycle-alerts', loadComponent: () => import('./features/lifecycle-alerts/lifecycle-alerts').then(m => m.LifecycleAlerts), canActivate: [PermissionGuard], data: { permission: 'lifecycle.view' } },
+      { path: 'bulk-operations', loadComponent: () => import('./features/bulk-operations/bulk-operations').then(m => m.BulkOperations), canActivate: [PermissionGuard], data: { permission: 'bulk.manage' } },
+      { path: 'career-path', loadComponent: () => import('./features/career-path/career-path').then(m => m.CareerPath), canActivate: [PermissionGuard], data: { permission: 'career.view' } },
+      { path: 'announcements', loadComponent: () => import('./features/announcements/announcements').then(m => m.Announcements), canActivate: [PermissionGuard], data: { permission: 'announcements.view' } },
+      { path: 'policy-center', loadComponent: () => import('./features/policy-center/policy-center').then(m => m.PolicyCenter), canActivate: [PermissionGuard], data: { permission: 'policies.view' } },
+      { path: 'offboarding-center', loadComponent: () => import('./features/offboarding-center/offboarding-center').then(m => m.OffboardingCenter), canActivate: [PermissionGuard], data: { permission: 'offboarding.view' } },
+      { path: 'form-builder', loadComponent: () => import('./features/form-builder/form-builder').then(m => m.FormBuilder), canActivate: [PermissionGuard], data: { permission: 'forms.view' } },
+      { path: 'employee-timeline', loadComponent: () => import('./features/employee-timeline/employee-timeline').then(m => m.EmployeeTimeline), canActivate: [PermissionGuard], data: { permission: 'timeline.view' } },
+      { path: 'contract-renewals', loadComponent: () => import('./features/contract-renewals/contract-renewals').then(m => m.ContractRenewals), canActivate: [PermissionGuard], data: { permission: 'contracts.renewals.view' } },
+      { path: 'certificates', loadComponent: () => import('./features/certificates/certificates').then(m => m.Certificates), canActivate: [PermissionGuard], data: { permission: 'certificates.view' } },
+      { path: 'super-admin', loadComponent: () => import('./features/super-admin/super-admin').then(m => m.SuperAdmin), canActivate: [PermissionGuard], data: { permission: 'superadmin.view' } },
+      { path: 'org-chart', loadComponent: () => import('./features/org-chart/org-chart').then(m => m.OrgChart), canActivate: [PermissionGuard], data: { permission: 'orgchart.view' } },
+      { path: 'asset-handover', loadComponent: () => import('./features/asset-handover/asset-handover').then(m => m.AssetHandover), canActivate: [PermissionGuard], data: { permission: 'assets.handover.view' } },
+      { path: 'smart-alerts', loadComponent: () => import('./features/smart-alerts/smart-alerts').then(m => m.SmartAlerts), canActivate: [PermissionGuard], data: { permission: 'alerts.view' } },
+      { path: 'shift-planner', loadComponent: () => import('./features/shift-planner/shift-planner').then(m => m.ShiftPlanner), canActivate: [PermissionGuard], data: { permission: 'shiftplanner.view' } },
+      { path: 'report-builder', loadComponent: () => import('./features/report-builder/report-builder').then(m => m.ReportBuilder), canActivate: [PermissionGuard], data: { permission: 'reportbuilder.view' } },
+      { path: 'knowledge-base', loadComponent: () => import('./features/knowledge-base/knowledge-base').then(m => m.KnowledgeBase), canActivate: [PermissionGuard], data: { permission: 'knowledge.view' } },
+      { path: 'attendance-anomalies', loadComponent: () => import('./features/attendance-anomalies/attendance-anomalies').then(m => m.AttendanceAnomalies), canActivate: [PermissionGuard], data: { permission: 'attendance.anomalies.view' } },
+      { path: 'dashboard-widgets', loadComponent: () => import('./features/dashboard-widgets/dashboard-widgets').then(m => m.DashboardWidgets), canActivate: [PermissionGuard], data: { permission: 'widgets.manage' } },
+      { path: 'leave-policy-engine', loadComponent: () => import('./features/leave-policy-engine/leave-policy-engine').then(m => m.LeavePolicyEngine), canActivate: [PermissionGuard], data: { permission: 'leave.policies.manage' } },
+      { path: 'document-vault', loadComponent: () => import('./features/document-vault/document-vault').then(m => m.DocumentVault), canActivate: [PermissionGuard], data: { permission: 'vault.view' } },
+      { path: 'payroll-components', loadComponent: () => import('./features/payroll-components/payroll-components').then(m => m.PayrollComponents), canActivate: [PermissionGuard], data: { permission: 'payroll.components.manage' } },
+      { path: 'kpi-designer', loadComponent: () => import('./features/kpi-designer/kpi-designer').then(m => m.KpiDesigner), canActivate: [PermissionGuard], data: { permission: 'kpi.manage' } },
+      { path: 'employee-self-service', loadComponent: () => import('./features/employee-self-service/employee-self-service').then(m => m.EmployeeSelfService), canActivate: [PermissionGuard], data: { permission: 'selfservice.view' } },
+      { path: 'exit-interviews', loadComponent: () => import('./features/exit-interviews/exit-interviews').then(m => m.ExitInterviews), canActivate: [PermissionGuard], data: { permission: 'exitinterviews.view' } },
+      { path: 'benefits-enrollment', loadComponent: () => import('./features/benefits-enrollment/benefits-enrollment').then(m => m.BenefitsEnrollment), canActivate: [PermissionGuard], data: { permission: 'benefits.view' } },
+      { path: 'compensation-review', loadComponent: () => import('./features/compensation-review/compensation-review').then(m => m.CompensationReview), canActivate: [PermissionGuard], data: { permission: 'compensation.view' } },
+      { path: 'workforce-planning', loadComponent: () => import('./features/workforce-planning/workforce-planning').then(m => m.WorkforcePlanning), canActivate: [PermissionGuard], data: { permission: 'workforce.view' } },
+      { path: 'hr-case-management', loadComponent: () => import('./features/hr-case-management/hr-case-management').then(m => m.HrCaseManagement), canActivate: [PermissionGuard], data: { permission: 'cases.view' } },
+      { path: 'salary-bands', loadComponent: () => import('./features/salary-bands/salary-bands').then(m => m.SalaryBands), canActivate: [PermissionGuard], data: { permission: 'salarybands.view' } },
+      { path: 'promotion-workflow', loadComponent: () => import('./features/promotion-workflow/promotion-workflow').then(m => m.PromotionWorkflow), canActivate: [PermissionGuard], data: { permission: 'promotions.view' } },
+      { path: 'probation-management', loadComponent: () => import('./features/probation-management/probation-management').then(m => m.ProbationManagement), canActivate: [PermissionGuard], data: { permission: 'probation.view' } },
+      { path: 'document-requests', loadComponent: () => import('./features/document-requests/document-requests').then(m => m.DocumentRequests), canActivate: [PermissionGuard], data: { permission: 'documentrequests.view' } },
+      { path: 'disciplinary-actions', loadComponent: () => import('./features/disciplinary-actions/disciplinary-actions').then(m => m.DisciplinaryActions), canActivate: [PermissionGuard], data: { permission: 'disciplinary.view' } },
+      { path: 'travel-management', loadComponent: () => import('./features/travel-management/travel-management').then(m => m.TravelManagement), canActivate: [PermissionGuard], data: { permission: 'travel.view' } },
+      { path: 'remote-work', loadComponent: () => import('./features/remote-work/remote-work').then(m => m.RemoteHybridWork), canActivate: [PermissionGuard], data: { permission: 'remote.view' } },
+      { path: 'headcount-budget', loadComponent: () => import('./features/headcount-budget/headcount-budget').then(m => m.HeadcountBudget), canActivate: [PermissionGuard], data: { permission: 'headcount.view' } },
+      { path: 'digital-acknowledgement', loadComponent: () => import('./features/digital-acknowledgement/digital-acknowledgement').then(m => m.DigitalAcknowledgement), canActivate: [PermissionGuard], data: { permission: 'acknowledgement.view' } },
+      { path: 'notification-inbox', loadComponent: () => import('./features/notification-inbox/notification-inbox').then(m => m.NotificationInbox), canActivate: [PermissionGuard], data: { permission: 'notifications.inbox.view' } },
+      { path: 'hr-calendar-automation', loadComponent: () => import('./features/hr-calendar-automation/hr-calendar-automation').then(m => m.HrCalendarAutomation), canActivate: [PermissionGuard], data: { permission: 'hrcalendar.view' } },
+      { path: 'employee-relations', loadComponent: () => import('./features/employee-relations/employee-relations').then(m => m.EmployeeRelations), canActivate: [PermissionGuard], data: { permission: 'relations.view' } },
+      { path: 'succession-risk', loadComponent: () => import('./features/succession-risk/succession-risk').then(m => m.SuccessionRisk), canActivate: [PermissionGuard], data: { permission: 'successionrisk.view' } },
+      { path: 'compensation-cycle', loadComponent: () => import('./features/compensation-cycle/compensation-cycle').then(m => m.CompensationCycle), canActivate: [PermissionGuard], data: { permission: 'compcycle.view' } },
+      { path: 'internal-jobs', loadComponent: () => import('./features/internal-jobs/internal-jobs').then(m => m.InternalJobs), canActivate: [PermissionGuard], data: { permission: 'internaljobs.view' } },
+      { path: 'hr-operations', loadComponent: () => import('./features/hr-operations/hr-operations').then(m => m.HrOperations), canActivate: [PermissionGuard], data: { permission: 'hrops.view' } },
+      { path: 'account-security', loadComponent: () => import('./features/account-security/account-security').then(m => m.AccountSecurity), canActivate: [PermissionGuard], data: { permission: 'security.accounts.manage' } },
+      { path: 'access-denied', loadComponent: () => import('./features/access-denied/access-denied').then(m => m.AccessDenied) },
+      { path: '**', loadComponent: () => import('./features/not-found/not-found').then(m => m.NotFound) },
     ],
   },
-
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' },
+  { path: '**', loadComponent: () => import('./features/not-found/not-found').then(m => m.NotFound) },
 ];

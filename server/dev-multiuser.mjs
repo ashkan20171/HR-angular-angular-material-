@@ -1,0 +1,1 @@
+import {spawn} from 'node:child_process';const shell=process.platform==='win32';const api=spawn(process.execPath,['server/auth-api.mjs'],{stdio:'inherit',shell});const cmd=process.platform==='win32'?'npx.cmd':'npx';const ng=spawn(cmd,['ng','serve'],{stdio:'inherit',shell});const stop=()=>{api.kill();ng.kill();process.exit()};process.on('SIGINT',stop);process.on('SIGTERM',stop);

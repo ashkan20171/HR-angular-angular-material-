@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-surveys',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Surveys {
+ config:EnterprisePageConfig={title:{fa:'نظرسنجی و eNPS',en:'Engagement & eNPS'},subtitle:{fa:'سنجش تجربه، مشارکت و رضایت کارکنان',en:'Measure employee experience, engagement and satisfaction'},item:{fa:'مورد',en:'item'},icon:'poll',kpisFa:[["eNPS", "+42", "+5 فصلانه"], ["مشارکت", "84٪", "312 پاسخ"], ["رضایت", "8.2", "از 10"], ["اقدامات باز", "13", "Follow-up"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["نبض ماهانه کارکنان", "312 پاسخ", "84٪"], ["تجربه دورکاری", "276 پاسخ", "76٪"], ["کیفیت مدیریت", "291 پاسخ", "81٪"], ["فرهنگ و همکاری", "305 پاسخ", "88٪"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

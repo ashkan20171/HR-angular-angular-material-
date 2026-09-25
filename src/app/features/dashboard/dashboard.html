@@ -1,70 +1,25 @@
-<div class="dashboard">
+<div class="dashboard-page">
+  <section class="page-heading">
+    <div><p class="eyebrow">ASHKANHR / OVERVIEW</p><h1>{{ t('سلام','Hello') }} {{ userName }} 👋</h1><p>{{ today }} · {{t('نمای لحظه‌ای وضعیت منابع انسانی سازمان','Live overview of your people operations')}}</p></div>
+    <div class="heading-actions"><button class="secondary" routerLink="/app/requests"><span class="material-symbols-rounded">assignment</span> {{t('درخواست‌ها','Requests')}}</button><button class="primary" routerLink="/app/users"><span class="material-symbols-rounded">person_add</span> {{t('افزودن کارمند','Add employee')}}</button></div>
+  </section>
 
-  <h1 class="welcome">👋 خوش آمدی، {{ userName }}</h1>
+  <section class="stats-grid">
+    <article class="stat-card" *ngFor="let item of stats"><div class="stat-icon" [ngClass]="item.tone"><span class="material-symbols-rounded">{{item.icon}}</span></div><div class="stat-copy"><span>{{item.title}}</span><strong>{{item.value}}</strong><small>{{item.trend}}</small></div><button class="more"><span class="material-symbols-rounded">more_horiz</span></button></article>
+  </section>
 
-  <!-- کارت‌ها -->
-  <div class="stats-grid">
-    <div class="stat-card" 
-         *ngFor="let item of stats" 
-         [style.borderColor]="item.color">
+  <section class="dashboard-grid">
+    <article class="panel attendance-panel">
+      <div class="panel-head"><div><h2>{{t('روند حضور کارکنان','Attendance trend')}}</h2><p>{{t('هفت روز گذشته','Last seven days')}}</p></div><button>{{t('این هفته','This week')}} <span class="material-symbols-rounded">expand_more</span></button></div>
+      <div class="chart-wrap"><div class="y-axis"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div><div class="bar-chart"><div class="bar-col" *ngFor="let value of attendance; let i=index"><div class="bar" [style.height.%]="value"><span>{{value}}%</span></div><small>{{dayLabels[i]}}</small></div></div></div>
+    </article>
+    <article class="panel leave-panel"><div class="panel-head"><div><h2>{{t('وضعیت امروز','Today status')}}</h2><p>{{t('حضور و مرخصی','Attendance & leave')}}</p></div><span class="live-dot">{{t('زنده','Live')}}</span></div><div class="donut"><div class="donut-center"><strong>128</strong><span>{{t('کارمند','employees')}}</span></div></div><div class="legend"><span><i class="present"></i> {{t('حاضر','Present')}} <b>119</b></span><span><i class="leave"></i> {{t('مرخصی','Leave')}} <b>6</b></span><span><i class="absent"></i> {{t('غایب','Absent')}} <b>3</b></span></div></article>
+  </section>
 
-      <div class="icon" [style.background]="item.color + '22'">
-        {{ item.icon }}
-      </div>
+  <section class="quick-section"><div class="section-title"><div><h2>{{t('دسترسی سریع','Quick actions')}}</h2><p>{{t('کارهای پرتکرار را سریع‌تر انجام بده','Get frequent tasks done faster')}}</p></div></div><div class="quick-grid"><a *ngFor="let action of quickActions" [routerLink]="action.link"><span class="material-symbols-rounded">{{action.icon}}</span><strong>{{action.title}}</strong><span class="material-symbols-rounded arrow">arrow_back</span></a></div></section>
 
-      <div class="details">
-        <h3>{{ item.value }}</h3>
-        <p>{{ item.title }}</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ۲ نمودار -->
-  <div class="charts-row">
-    <img src="/assets/charts/chart1.png" class="chart-box">
-    <img src="/assets/charts/chart2.png" class="chart-box">
-  </div>
-
-  <!-- خلاصه وضعیت -->
-  <div class="summary-box">
-    <h2>خلاصه وضعیت سازمان</h2>
-    <ul>
-      <li>⭐ میانگین حضور کارکنان: ۹۳٪</li>
-      <li>🕒 دیرکرد‌های امروز: ۳ نفر</li>
-      <li>🏖️ مجموع مرخصی‌های ثبت‌شده ماه: ۲۱ مورد</li>
-      <li>📊 بیشترین فعالیت: واحد مالی</li>
-    </ul>
-  </div>
-
-  <!-- جدول درخواست‌ها -->
-  <div class="table-box">
-    <h2>آخرین درخواست‌ها</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th>کاربر</th>
-          <th>نوع</th>
-          <th>تاریخ</th>
-          <th>وضعیت</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr *ngFor="let r of recentRequests">
-          <td>{{ r.user }}</td>
-          <td>{{ r.type }}</td>
-          <td>{{ r.date }}</td>
-          <td>
-            <span class="status" [ngClass]="r.status">
-              {{ r.status === 'pending' ? 'در انتظار' :
-                 r.status === 'accepted' ? 'تایید شده' : 'رد شده' }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-  </div>
-
+  <section class="bottom-grid">
+    <article class="panel requests-panel"><div class="panel-head"><div><h2>{{t('آخرین درخواست‌ها','Latest requests')}}</h2><p>{{t('آخرین فعالیت‌های نیازمند پیگیری','Latest items that need follow-up')}}</p></div><a routerLink="/app/requests">{{t('مشاهده همه','View all')}}</a></div><div class="table-scroll"><table><thead><tr><th>{{t('کارمند','employees')}}</th><th>{{t('نوع درخواست','Request type')}}</th><th>{{t('تاریخ','Date')}}</th><th>{{t('وضعیت','Status')}}</th></tr></thead><tbody><tr *ngFor="let r of recentRequests"><td><span class="mini-avatar">{{r.user[0]}}</span>{{r.user}}</td><td>{{r.type}}</td><td>{{r.date}}</td><td><span class="status" [ngClass]="r.status">{{statusLabel(r.status)}}</span></td></tr></tbody></table></div></article>
+    <article class="panel pulse-panel"><div class="panel-head"><div><h2>{{t('نبض سازمان','Organization pulse')}}</h2><p>{{t('شاخص‌های این ماه','This month metrics')}}</p></div></div><div class="metric"><span>{{t('رضایت کارکنان','Employee satisfaction')}}</span><b>86%</b><div><i style="width:86%"></i></div></div><div class="metric"><span>{{t('تکمیل ارزیابی عملکرد','Performance reviews completed')}}</span><b>74%</b><div><i style="width:74%"></i></div></div><div class="metric"><span>{{t('ماندگاری کارکنان','Employee retention')}}</span><b>94%</b><div><i style="width:94%"></i></div></div><div class="insight"><span class="material-symbols-rounded">auto_awesome</span><div><strong>{{t('بینش هوشمند','Smart insight')}}</strong><p>{{t('نرخ حضور این هفته نسبت به هفته قبل ۱.۸٪ بهبود داشته است.','Attendance improved by 1.8% compared with last week.')}}</p></div></div></article>
+  </section>
 </div>

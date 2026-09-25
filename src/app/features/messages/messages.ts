@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessagesService } from './messages.service';
+import { Message } from './message.model';
 
 @Component({
   selector: 'app-messages',
@@ -11,10 +12,13 @@ import { MessagesService } from './messages.service';
 })
 export class Messages {
 
-  user = localStorage.getItem('userName') || 'کاربر';
-  list = [];
+  user = 'کاربر';
+  list: Message[] = [];
 
   constructor(private msg: MessagesService) {
+    if (typeof localStorage !== 'undefined') {
+      this.user = localStorage.getItem('userName') || 'کاربر';
+    }
     this.list = this.msg.list(this.user);
   }
 

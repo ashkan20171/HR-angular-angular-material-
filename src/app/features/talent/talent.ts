@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-talent',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Talent {
+ config:EnterprisePageConfig={title:{fa:'استعداد و جانشین‌پروری',en:'Talent & succession'},subtitle:{fa:'مدیریت استعدادها، نقش‌های حیاتی و جانشینان',en:'Manage talent, critical roles and succession'},item:{fa:'مورد',en:'item'},icon:'workspace_premium',kpisFa:[["استعدادهای کلیدی", "18", "شناسایی\u200cشده"], ["نقش\u200cهای حیاتی", "9", "سازمان"], ["جانشین آماده", "6", "Ready now"], ["ریسک خروج", "4", "نیازمند اقدام"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["مدیر مهندسی", "2 جانشین بالقوه", "آماده"], ["مدیر فروش", "1 جانشین بالقوه", "6 ماه"], ["Head of Product", "3 جانشین بالقوه", "12 ماه"], ["HRBP Lead", "1 جانشین بالقوه", "آماده"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

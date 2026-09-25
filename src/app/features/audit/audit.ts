@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-audit',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class AuditLog {
+ config:EnterprisePageConfig={title:{fa:'گزارش فعالیت‌ها',en:'Audit log'},subtitle:{fa:'ردیابی تغییرات حساس و رویدادهای امنیتی سیستم',en:'Track sensitive changes and security events'},item:{fa:'مورد',en:'item'},icon:'policy',kpisFa:[["رویداد امروز", "184", "سیستم"], ["تغییر حساس", "7", "بررسی"], ["ورود ناموفق", "3", "24 ساعت"], ["Compliance", "99.2٪", "سلامت"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["ویرایش اطلاعات حقوق", "Admin · Salary module", "۱۴:۲۲"], ["تأیید مرخصی", "HR Manager · Leave", "۱۳:۵۸"], ["تغییر نقش کاربر", "System Admin · Users", "۱۲:۴۱"], ["خروجی گزارش حقوق", "Accounting · Payroll", "۱۱:۰۵"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

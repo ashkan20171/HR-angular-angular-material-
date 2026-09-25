@@ -28,3 +28,6 @@ input, select {
   border-radius: 10px;
   cursor: pointer;
 }
+.user-form-page{max-width:720px;margin:auto;padding:24px}.user-form-page form{display:grid;gap:10px}.user-form-page input,.user-form-page select{padding:11px;border:1px solid #ccc;border-radius:10px}.password-row{display:flex;gap:8px}.password-row input{flex:1}.hint{opacity:.7}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}.error{padding:10px;border-radius:10px;background:#fee2e2;color:#991b1b}.actions{display:flex;gap:10px;margin-top:10px}.actions button{padding:10px 16px;border-radius:10px;border:1px solid #ccc;cursor:pointer}
+
+.password-policy{margin:.5rem 0 1rem;padding:.8rem 1rem;border:1px solid var(--border-color,#d9dee8);border-radius:12px;background:var(--surface-2,#f7f9fc);font-size:.9rem}.password-policy ul{margin:.4rem 0;padding-inline-start:1.25rem}.password-policy .error{margin-top:.5rem}

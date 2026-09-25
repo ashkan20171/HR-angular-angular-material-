@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ConfirmService } from './confirm.service';
@@ -31,9 +31,8 @@ import { ConfirmService } from './confirm.service';
   styleUrl: './confirm-host.css'
 })
 export class ConfirmHost {
+  confirm = inject(ConfirmService);
   state = computed(() => this.confirm.current());
-
-  constructor(public confirm: ConfirmService) {}
 
   onBackdrop() {
     this.confirm.cancel();

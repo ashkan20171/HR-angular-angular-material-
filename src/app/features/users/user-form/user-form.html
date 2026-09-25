@@ -1,23 +1,15 @@
-<h2>{{ editing ? 'ویرایش کاربر' : 'ایجاد کاربر جدید' }}</h2>
-
+<section class="user-form-page">
+<h2>{{ editing ? t('ویرایش کاربر','Edit user') : t('ایجاد کاربر جدید','Create new user') }}</h2>
+<p class="hint">{{t('برای کاربر نام کاربری و رمز عبور تعیین کنید تا بتواند وارد سامانه شود.','Set a username and password so the user can sign in to the system.')}}</p>
 <form [formGroup]="form" (ngSubmit)="save()">
-
-  <label>نام</label>
-  <input formControlName="name">
-
-  <label>نام کاربری</label>
-  <input formControlName="username">
-
-  <label>ایمیل</label>
-  <input formControlName="email">
-
-  <label>نقش</label>
-  <select formControlName="role">
-    <option value="Admin">مدیر</option>
-    <option value="Manager">مدیر میانی</option>
-    <option value="Employee">کارمند</option>
-  </select>
-
-  <button class="btn-save">{{ editing ? 'ذخیره تغییرات' : 'ایجاد' }}</button>
-
-</form>
+<label>{{t('نام','Name')}}</label><input formControlName="name">
+<label>{{t('نام کاربری','Username')}}</label><input formControlName="username" autocomplete="off">
+<label>{{t('ایمیل','Email')}}</label><input formControlName="email" type="email">
+<label>{{t('نقش','Role')}}</label><select formControlName="role"><option value="admin">{{t('مدیر سیستم','Admin')}}</option><option value="hr">{{t('منابع انسانی','HR')}}</option><option value="manager">{{t('مدیر واحد','Manager')}}</option><option value="accounting">{{t('مالی','Finance')}}</option><option value="recruiter">{{t('استخدام','Recruiter')}}</option><option value="employee">{{t('کارمند','Employee')}}</option></select>
+<label>{{ editing ? t('رمز عبور جدید (اختیاری)','New password (optional)') : t('رمز عبور','Password') }}</label><div class="password-row"><input formControlName="password" [type]="showPassword?'text':'password'" autocomplete="new-password" (input)="checkPassword()"><button type="button" (click)="showPassword=!showPassword">{{showPassword?t('مخفی','Hide'):t('نمایش','Show')}}</button></div>
+<div class="password-policy"><strong>{{t('شرایط رمز عبور','Password requirements')}}</strong><ul><li>{{t('حداقل','Minimum')}} {{policy.minLength}} {{t('کاراکتر','characters')}}</li><li *ngIf="policy.requireUpper">{{t('حداقل یک حرف بزرگ انگلیسی (A-Z)','At least one uppercase letter (A-Z)')}}</li><li *ngIf="policy.requireLower">{{t('حداقل یک حرف کوچک انگلیسی (a-z)','At least one lowercase letter (a-z)')}}</li><li *ngIf="policy.requireNumber">{{t('حداقل یک عدد (0-9)','At least one number (0-9)')}}</li><li *ngIf="policy.requireSpecial">{{t('حداقل یک کاراکتر ویژه مثل !@#','At least one special character such as !@#')}}</li></ul><div class="error" *ngIf="passwordErrors.length"><div *ngFor="let item of passwordErrors">• {{passwordErrorText(item)}}</div></div></div>
+<label>{{t('تکرار رمز عبور','Confirm password')}}</label><input formControlName="confirmPassword" [type]="showPassword?'text':'password'" autocomplete="new-password">
+<label class="check"><input type="checkbox" formControlName="active"> {{t('حساب فعال باشد','Account is active')}}</label>
+<div class="error" *ngIf="error">{{error}}</div>
+<div class="actions"><button class="btn-save" type="submit">{{ editing ? t('ذخیره تغییرات','Save changes') : t('ایجاد کاربر','Create user') }}</button><button type="button" (click)="cancel()">{{t('انصراف','Cancel')}}</button></div>
+</form></section>

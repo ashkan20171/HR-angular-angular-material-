@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -27,6 +27,7 @@ type Stage = Applicant['status'];
   ]
 })
 export class RecruitmentJob {
+  private service = inject(RecruitmentService);
   jobId = signal<number>(0);
 
   job = computed(() => this.service.getJobs().find(j => j.id === this.jobId()));
@@ -60,7 +61,6 @@ export class RecruitmentJob {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private service: RecruitmentService,
     private toast: ToastService,
   ) {
     const id = Number(this.route.snapshot.paramMap.get('id'));

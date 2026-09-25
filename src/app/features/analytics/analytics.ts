@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-analytics',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Analytics {
+ config:EnterprisePageConfig={title:{fa:'تحلیل منابع انسانی',en:'People analytics'},subtitle:{fa:'شاخص‌ها و بینش‌های تحلیلی منابع انسانی',en:'HR metrics and people insights'},item:{fa:'مورد',en:'item'},icon:'query_stats',kpisFa:[["Headcount", "428", "+3.1٪"], ["Turnover", "7.4٪", "-1.2٪"], ["Time to hire", "21d", "-4 روز"], ["Cost / hire", "184M", "ریال"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["نرخ ماندگاری", "12 ماه اخیر", "92٪"], ["تنوع مهارتی", "Skill coverage", "81٪"], ["غیبت غیرمنتظره", "30 روز اخیر", "2.8٪"], ["Internal mobility", "فصل جاری", "14٪"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

@@ -6,21 +6,21 @@ export const USER_ROUTES: Routes = [
     path: '',
     loadComponent: () =>
       import('./users').then(m => m.Users),
-    canMatch: [AuthGuard],
+    canActivate: [AuthGuard],
     data: { permission: 'users.view' }
   },
   {
     path: 'new',
     loadComponent: () =>
       import('./user-form/user-form').then(m => m.UserForm),
-    canMatch: [AuthGuard],
+    canActivate: [AuthGuard],
     data: { permission: 'users.edit' }
   },
   {
     path: ':id',
     loadComponent: () =>
       import('./user-form/user-form').then(m => m.UserForm),
-    canMatch: [AuthGuard],
+    canActivate: [AuthGuard],
     data: { permission: 'users.edit' }
   }
 ];

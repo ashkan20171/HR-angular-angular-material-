@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-learning',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Learning {
+ config:EnterprisePageConfig={title:{fa:'آموزش و توسعه',en:'Learning & development'},subtitle:{fa:'برنامه‌ریزی مهارت‌ها، دوره‌ها و مسیر رشد کارکنان',en:'Plan skills, courses and employee growth paths'},item:{fa:'مورد',en:'item'},icon:'school',kpisFa:[["دوره فعال", "14", "این فصل"], ["ثبت‌نام", "86", "کارمند"], ["نرخ تکمیل", "78٪", "+6٪"], ["ساعت یادگیری", "624h", "این فصل"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["Angular Advanced", "توسعه نرم‌افزار · 18 نفر", "82٪"], ["Leadership Essentials", "مدیران · 12 نفر", "64٪"], ["Information Security", "کل سازمان · 94 نفر", "91٪"], ["Business English", "اختیاری · 23 نفر", "55٪"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

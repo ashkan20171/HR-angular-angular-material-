@@ -26,12 +26,10 @@
         <input matInput type="password" formControlName="password">
       </mat-form-field>
 
-      <div class="captcha-wrapper">
-        <re-captcha
-          siteKey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-          (resolved)="onCaptchaResolved($event)">
-        </re-captcha>
-      </div>
+      <label class="captcha-wrapper human-check">
+        <input type="checkbox" (change)="onHumanVerificationChange($event)">
+        <span>من ربات نیستم / I am human</span>
+      </label>
 
       <button
         mat-raised-button

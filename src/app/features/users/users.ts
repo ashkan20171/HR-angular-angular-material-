@@ -34,11 +34,11 @@ export class Users {
   }
 
   edit(id: number) {
-    this.router.navigate(['/users', id]);
+    this.router.navigate(['/app/users', id]);
   }
 
   add() {
-    this.router.navigate(['/users/new']);
+    this.router.navigate(['/app/users/new']);
   }
 
   delete(id: number) {

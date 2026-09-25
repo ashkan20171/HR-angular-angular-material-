@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-loans',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Loans {
+ config:EnterprisePageConfig={title:{fa:'وام و مساعده',en:'Loans & advances'},subtitle:{fa:'مدیریت درخواست‌های وام و مساعده کارکنان',en:'Manage employee loans and salary advances'},item:{fa:'مورد',en:'item'},icon:'request_quote',kpisFa:[["درخواست فعال", "17", "جاری"], ["در انتظار تایید", "6", "مدیر/مالی"], ["پرداخت این ماه", "9", "تکمیل"], ["مانده تعهدات", "2.8B", "ریال"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["مساعده حقوق · #2408", "در انتظار مالی", "در انتظار"], ["وام رفاهی · #2403", "تایید مدیر", "بررسی"], ["مساعده اضطراری · #2398", "آماده پرداخت", "تایید"], ["وام ضروری · #2391", "مدارک ناقص", "اقدام"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

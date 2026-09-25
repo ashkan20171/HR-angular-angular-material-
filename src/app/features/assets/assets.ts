@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-assets',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Assets {
+ config:EnterprisePageConfig={title:{fa:'دارایی‌ها',en:'Assets'},subtitle:{fa:'مدیریت تجهیزات و دارایی‌های تخصیص‌یافته به کارکنان',en:'Manage equipment and employee asset assignments'},item:{fa:'مورد',en:'item'},icon:'devices',kpisFa:[["کل دارایی", "286", "ثبت‌شده"], ["تحویل‌شده", "231", "81٪"], ["در تعمیر", "8", "Service"], ["آزاد", "47", "قابل تخصیص"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["Laptop · Dell Latitude", "AST-1028 · آرمان رضایی", "تحویل‌شده"], ["Monitor · LG 27", "AST-0881 · مریم احمدی", "تحویل‌شده"], ["Mobile · Samsung", "AST-1201 · انبار IT", "آزاد"], ["Laptop · Lenovo", "AST-0912 · Service Desk", "تعمیر"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

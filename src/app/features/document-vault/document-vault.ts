@@ -1,0 +1,6 @@
+import { CommonModule } from '@angular/common';import { Component } from '@angular/core';import { FormsModule } from '@angular/forms';import { LanguageService } from '../../core/i18n/language.service';import { LocaleDatePipe } from '../../shared/locale-date.pipe';
+interface Doc{id:number;employee:string;titleFa:string;titleEn:string;category:string;expires:Date;confidential:boolean}
+@Component({selector:'app-document-vault',standalone:true,imports:[CommonModule,FormsModule,LocaleDatePipe],templateUrl:'./document-vault.html'}) export class DocumentVault{
+ docs:Doc[]=[{id:1,employee:'Sara Ahmadi',titleFa:'قرارداد استخدام',titleEn:'Employment contract',category:'contract',expires:new Date(2027,2,20),confidential:true}];draft:Doc|null=null;query='';
+ constructor(public language:LanguageService){}get fa(){return this.language.currentLanguage==='fa'}t(f:string,e:string){return this.fa?f:e} get filtered(){const q=this.query.toLowerCase();return this.docs.filter(x=>(x.employee+x.titleFa+x.titleEn+x.category).toLowerCase().includes(q))} add(){this.draft={id:Date.now(),employee:'',titleFa:'',titleEn:'',category:'other',expires:new Date(),confidential:false}} save(){if(!this.draft)return;this.docs.unshift({...this.draft});this.draft=null} remove(id:number){this.docs=this.docs.filter(x=>x.id!==id)}
+}

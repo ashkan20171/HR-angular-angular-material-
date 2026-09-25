@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-shifts',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Shifts {
+ config:EnterprisePageConfig={title:{fa:'مدیریت شیفت‌ها',en:'Shift management'},subtitle:{fa:'برنامه‌ریزی شیفت و پوشش نیروی انسانی',en:'Plan shifts and workforce coverage'},item:{fa:'مورد',en:'item'},icon:'calendar_month',kpisFa:[["شیفت\u200cهای فعال", "12", "امروز"], ["کارکنان برنامه\u200cریزی\u200cشده", "86", "این هفته"], ["تداخل شیفت", "3", "نیازمند بررسی"], ["پوشش شیفت", "94٪", "هدف 96٪"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["تیم پشتیبانی", "صبح · 08:00–16:00", "24 نفر"], ["عملیات", "عصر · 16:00–00:00", "18 نفر"], ["NOC", "شب · 00:00–08:00", "8 نفر"], ["فروش", "شناور · 09:00–18:00", "31 نفر"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

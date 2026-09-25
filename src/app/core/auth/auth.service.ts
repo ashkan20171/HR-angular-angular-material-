@@ -1,118 +1,15 @@
-import { Injectable } from '@angular/core';
-
-export type Role = 'admin' | 'manager' | 'employee' | 'hr' | 'accounting';
-
-export interface AppUser {
-  username: string;
-  password: string;
-  role: Role;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-
-  // لیست کاربران سیستم
-  private users: AppUser[] = [
-    { username: 'admin', password: '1234', role: 'admin' },
-    { username: 'manager', password: '2222', role: 'manager' },
-    { username: 'employee', password: '3333', role: 'employee' },
-    { username: 'hruser', password: '4444', role: 'hr' },
-    { username: 'accountinguser', password: '5555', role: 'accounting' }
-  ];
-
-  constructor() {}
-
-  // نقش فعلی کاربر
-  get role(): Role {
-    return (localStorage.getItem('role') as Role) || 'employee';
-  }
-
-  // بررسی لاگین بودن کاربر
-  get isLoggedIn(): boolean {
-    return !!localStorage.getItem('authToken');
-  }
-
-  // بررسی دسترسی‌ها
-  hasPermission(permission: string): boolean {
-    const role = this.role;
-
-    const permissions: Record<Role, string[]> = {
-      admin: [
-        'dashboard.view',
-        'users.view',
-        'users.edit',
-        'requests.view',
-        'payroll.view',
-        'performance.view',
-        'performance.add',
-        'performance.edit',
-        'profile.view'
-      ],
-      manager: [
-        'dashboard.view',
-        'users.view',
-        'requests.view',
-        'attendance.view',
-        'payroll.view',
-        'performance.view',
-        'performance.add',
-        'performance.edit',
-        'profile.view'
-      ],
-      employee: [
-        'dashboard.view',
-        'attendance.view',
-        'payroll.view',
-        'performance.view',
-        'profile.view'
-      ],
-      hr: [
-        'dashboard.view',
-        'users.view',
-        'users.edit',
-        'requests.view',
-        'attendance.view',
-        'payroll.view',
-        'performance.view',
-        'performance.add',
-        'profile.view'
-      ],
-      accounting: [
-        'dashboard.view',
-        'payroll.view',
-        'payroll.add',
-        'payroll.view-details',
-        'profile.view'
-      ]
-    };
-
-    return permissions[role]?.includes(permission);
-  }
-
-  // لاگین
-  login(username: string, password: string): boolean {
-    const user = this.users.find(
-      u => u.username === username && u.password === password
-    );
-
-    if (!user) {
-      return false;
-    }
-
-    // ذخیره اطلاعات کاربر
-    localStorage.setItem('authToken', 'logged-in'); // برای AuthGuard
-    localStorage.setItem('userName', user.username);
-    localStorage.setItem('role', user.role);
-
-    return true;
-  }
-
-  // لاگ‌اوت
-  logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('role');
-  }
+import { Injectable, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { UserService, UserRole } from '../../features/users/user.service';
+import { AccountSecurityService } from './account-security.service';
+import { SharedAuthApiService } from './shared-auth-api.service';
+export type Role=UserRole;
+@Injectable({providedIn:'root'}) export class AuthService{
+ private platformId=inject(PLATFORM_ID);private users=inject(UserService);private security=inject(AccountSecurityService);private sharedApi=inject(SharedAuthApiService);private get storage():Storage|null{return isPlatformBrowser(this.platformId)?localStorage:null}
+ get role():Role{return (this.storage?.getItem('role') as Role)||'employee'} get isLoggedIn(){return !!this.storage?.getItem('authToken')}
+ hasPermission(permission:string){const p:Record<Role,string[]>={admin:['dashboard.view','users.view','users.edit','requests.view','attendance.view','payroll.view','performance.view','performance.add','performance.edit','profile.view'],manager:['dashboard.view','users.view','requests.view','attendance.view','payroll.view','performance.view','performance.add','performance.edit','profile.view'],employee:['dashboard.view','requests.view','attendance.view','payroll.view','performance.view','profile.view'],hr:['dashboard.view','users.view','users.edit','requests.view','attendance.view','payroll.view','performance.view','performance.add','profile.view'],accounting:['dashboard.view','requests.view','attendance.view','payroll.view','payroll.add','payroll.view-details','profile.view'],recruiter:['dashboard.view','users.view','profile.view']};return p[this.role]?.includes(permission)??false}
+ loginLocal(username:string,password:string):boolean{username=(username||'').trim();password=String(password??'');const candidate=this.users.getByUsername(username);if(!candidate||!this.storage){this.security.addEvent(username,false,'INVALID_CREDENTIALS');return false}if(candidate.active===false){this.security.addEvent(username,false,'DISABLED');return false}if(candidate.accountExpiresAt&&new Date(candidate.accountExpiresAt)<new Date()){this.security.addEvent(username,false,'EXPIRED');return false}if(candidate.lockedUntil&&new Date(candidate.lockedUntil)>new Date()){this.security.addEvent(username,false,'LOCKED');return false}const user=this.users.validate(username,password);if(!user){const p=this.security.policy();this.users.recordFailed(candidate.id,p.maxFailedAttempts,p.lockMinutes);this.security.addEvent(username,false,'INVALID_CREDENTIALS');return false}this.finishLogin(user,'logged-in');return true}
+ async login(username:string,password:string):Promise<boolean>{username=(username||'').trim();password=String(password??'');const remote=await this.sharedApi.login(username,password);if(remote?.ok&&remote.user){this.finishLogin(remote.user,remote.token||'shared-session');return true}return this.loginLocal(username,password)}
+ private finishLogin(user:any,token:string){if(!this.storage)return;this.storage.setItem('authToken',token);this.storage.setItem('userName',user.username);this.storage.setItem('role',user.role);this.storage.setItem('userId',String(user.id));if(user.forcePasswordChange)this.storage.setItem('forcePasswordChange','1');else this.storage.removeItem('forcePasswordChange');this.security.startSession(user.username);this.security.addEvent(user.username,true,'SUCCESS')}
+ logout(){this.security.endCurrent();['authToken','userName','role','userId','forcePasswordChange'].forEach(k=>this.storage?.removeItem(k))}
 }

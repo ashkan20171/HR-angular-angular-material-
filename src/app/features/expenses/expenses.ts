@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-expenses',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Expenses {
+ config:EnterprisePageConfig={title:{fa:'هزینه‌ها و مزایا',en:'Expenses & benefits'},subtitle:{fa:'مدیریت هزینه‌ها، بازپرداخت‌ها و مزایای کارکنان',en:'Manage expenses, reimbursements and employee benefits'},item:{fa:'مورد',en:'item'},icon:'account_balance_wallet',kpisFa:[["در انتظار", "18", "درخواست"], ["این ماه", "۴۸.۲M", "تومان"], ["تأیید شده", "91٪", "SLA"], ["مزایای فعال", "8", "برنامه"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["هزینه مأموریت", "مریم احمدی · ۲.۸M تومان", "در انتظار"], ["اینترنت دورکاری", "آرمان رضایی · ۶۵۰K", "تأیید"], ["آموزش تخصصی", "سارا محمدی · ۴.۱M", "بررسی"], ["بیمه تکمیلی", "تمدید گروهی", "فعال"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

@@ -1,0 +1,6 @@
+import { Component } from '@angular/core';
+import { EnterpriseCrudPage, EnterprisePageConfig } from '../../shared/enterprise-crud-page/enterprise-crud-page';
+@Component({selector:'app-recognition',standalone:true,imports:[EnterpriseCrudPage],template:`<app-enterprise-crud-page [config]="config"></app-enterprise-crud-page>`})
+export class Recognition {
+ config:EnterprisePageConfig={title:{fa:'قدردانی و پاداش',en:'Recognition & rewards'},subtitle:{fa:'قدردانی از کارکنان و مدیریت امتیازها و پاداش‌ها',en:'Recognize employees and manage points and rewards'},item:{fa:'مورد',en:'item'},icon:'military_tech',kpisFa:[["قدردانی این ماه", "74", "ارسال\u200cشده"], ["امتیاز توزیع\u200cشده", "12.4K", "Points"], ["کارکنان فعال", "68٪", "مشارکت"], ["پاداش\u200cهای دریافت\u200cشده", "39", "این ماه"]],kpisEn:[["Active items","128","Current"],["Pending","9","Needs action"],["Due soon","6","Reminder"],["Completion","94%","Healthy"]],rowsFa:[["سارا محمدی", "Team Player · 450 امتیاز", "جدید"], ["امیر رضایی", "Customer Hero · 600 امتیاز", "جدید"], ["نیلوفر احمدی", "Innovation · 750 امتیاز", "ویژه"], ["علی کریمی", "Mentor · 350 امتیاز", "جدید"]],rowsEn:[["Primary record","Current operational item","Active"],["Team record","Assigned workflow","In progress"],["Compliance record","Validated information","Complete"],["Follow-up item","Requires review","Pending"]]};
+}

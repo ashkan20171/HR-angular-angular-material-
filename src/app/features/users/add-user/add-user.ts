@@ -40,10 +40,10 @@ export class AddUserComponent implements OnInit {
 
     alert('کاربر با موفقیت افزوده شد ✔');
 
-    this.router.navigate(['/users']);
+    this.router.navigate(['/app/users']);
   }
 
   cancel() {
-    this.router.navigate(['/users']);
+    this.router.navigate(['/app/users']);
   }
 }

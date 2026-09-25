@@ -1,66 +1,49 @@
-<div class="layout">
-
-  <!-- Sidebar -->
+<div class="app-shell" [class.sidebar-collapsed]="sidebarCollapsed" [class.mobile-open]="mobileOpen">
+  <button class="mobile-backdrop" aria-label="Close menu" (click)="closeMobile()"></button>
   <aside class="sidebar">
-
-    <div class="logo">
-      <span>⚡</span>
-      <h2>AshkanHR</h2>
+    <div class="brand">
+      <div class="brand-mark">A</div>
+      <div class="brand-copy"><strong>AshkanHR</strong><span>People Operations</span></div>
+      <button class="icon-button collapse" (click)="toggleSidebar()" title="Collapse"><span class="material-symbols-rounded">dock_to_right</span></button>
     </div>
 
-    <nav class="menu">
-      <ul>
+    <div class="workspace-card">
+      <div class="workspace-icon"><span class="material-symbols-rounded">apartment</span></div>
+      <div><strong>{{ isFa ? 'شرکت نمونه' : 'Acme Company' }}</strong><span>{{ isFa ? 'فضای کاری اصلی' : 'Main workspace' }}</span></div>
+      <span class="material-symbols-rounded">unfold_more</span>
+    </div>
 
-        <!-- منو بر اساس نقش -->
-        <ng-container *ngFor="let item of menu">
-          <li *ngIf="auth.hasPermission(item.permission)">
-            <a
-              [routerLink]="item.link"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: true }"
-            >
-              {{ item.icon }} {{ item.title }}
-            </a>
-          </li>
-        </ng-container>
-
-      </ul>
+    <nav class="nav-list" aria-label="Main navigation">
+      <ng-container *ngFor="let item of menu">
+        <a *ngIf="canSee(item)" [routerLink]="item.link" routerLinkActive="active" (click)="closeMobile()" [title]="label(item)">
+          <span class="material-symbols-rounded">{{ item.icon }}</span><span class="nav-label">{{ label(item) }}</span>
+        </a>
+      </ng-container>
     </nav>
 
+    <div class="sidebar-footer">
+      <a routerLink="profile" routerLinkActive="active"><span class="material-symbols-rounded">manage_accounts</span><span class="nav-label">{{ isFa ? 'پروفایل و تنظیمات' : 'Profile & settings' }}</span></a>
+      <button class="support-card" routerLink="chat"><span class="material-symbols-rounded">auto_awesome</span><span class="nav-label"><strong>{{ isFa ? 'کمکی لازم داری؟' : 'Need help?' }}</strong><small>{{ isFa ? 'از دستیار منابع انسانی بپرس' : 'Ask the HR assistant' }}</small></span></button>
+    </div>
   </aside>
 
-  <!-- Content wrapper -->
-  <div class="content-area">
-
-    <!-- Header -->
-    <header class="header">
-
-      <!-- (اختیاری) اگر واقعاً route notifications نداری، این بخش رو حذف کن -->
-      <!--
-      <div class="notif-icon" routerLink="notifications">
-        🔔
-        <span class="badge">{{ notif.unreadCount() }}</span>
+  <section class="content-area">
+    <header class="topbar">
+      <div class="topbar-start">
+        <button class="icon-button mobile-menu" (click)="toggleMobile()"><span class="material-symbols-rounded">menu</span></button>
+        <button class="global-search" type="button" (click)="openSearch()"><span class="material-symbols-rounded">search</span><span class="search-placeholder">{{ isFa ? 'جستجو در کارکنان، درخواست‌ها و...' : 'Search employees, requests…' }}</span><kbd>Ctrl K</kbd></button>
       </div>
-      -->
-
-      <!-- User info -->
-      <div class="user-box">
-        <span class="name">{{ userName }}</span>
-        <span class="role">({{ userRole }})</span>
+      <div class="topbar-actions">
+        <button class="language-button" (click)="toggleLanguage()">{{ isFa ? 'EN' : 'فا' }}</button>
+        <button class="icon-button" (click)="toggleTheme()" [title]="isFa ? 'تغییر پوسته' : 'Toggle theme'"><span class="material-symbols-rounded">{{ theme.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode' }}</span></button>
+        <button class="icon-button notification" routerLink="notifications"><span class="material-symbols-rounded">notifications</span><i></i></button>
+        <div class="divider"></div>
+        <button class="profile-chip" routerLink="profile"><span class="avatar">{{ userName.charAt(0).toUpperCase() }}</span><span class="profile-copy"><strong>{{ userName }}</strong><small>{{ userRole }}</small></span><span class="material-symbols-rounded">expand_more</span></button>
+        <button class="icon-button logout" (click)="logout()" [title]="isFa ? 'خروج' : 'Sign out'"><span class="material-symbols-rounded">logout</span></button>
       </div>
-
-      <!-- Logout -->
-      <button class="logout-btn" (click)="logout()">
-        خروج
-      </button>
-
     </header>
-
-    <!-- Page content -->
-    <main class="main">
-      <router-outlet></router-outlet>
-    </main>
-
-  </div>
-
+    <main class="main"><router-outlet></router-outlet></main>
+  </section>
 </div>
+
+<app-command-palette [(open)]="searchOpen" [isFa]="isFa"></app-command-palette>
