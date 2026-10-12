@@ -1,3 +1,30 @@
-<section class="hr-page"><header class="hr-page__hero"><div><span class="hr-eyebrow">AshkanHR · Workflow Engine</span><h1>مرکز تاییدها</h1><p>صف عملیاتی واقعی برای مدیریت گردش تایید مرخصی، هزینه، اضافه‌کاری و درخواست‌های سازمانی.</p></div><div class="hr-actions"><button class="hr-btn" (click)="workflow.reset()"><span class="material-symbols-rounded">restart_alt</span>بازنشانی Demo</button><button class="hr-btn primary"><span class="material-symbols-rounded">tune</span>قوانین Workflow</button></div></header>
-<div class="hr-kpis"><article class="hr-kpi"><div class="hr-kpi__top"><span>در انتظار من</span><span class="hr-kpi__icon material-symbols-rounded">pending_actions</span></div><strong>{{pending}}</strong><small>نیازمند اقدام</small></article><article class="hr-kpi"><div class="hr-kpi__top"><span>تایید شده</span><span class="hr-kpi__icon material-symbols-rounded">task_alt</span></div><strong>{{approved}}</strong><small>در نشست جاری</small></article><article class="hr-kpi"><div class="hr-kpi__top"><span>SLA</span><span class="hr-kpi__icon material-symbols-rounded">timer</span></div><strong>96%</strong><small>در محدوده هدف</small></article><article class="hr-kpi"><div class="hr-kpi__top"><span>میانگین چرخه</span><span class="hr-kpi__icon material-symbols-rounded">speed</span></div><strong>6.2h</strong><small>18٪ سریع‌تر</small></article></div>
-<article class="hr-panel"><div class="hr-panel__head"><div><h2>صف تصمیم‌گیری</h2><small>تغییر وضعیت‌ها بلافاصله در state مشترک اعمال می‌شود</small></div><input class="hr-search" [(ngModel)]="query" placeholder="جستجوی درخواست یا کارمند..." /></div><div class="hr-panel__body hr-list"><div class="hr-row" *ngFor="let r of rows"><div class="hr-row__main"><span class="hr-avatar material-symbols-rounded">approval</span><div><strong>{{r.type}} · {{r.employee}}</strong><small>{{r.stage}} · {{r.age}} <ng-container *ngIf="r.amount"> · {{r.amount}}</ng-container></small></div></div><div class="workflow-actions"><span class="hr-badge" [class.success]="r.status==='approved'" [class.warning]="r.status==='rejected'">{{statusFa(r.status)}}</span><ng-container *ngIf="r.status==='pending'"><button class="mini success" (click)="decide(r,true)"><span class="material-symbols-rounded">check</span></button><button class="mini danger" (click)="decide(r,false)"><span class="material-symbols-rounded">close</span></button></ng-container></div></div><div class="hr-empty" *ngIf="!rows.length">موردی با این جستجو پیدا نشد.</div></div></article></section>
+<section class="hr-page" [attr.dir]="fa ? 'rtl' : 'ltr'">
+  <header class="hr-page__hero">
+    <div>
+      <span class="hr-eyebrow">AshkanHR · Self-service</span>
+      <h1>{{t('پیگیری درخواست‌های من','My request status')}}</h1>
+      <p>{{t('فقط درخواست‌های متعلق به حساب شما نمایش داده می‌شود.','Only requests belonging to your account are shown.')}}</p>
+    </div>
+  </header>
+  <div class="hr-kpis">
+    <article class="hr-kpi"><div class="hr-kpi__top"><span>{{t('کل درخواست‌های من','My requests')}}</span></div><strong>{{items.length}}</strong></article>
+    <article class="hr-kpi"><div class="hr-kpi__top"><span>{{t('در انتظار بررسی','Pending')}}</span></div><strong>{{pending}}</strong></article>
+    <article class="hr-kpi"><div class="hr-kpi__top"><span>{{t('تأیید شده','Approved')}}</span></div><strong>{{approved}}</strong></article>
+  </div>
+  <article class="hr-panel">
+    <div class="hr-panel__head">
+      <div><h2>{{t('سوابق درخواست‌های من','My request history')}}</h2><small>{{t('اطلاعات آزمایشی مرورگر','Browser demo data')}}</small></div>
+      <input class="hr-search" [(ngModel)]="query" [attr.aria-label]="t('جستجوی درخواست','Search requests')" [placeholder]="t('جستجو...','Search...')">
+    </div>
+    <div class="hr-panel__body hr-list">
+      <div class="hr-row" *ngFor="let r of rows">
+        <div class="hr-row__main"><span class="hr-avatar material-symbols-rounded">assignment</span>
+          <div><strong>{{r.kind}}</strong><small>{{r.date === '—' ? '—' : (r.date | localeDate)}}</small></div>
+        </div>
+        <span class="hr-badge" [class.success]="r.status==='approved'" [class.warning]="r.status==='rejected'">{{statusText(r.status)}}</span>
+      </div>
+      <div class="hr-empty" *ngIf="!rows.length">{{t('درخواستی برای نمایش وجود ندارد.','No requests to display.')}}</div>
+    </div>
+  </article>
+  <p class="approval-note" *ngIf="canApprove">{{t('تأیید درخواست سایر کارکنان تا اتصال امن به بک‌اند و تعریف ساختار سازمانی غیرفعال است.','Approving other employees’ requests is disabled until secure backend and organization mapping are available.')}}</p>
+</section>

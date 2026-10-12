@@ -1,3 +1,4 @@
+import { LocaleDateInput } from '../../shared/locale-date-input/locale-date-input';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,7 +10,7 @@ import { RequestStatusPipe } from './request-status.pipe';
 @Component({
   selector: 'app-requests',
   standalone: true,
-  imports: [CommonModule, FormsModule,RequestTypePipe,
+  imports: [LocaleDateInput, CommonModule, FormsModule,RequestTypePipe,
     RequestStatusPipe],
   templateUrl: './requests.html',
   styleUrl: './requests.css'

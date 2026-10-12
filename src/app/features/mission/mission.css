@@ -255,3 +255,5 @@ body.dark {
   --hover: #2d3748;
   --input-bg: #374151;
 }
+
+.mission-table-wrap{max-width:100%;overflow-x:auto}.mission-table{min-width:680px}.modal-box app-locale-date-input{display:block;width:100%;margin-bottom:12px}.modal-box [role=alert]{color:#b42318;font-weight:600}

@@ -1,3 +1,4 @@
+import { LocaleDateInput } from '../../shared/locale-date-input/locale-date-input';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +7,7 @@ import { LeaveService, LeaveItem } from './leave.service';
 @Component({
   selector: 'app-leave',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [LocaleDateInput, CommonModule, FormsModule],
   templateUrl: './leave.html',
   styleUrl: './leave.css'
 })

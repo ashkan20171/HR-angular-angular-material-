@@ -1,7 +1,7 @@
 <div class="attendance-wrapper">
 
-  <h2>حضور و غیاب</h2>
-  <p class="date">امروز: {{ today }}</p>
+  <h2>{{t("حضور و غیاب من","My attendance")}}</h2><p class="demo-note">{{t("اطلاعات آزمایشی ذخیره‌شده در این مرورگر","Demo records stored in this browser")}}</p><p *ngIf="error" role="alert">{{error}}</p>
+  <p class="date">{{t("امروز:","Today:")}} {{ today | localeDate }}</p>
 
   <div class="grid">
 
@@ -17,8 +17,8 @@
       <p><strong>تأخیر:</strong> {{ delayToday }} ساعت</p>
 
       <div class="actions">
-        <button class="btn-in" (click)="punchIn()">ورود</button>
-        <button class="btn-out" (click)="punchOut()">خروج</button>
+        <button class="btn-in" (click)="punchIn()">{{t("ورود","Clock in")}}</button>
+        <button class="btn-out" (click)="punchOut()">{{t("خروج","Clock out")}}</button>
       </div>
     </div>
 
@@ -49,7 +49,7 @@
 
       <tbody>
         <tr *ngFor="let r of monthRecords">
-          <td>{{ r.date }}</td>
+          <td>{{ r.date | localeDate }}</td>
           <td>{{ r.in }}</td>
           <td>{{ r.out }}</td>
           <td>{{ r.workHours }}</td>

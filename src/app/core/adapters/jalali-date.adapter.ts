@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NativeDateAdapter } from '@angular/material/core';
-import * as moment from 'moment-jalaali';
+import moment from 'moment-jalaali';
 import { LanguageService } from '../i18n/language.service';
 
 moment.loadPersian({ dialect: 'persian-modern', usePersianDigits: false });
@@ -50,14 +50,15 @@ export class JalaliDateAdapter extends NativeDateAdapter {
   override addCalendarYears(date: Date, years: number): Date { if(!this.fa) return super.addCalendarYears(date,years); const m=moment(date); m.jYear(m.jYear()+years); return m.toDate(); }
   override addCalendarMonths(date: Date, months: number): Date { if(!this.fa) return super.addCalendarMonths(date,months); const m=moment(date); m.jMonth(m.jMonth()+months); return m.toDate(); }
   override addCalendarDays(date: Date, days: number): Date { return moment(date).add(days,'day').toDate(); }
-  override toIso8601(date: Date): string { return date.toISOString().slice(0,10); }
+  override toIso8601(date: Date): string { const y=date.getFullYear(),m=String(date.getMonth()+1).padStart(2,'0'),d=String(date.getDate()).padStart(2,'0'); return `${y}-${m}-${d}`; }
   override isDateInstance(obj: any): boolean { return obj instanceof Date; }
   override isValid(date: Date): boolean { return date instanceof Date && !Number.isNaN(date.getTime()); }
   override invalid(): Date { return new Date(NaN); }
   override format(date: Date, _displayFormat: Object): string { return this.fa ? moment(date).format('jYYYY/jMM/jDD') : moment(date).format('YYYY/MM/DD'); }
   override parse(value: any): Date|null {
     if (!value) return null; if (value instanceof Date) return value;
-    const p=this.fa ? moment(String(value),['jYYYY/jMM/jDD','jYYYY-jMM-jDD'],true) : moment(String(value),['YYYY/MM/DD','YYYY-MM-DD','MM/DD/YYYY'],true);
+    const input=String(value).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632));
+    const p=this.fa ? moment(input,['jYYYY/jMM/jDD','jYYYY-jMM-jDD'],true) : moment(input,['YYYY/MM/DD','YYYY-MM-DD','MM/DD/YYYY'],true);
     return p.isValid()?p.toDate():null;
   }
 }

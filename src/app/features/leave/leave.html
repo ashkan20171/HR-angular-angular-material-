@@ -82,10 +82,10 @@
       </select>
 
       <label>تاریخ شروع</label>
-      <input type="date" [(ngModel)]="newLeave.start" (change)="calcDays()">
+      <app-locale-date-input [(ngModel)]="newLeave.start" (change)="calcDays()"></app-locale-date-input>
 
       <label>تاریخ پایان</label>
-      <input type="date" [(ngModel)]="newLeave.end" (change)="calcDays()">
+      <app-locale-date-input [(ngModel)]="newLeave.end" (change)="calcDays()"></app-locale-date-input>
 
       <label>توضیحات</label>
       <textarea [(ngModel)]="newLeave.desc"></textarea>

@@ -1,73 +1,39 @@
-<div class="profile-wrapper">
-
-  <h2 class="title">پروفایل کاربری</h2>
-
-  <div class="grid">
-
-    <!-- اطلاعات شخصی -->
-    <div class="card">
-
-      <h3>اطلاعات شخصی</h3>
-
-      <div class="avatar-box">
-        <img [src]="avatarPreview" class="avatar">
-        <label class="upload-btn">
-          تغییر عکس
-          <input type="file" accept="image/*" (change)="onAvatarChange($event)">
-        </label>
-      </div>
-
-      <label>نام و نام خانوادگی</label>
-      <input type="text" [(ngModel)]="personal.name">
-
-      <label>ایمیل</label>
-      <input type="email" [(ngModel)]="personal.email">
-
-      <label>شماره موبایل</label>
-      <input type="text" [(ngModel)]="personal.phone">
-
-      <label>تاریخ تولد</label>
-      <input type="date" [(ngModel)]="personal.birth">
-
-      <label>وضعیت تأهل</label>
-      <select [(ngModel)]="personal.marital">
-        <option value="single">مجرد</option>
-        <option value="married">متأهل</option>
-      </select>
-
-    </div>
-
-    <!-- اطلاعات سازمانی -->
-    <div class="card">
-
-      <h3>اطلاعات سازمانی</h3>
-
-      <p><strong>کد پرسنلی:</strong> {{ job.code }}</p>
-      <p><strong>سمت:</strong> {{ job.position }}</p>
-      <p><strong>دپارتمان:</strong> {{ job.department }}</p>
-      <p><strong>نوع همکاری:</strong> {{ job.type }}</p>
-      <p><strong>تاریخ استخدام:</strong> {{ job.hired }}</p>
-      <p><strong>{{ job.manager }}</strong></p>
-
-    </div>
-
-    <!-- تغییر رمز عبور -->
-    <div class="card">
-
-      <h3>تغییر رمز عبور</h3>
-
-      <label>رمز فعلی</label>
-      <input type="password" [(ngModel)]="password.old">
-
-      <label>رمز جدید</label>
-      <input type="password" [(ngModel)]="password.new">
-
-      <label>تکرار رمز جدید</label>
-      <input type="password" [(ngModel)]="password.confirm">
-
-      <button class="save-btn" (click)="changePassword()">ثبت تغییرات</button>
-    </div>
-
-  </div>
-
-</div>
+<section class="profile-wrapper" [attr.dir]="fa ? 'rtl' : 'ltr'">
+  <header class="profile-heading"><span class="eyebrow">AshkanHR · My workspace</span>
+    <h1>{{fa ? 'پروفایل من' : 'My profile'}}</h1>
+    <p>{{fa ? 'اطلاعات این صفحه فقط از حساب کاربری واردشده خوانده می‌شود.' : 'This page shows the currently signed-in account only.'}}</p>
+  </header>
+  <div class="grid"><article class="card">
+    <div class="avatar-placeholder" aria-hidden="true">{{displayName.charAt(0).toUpperCase()}}</div>
+    <h2>{{displayName}}</h2>
+    <dl><div><dt>{{fa?'نام کاربری':'Username'}}</dt><dd>{{username}}</dd></div>
+      <div><dt>{{fa?'ایمیل':'Email'}}</dt><dd>{{email}}</dd></div>
+      <div><dt>{{fa?'شناسه کاربر':'User ID'}}</dt><dd>{{accountId}}</dd></div>
+      <div><dt>{{fa?'نقش':'Role'}}</dt><dd>{{role}}</dd></div></dl>
+  </article><article class="card">
+    <h2>{{fa?'اطلاعات استخدامی':'Employment information'}}</h2>
+    <p class="draft-note">{{fa?'پیش‌نویس شخصی — تأییدنشده توسط سازمان':'Private draft — not verified by the organization'}}</p>
+    <ng-container *ngIf="employmentDraft as draft; else noEmployment">
+      <dl>
+        <div><dt>{{fa?'کد پرسنلی':'Employee code'}}</dt><dd>{{draft.employeeCode || '—'}}</dd></div>
+        <div><dt>{{fa?'سمت':'Job title'}}</dt><dd>{{draft.jobTitle || '—'}}</dd></div>
+        <div><dt>{{fa?'واحد':'Department'}}</dt><dd>{{draft.department || '—'}}</dd></div>
+        <div><dt>{{fa?'تیم':'Team'}}</dt><dd>{{draft.team || '—'}}</dd></div>
+        <div><dt>{{fa?'مدیر مستقیم':'Direct manager'}}</dt><dd>{{draft.managerName || '—'}}</dd></div>
+        <div><dt>{{fa?'شروع همکاری':'Start date'}}</dt><dd>{{draft.startDate ? (draft.startDate | localeDate) : '—'}}</dd></div>
+      </dl>
+    </ng-container>
+    <ng-template #noEmployment><p>{{fa?'هنوز پیش‌نویس اطلاعات استخدامی ثبت نکرده‌اید.':'No employment draft saved yet.'}}</p></ng-template>
+  </article></div>
+<article class="card personal-edit">
+ <h2>{{fa?'اطلاعات تماس شخصی':'Personal contact details'}}</h2>
+ <p class="draft-note">{{fa?'پیش‌نویس خصوصی در این مرورگر؛ تأیید سازمانی نشده است.':'Private browser draft; not verified by your organization.'}}</p>
+ <div class="personal-fields">
+ <label>{{fa?'شماره تماس':'Phone'}}<input [(ngModel)]="personalForm.phone" type="tel" maxlength="22" autocomplete="tel"></label>
+ <label>{{fa?'شهر':'City'}}<input [(ngModel)]="personalForm.city" maxlength="100" autocomplete="address-level2"></label>
+ <label>{{fa?'نام تماس اضطراری':'Emergency contact name'}}<input [(ngModel)]="personalForm.emergencyContact" maxlength="100"></label>
+ <label>{{fa?'شماره تماس اضطراری':'Emergency phone'}}<input [(ngModel)]="personalForm.emergencyPhone" type="tel" maxlength="22"></label>
+ </div>
+ <div class="personal-actions"><button type="button" (click)="savePersonal()">{{fa?'ذخیره پیش‌نویس':'Save draft'}}</button><span *ngIf="personalMessage" [class.personal-error]="personalError" role="status">{{personalMessage}}</span></div>
+ </article>
+</section>

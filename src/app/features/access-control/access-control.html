@@ -1,3 +1,57 @@
-<section class="hr-page"><header class="hr-page__hero"><div><span class="hr-eyebrow">AshkanHR · Security</span><h1>{{fa?'نقش‌ها و سطح دسترسی':'Roles & Permissions'}}</h1><p>{{fa?'کنترل دسترسی مبتنی بر نقش، عملیات و محدوده داده برای تمام بخش‌های سامانه.':'Role, action and data-scope based access control across the HR platform.'}}</p></div><button class="hr-btn" (click)="reset()">{{fa?'بازنشانی پیش‌فرض':'Reset defaults'}}</button></header>
-<div class="hr-grid"><aside class="hr-panel"><div class="hr-panel__head"><h2>{{fa?'نقش‌ها':'Roles'}}</h2></div><div class="hr-panel__body hr-list"><button class="role-row" *ngFor="let r of roles" [class.active]="selected===r.id" (click)="selected=r.id"><strong>{{label(r)}}</strong><small>{{r.id}}</small></button></div></aside>
-<article class="hr-panel"><div class="hr-panel__head"><div><h2>{{label(policy)}}</h2><small>{{fa?'محدوده مشاهده داده':'Data visibility scope'}}</small></div><select class="hr-search" [ngModel]="policy.scope" (ngModelChange)="scope($event)"><option value="own">Own</option><option value="team">Team</option><option value="department">Department</option><option value="all">All</option></select></div><div class="hr-panel__body permission-groups"><section *ngFor="let g of groups"><h3>{{fa?g.fa:g.en}}</h3><label class="permission-item" *ngFor="let p of g.items"><span><strong>{{p}}</strong><small>{{fa?'مجوز عملیاتی':'Action permission'}}</small></span><input type="checkbox" [checked]="has(p)" (change)="toggle(p)"></label></section></div></article></div></section>
+<section class="hr-page role-admin" [attr.dir]="fa ? 'rtl' : 'ltr'">
+  <header class="hr-page__hero role-hero">
+    <div><span class="hr-eyebrow">AshkanHR · Access governance</span>
+      <h1>{{ fa ? 'مدیریت نقش‌ها و دسترسی‌ها' : 'Roles & Permissions' }}</h1>
+      <p>{{ fa ? 'مجوزها و محدوده مشاهده داده برای هر نقش را به صورت مستقل تنظیم کنید.' : 'Manage action permissions and data visibility for each role.' }}</p>
+    </div>
+    <button type="button" class="hr-btn" (click)="reset()">{{fa ? 'بازنشانی پیش‌فرض' : 'Reset defaults'}}</button>
+  </header>
+  <div class="reset-confirm" *ngIf="showResetConfirmation" role="alert">
+    <span>{{fa ? 'تمام تنظیمات سفارشی نقش‌ها بازنشانی شوند؟' : 'Restore all default role policies?'}}</span>
+    <button type="button" (click)="reset()">{{fa ? 'تأیید' : 'Confirm'}}</button>
+    <button type="button" (click)="showResetConfirmation=false">{{fa ? 'انصراف' : 'Cancel'}}</button>
+  </div>
+  <p class="role-notice" *ngIf="notice" role="status">{{notice}}</p>
+  <div class="role-layout">
+    <aside class="hr-panel role-sidebar">
+      <div class="hr-panel__head"><h2>{{fa ? 'نقش‌های سازمانی' : 'Organization roles'}}</h2></div>
+      <nav class="role-list" [attr.aria-label]="fa ? 'انتخاب نقش' : 'Choose role'">
+        <button type="button" class="role-row" *ngFor="let r of roles"
+          [class.active]="selected===r.id" [attr.aria-current]="selected===r.id ? 'true' : null"
+          (click)="selected=r.id;notice=''">
+          <strong>{{label(r)}}</strong><small>{{r.permissions.length}} {{fa ? 'مجوز' : 'permissions'}}</small>
+        </button>
+      </nav>
+    </aside>
+    <article class="hr-panel role-content">
+      <div class="role-toolbar">
+        <div><h2>{{label(policy)}}</h2><p>{{fa ? 'محدوده دسترسی به داده‌ها' : 'Data visibility scope'}}</p></div>
+        <select class="hr-search" [ngModel]="policy.scope" (ngModelChange)="scope($event)"
+          [disabled]="isProtectedRole" [attr.aria-label]="fa ? 'محدوده داده' : 'Data scope'">
+          <option value="own">{{fa ? 'فقط خود' : 'Own'}}</option>
+          <option value="team">{{fa ? 'تیم' : 'Team'}}</option>
+          <option value="department">{{fa ? 'واحد' : 'Department'}}</option>
+          <option value="all">{{fa ? 'همه' : 'All'}}</option>
+        </select>
+      </div>
+      <p class="role-hint" *ngIf="isProtectedRole">{{fa ? 'برای جلوگیری از قفل شدن مدیریت سیستم، مجوزهای مدیر در این صفحه قابل تغییر نیست.' : 'Administrator permissions are locked here to prevent accidental lockout.'}}</p>
+      <div class="role-search-wrap"><input class="hr-search role-search" type="search" [(ngModel)]="search"
+        [placeholder]="fa ? 'جستجوی مجوزها...' : 'Search permissions...'"
+        [attr.aria-label]="fa ? 'جستجوی مجوز' : 'Search permissions'"></div>
+      <div class="permission-groups">
+        <section class="permission-group" *ngFor="let g of visibleGroups">
+          <div class="permission-heading"><h3>{{fa ? g.fa : g.en}} <small>{{count(g.items)}} / {{g.items.length}}</small></h3>
+            <div class="group-actions">
+              <button type="button" [disabled]="isProtectedRole" (click)="setGroup(g.items,true)">{{fa ? 'انتخاب همه' : 'Select all'}}</button>
+              <button type="button" [disabled]="isProtectedRole" (click)="setGroup(g.items,false)">{{fa ? 'حذف همه' : 'Clear'}}</button>
+            </div>
+          </div>
+          <label class="permission-item" *ngFor="let p of g.items">
+            <span>{{p}}</span><input type="checkbox" [checked]="has(p)" [disabled]="isProtectedRole" (change)="toggle(p)">
+          </label>
+        </section>
+        <p *ngIf="visibleGroups.length===0">{{fa ? 'مجوزی پیدا نشد.' : 'No matching permissions.'}}</p>
+      </div>
+    </article>
+  </div>
+</section>

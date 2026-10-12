@@ -1,4 +1,5 @@
-<div class="leave-page">
+<div class="leave-page" [attr.dir]="fa ? 'rtl' : 'ltr'">
+  <p class="demo-note">{{t("سوابق شخصی آزمایشی","Personal demo records")}}</p>
 
   <h1>درخواست اضافه‌کاری</h1>
 
@@ -23,7 +24,7 @@
   <!-- نمودار -->
   <div class="chart-box">
     <h2>نمودار ساعات اضافه‌کاری</h2>
-    <img src="/assets/charts/overtime-chart.png" alt="chart" />
+    <p>{{t("مجموع ساعات این ماه:","Hours this month:")}} {{getTotalThisMonth()}}</p>
   </div>
 
   <!-- جدول -->
@@ -45,7 +46,7 @@
 
     <tbody>
       <tr *ngFor="let item of overtimeList">
-        <td>{{ item.date }}</td>
+        <td>{{ item.date | localeDate }}</td>
         <td>{{ item.start }}</td>
         <td>{{ item.end }}</td>
         <td>{{ item.hours }}</td>
@@ -73,7 +74,7 @@
       <h2>ثبت اضافه‌کاری</h2>
 
       <label>تاریخ</label>
-      <input type="text" [(ngModel)]="form.date" placeholder="مثال: ۱۴۰۳/۰۸/۲۲">
+      <app-locale-date-input [(ngModel)]="form.date"></app-locale-date-input>
 
       <label>ساعت شروع</label>
       <input type="time" [(ngModel)]="form.start">
@@ -84,6 +85,7 @@
       <label>توضیحات</label>
       <textarea rows="3" [(ngModel)]="form.reason"></textarea>
 
+      <p *ngIf="error" role="alert">{{error}}</p>
       <div class="modal-actions">
         <button class="cancel" (click)="closeModal()">لغو</button>
         <button class="submit" (click)="submit()">ثبت</button>

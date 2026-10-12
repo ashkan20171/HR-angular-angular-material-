@@ -9,7 +9,9 @@
     "test": "ng test",
     "serve:ssr:ashkanhr": "node dist/ashkanhr/server/server.mjs",
     "api": "node server/auth-api.mjs",
-    "dev:multiuser": "node server/dev-multiuser.mjs"
+    "dev:multiuser": "node server/dev-multiuser.mjs",
+    "verify:frontend": "node scripts/verify-frontend.mjs",
+    "verify:profile": "node scripts/verify-profile-imports.mjs"
   },
   "prettier": {
     "printWidth": 100,

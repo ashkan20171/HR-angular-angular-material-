@@ -1,1 +1,24 @@
-<section class="hr-page"><header class="hr-page__hero"><div><span class="hr-eyebrow">AshkanHR · Contracts</span><h1>{{fa?'مرکز تمدید قرارداد':'Contract renewal center'}}</h1><p>{{fa?'قراردادهای نزدیک به انقضا را قبل از موعد پیگیری و تمدید کنید.':'Track and renew contracts before they expire.'}}</p></div></header><article class="hr-panel"><div class="hr-panel__body hr-list"><div class="role-row" *ngFor="let x of rows"><div><strong>{{x.employee}}</strong><small>{{fa?'پایان قرارداد':'Contract end'}}: {{x.end|localeDate}} · {{label(x.status)}}</small></div><button class="hr-btn" *ngIf="x.status!=='renewed'" (click)="renew(x)">{{fa?'ثبت تمدید':'Mark renewed'}}</button></div></div></article></section>
+<section class="hr-page contracts-page">
+  <header class="hr-page__hero"><div><span class="hr-eyebrow">AshkanHR · Contracts</span><h1>{{t('داشبورد مدیریت قراردادها','Contract management dashboard')}}</h1><p>{{t('وضعیت واقعی قراردادهای ثبت‌شده، هشدار انقضا و گزارش مدیریتی','Live overview of stored employee contracts, expiry risks and reports')}}</p></div><button class="hr-btn refresh" type="button" (click)="refresh()">{{t('به‌روزرسانی','Refresh')}}</button></header>
+  <div class="contract-stats" aria-label="Contract status summary">
+    <button type="button" class="stat expired" (click)="filter='expired'"><span>{{t('منقضی‌شده','Expired')}}</span><strong>{{counts.expired}}</strong></button>
+    <button type="button" class="stat soon" (click)="filter='soon'"><span>{{t('رو به پایان (۶۰ روز)','Ending within 60 days')}}</span><strong>{{counts.soon}}</strong></button>
+    <button type="button" class="stat valid" (click)="filter='valid'"><span>{{t('معتبر','Valid')}}</span><strong>{{counts.valid}}</strong></button>
+    <button type="button" class="stat open" (click)="filter='open'"><span>{{t('بدون تاریخ پایان','No end date')}}</span><strong>{{counts.open}}</strong></button>
+  </div>
+  <article class="hr-panel"><div class="hr-panel__body">
+    <div class="contract-toolbar">
+      <label>{{t('جستجو','Search')}}<input [(ngModel)]="query" [placeholder]="t('نام، کد پرسنلی، سمت…','Name, code, position…')" /></label>
+      <label>{{t('وضعیت قرارداد','Contract status')}}<select [(ngModel)]="filter"><option value="all">{{t('همه','All')}}</option><option value="expired">{{label('expired')}}</option><option value="soon">{{label('soon')}}</option><option value="valid">{{label('valid')}}</option><option value="open">{{label('open')}}</option></select></label>
+      <label>{{t('واحد سازمانی','Department')}}<select [(ngModel)]="department"><option value="all">{{t('همه واحدها','All departments')}}</option><option *ngFor="let d of departments" [value]="d">{{d}}</option></select></label>
+      <label class="check"><input type="checkbox" [(ngModel)]="activeOnly" />{{t('فقط کارکنان فعال','Active employees only')}}</label>
+      <button *ngIf="canExport" class="hr-btn" type="button" (click)="exportCsv()">{{t('خروجی CSV','Export CSV')}}</button>
+    </div>
+    <p class="contract-hint">{{t('نمایش','Showing')}} {{visible.length}} {{t('پرونده؛ آمار کارت‌ها بر اساس فیلتر کارکنان فعال محاسبه می‌شود.','records; summary cards respect the active-employees filter.')}}</p>
+    <div class="contract-table-wrap"><table><thead><tr><th>{{t('کارمند','Employee')}}</th><th>{{t('واحد / سمت','Department / Position')}}</th><th>{{t('شروع','Start')}}</th><th>{{t('پایان','End')}}</th><th>{{t('وضعیت','Status')}}</th><th>{{t('اقدام','Action')}}</th></tr></thead><tbody>
+      <tr *ngFor="let e of visible"><td><strong>{{e.firstName}} {{e.lastName}}</strong><small>{{e.employeeCode}}</small></td><td>{{e.department||'—'}}<small>{{e.jobTitle||'—'}}</small></td><td>{{date(e.contractStart)}}</td><td>{{date(e.contractEnd)}}</td><td><span class="status" [class]="status(e)">{{label(status(e))}}</span></td><td><a *ngIf="canRenew" routerLink="/app/directory" class="renew-link">{{t('مدیریت / تمدید','Manage / renew')}}</a><span *ngIf="!canRenew">—</span></td></tr>
+      <tr *ngIf="visible.length===0"><td colspan="6" class="empty">{{t('قراردادی با این فیلترها یافت نشد.','No contracts match these filters.')}}</td></tr>
+    </tbody></table></div>
+    <p class="contract-hint">{{t('برای تمدید، در بخش مدیریت کارکنان روی دکمه تمدید قرارداد شخص موردنظر کلیک کنید. هشدارها فقط هنگام مشاهده صفحه محاسبه می‌شوند.','To renew, use the employee’s Renew action in Employee Directory. Expiry status is calculated on page view; no automatic notifications are sent.')}}</p>
+  </div></article>
+</section>

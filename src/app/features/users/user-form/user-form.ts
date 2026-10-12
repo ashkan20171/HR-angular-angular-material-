@@ -18,6 +18,24 @@ export class UserForm{
  get policy(){return this.security.policy()}
  passwordErrorText(code:string){const map:any={MIN_LENGTH:this.t(`حداقل ${this.policy.minLength} کاراکتر`,`At least ${this.policy.minLength} characters`),UPPER:this.t('حداقل یک حرف بزرگ انگلیسی (A-Z)','At least one uppercase letter (A-Z)'),LOWER:this.t('حداقل یک حرف کوچک انگلیسی (a-z)','At least one lowercase letter (a-z)'),NUMBER:this.t('حداقل یک عدد (0-9)','At least one number (0-9)'),SPECIAL:this.t('حداقل یک کاراکتر ویژه مثل !@#','At least one special character such as !@#')};return map[code]||code}
  checkPassword(){const value=this.form?.get('password')?.value||'';this.passwordErrors=value?this.security.validatePassword(value):[];}
- async save(){this.error='';this.checkPassword();if(this.form.invalid)return;const v=this.form.getRawValue();if(!this.editing&&!v.password){this.error=this.t('رمز عبور الزامی است.','Password is required.');return}if(v.password!==v.confirmPassword){this.error=this.t('رمز عبور و تکرار آن یکسان نیست.','Password and confirmation do not match.');return}if(v.password&&this.passwordErrors.length){this.error=this.t('لطفاً موارد مشخص‌شده در راهنمای رمز عبور را اصلاح کنید.','Please fix the password requirements shown below.');return}try{const {confirmPassword,...user}=v as any;user.username=(user.username||'').trim();user.password=String(user.password??'');if(this.editing){await this.sharedApi.update(user);this.userService.update(user)}else{const remote=await this.sharedApi.create(user);if(remote){this.userService.create({...user,id:remote.id})}else{this.userService.create(user)}}this.router.navigate(['/app/users'])}catch(e){this.error=this.t('این نام کاربری قبلاً ثبت شده است.','This username already exists.')}}
+ async save(){
+  this.error='';this.checkPassword();
+  if(this.form.invalid){this.form.markAllAsTouched();this.error=this.t('اطلاعات فرم را کامل و صحیح وارد کنید.','Please complete all required fields correctly.');return}
+  const v=this.form.getRawValue();
+  if(!this.editing&&!v.password){this.error=this.t('رمز عبور الزامی است.','Password is required.');return}
+  if(v.password!==v.confirmPassword){this.error=this.t('رمز عبور و تکرار آن یکسان نیست.','Password and confirmation do not match.');return}
+  if(v.password&&this.passwordErrors.length){this.error=this.t('لطفاً شرایط رمز عبور را رعایت کنید.','Please satisfy the password requirements.');return}
+  try{
+   const {confirmPassword,...user}=v as any;
+   user.username=String(user.username||'').trim();
+   user.password=String(user.password??'');
+   // Frontend-only phase: use one local store for creation and authentication.
+   // Remote writes are intentionally deferred until the backend phase.
+   if(this.editing)this.userService.update(user);
+   else this.userService.create(user);
+   await this.router.navigate(['/app/users']);
+  }catch(e){const code=e instanceof Error?e.message:'';this.error=code==='USERNAME_EXISTS'?this.t('این نام کاربری قبلاً ثبت شده است.','This username already exists.'):this.t('ذخیره کاربر ناموفق بود.','Could not save the user.')}
+ }
+
  cancel(){this.router.navigate(['/app/users'])}
 }

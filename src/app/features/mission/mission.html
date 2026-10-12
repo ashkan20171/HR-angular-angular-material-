@@ -1,103 +1,39 @@
-<div class="mission-page">
-
-  <h1>درخواست مأموریت</h1>
-
-  <!-- کارت‌ها -->
+<div class="mission-page" [attr.dir]="fa ? 'rtl' : 'ltr'">
+  <h1>{{t('درخواست مأموریت','Mission requests')}}</h1>
   <div class="info-grid">
-
-    <div class="info-card">
-      <h3>مأموریت‌های این ماه</h3>
-      <div class="value blue">{{ missionList.length }} مورد</div>
-      <div class="progress"><div class="bar" style="width: 40%"></div></div>
-    </div>
-
-    <div class="info-card">
-      <h3>روزهای مأموریت</h3>
-      <div class="value green">5 روز</div>
-    </div>
-
+    <div class="info-card"><h3>{{t('تعداد مأموریت‌های من','My missions')}}</h3><div class="value blue">{{missionList.length}}</div></div>
+    <div class="info-card"><h3>{{t('مجموع روزهای مأموریت','Total mission days')}}</h3><div class="value green">{{totalDays}}</div></div>
+    <div class="info-card"><h3>{{t('در انتظار بررسی','Pending')}}</h3><div class="value blue">{{pendingCount}}</div></div>
   </div>
-
-  <!-- نمودار -->
-  <div class="chart-box">
-    <h2>نمودار وضعیت مأموریت</h2>
-    <img src="/assets/charts/mission-chart.png" alt="chart" />
-  </div>
-
-  <!-- جدول -->
   <div class="table-header">
-    <h2>سوابق مأموریت</h2>
-    <button class="btn-new" (click)="openNew()">➕ ثبت مأموریت</button>
+    <h2>{{t('سوابق مأموریت من','My mission history')}}</h2>
+    <button class="btn-new" type="button" (click)="openNew()">{{t('ثبت مأموریت','New mission')}}</button>
   </div>
-
-  <table class="mission-table">
-    <thead>
-      <tr>
-        <th>تاریخ شروع</th>
-        <th>تاریخ پایان</th>
-        <th>نوع</th>
-        <th>مقصد</th>
-        <th>مدت</th>
-        <th>وضعیت</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr *ngFor="let item of missionList">
-        <td>{{ item.start }}</td>
-        <td>{{ item.end }}</td>
-        <td>{{ item.type }}</td>
-        <td>{{ item.place }}</td>
-        <td>{{ item.days }} روز</td>
-
-        <td>
-          <span class="status"
-            [ngClass]="{
-              'pending': item.status === 'pending',
-              'accepted': item.status === 'accepted',
-              'rejected': item.status === 'rejected'
-            }">
-            {{
-              item.status === 'pending' ? 'در انتظار' :
-              item.status === 'accepted' ? 'تأیید شده' : 'رد شده'
-            }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- MODAL -->
+  <div class="mission-table-wrap">
+    <table class="mission-table">
+      <thead><tr><th>{{t('شروع','Start')}}</th><th>{{t('پایان','End')}}</th><th>{{t('نوع','Type')}}</th><th>{{t('مقصد','Destination')}}</th><th>{{t('روز','Days')}}</th><th>{{t('وضعیت','Status')}}</th></tr></thead>
+      <tbody>
+        <tr *ngFor="let item of missionList">
+          <td>{{item.start | localeDate}}</td><td>{{item.end | localeDate}}</td>
+          <td>{{item.type === 'local' ? t('داخلی','Local') : item.type === 'city' ? t('خارج از شهر','Out of town') : t('خارج از کشور','International')}}</td>
+          <td>{{item.place}}</td><td>{{item.days}}</td>
+          <td><span class="status" [ngClass]="item.status">{{item.status === 'pending' ? t('در انتظار','Pending') : item.status === 'accepted' ? t('تأیید شده','Approved') : t('رد شده','Rejected')}}</span></td>
+        </tr>
+        <tr *ngIf="missionList.length===0"><td colspan="6">{{t('هنوز مأموریتی ثبت نشده است.','No missions recorded yet.')}}</td></tr>
+      </tbody>
+    </table>
+  </div>
   <div class="modal" *ngIf="showModal">
-    <div class="modal-box">
-
-      <h2>ثبت مأموریت جدید</h2>
-
-      <label>نوع مأموریت</label>
-      <select [(ngModel)]="form.type">
-        <option>داخلی</option>
-        <option>خارج از شهر</option>
-        <option>خارج از کشور</option>
-      </select>
-
-      <label>مقصد</label>
-      <input type="text" [(ngModel)]="form.place" placeholder="مثال: اصفهان">
-
-      <label>تاریخ شروع</label>
-      <input type="text" [(ngModel)]="form.start">
-
-      <label>تاریخ پایان</label>
-      <input type="text" [(ngModel)]="form.end">
-
-      <label>توضیحات</label>
-      <textarea rows="3" [(ngModel)]="form.reason"></textarea>
-
-      <div class="modal-actions">
-        <button class="cancel" (click)="closeModal()">لغو</button>
-        <button class="submit" (click)="submit()">ثبت</button>
-      </div>
-
+    <div class="modal-box" role="dialog" aria-modal="true" [attr.aria-label]="t('ثبت مأموریت','New mission')">
+      <h2>{{t('مأموریت جدید','New mission')}}</h2>
+      <label>{{t('نوع مأموریت','Mission type')}}</label>
+      <select [(ngModel)]="form.type"><option value="local">{{t('داخلی','Local')}}</option><option value="city">{{t('خارج از شهر','Out of town')}}</option><option value="international">{{t('خارج از کشور','International')}}</option></select>
+      <label>{{t('مقصد','Destination')}}</label><input type="text" maxlength="120" [(ngModel)]="form.place">
+      <label>{{t('تاریخ شروع','Start date')}}</label><app-locale-date-input [(ngModel)]="form.start"></app-locale-date-input>
+      <label>{{t('تاریخ پایان','End date')}}</label><app-locale-date-input [(ngModel)]="form.end"></app-locale-date-input>
+      <label>{{t('توضیحات','Description')}}</label><textarea rows="3" [(ngModel)]="form.reason"></textarea>
+      <p *ngIf="error" role="alert">{{error}}</p>
+      <div class="modal-actions"><button class="cancel" type="button" (click)="closeModal()">{{t('لغو','Cancel')}}</button><button class="submit" type="button" (click)="submit()">{{t('ثبت','Save')}}</button></div>
     </div>
   </div>
-
 </div>

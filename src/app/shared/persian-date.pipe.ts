@@ -1,24 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { LanguageService } from '../core/i18n/language.service';
+import { LocaleDatePipe } from './locale-date.pipe';
 
-@Pipe({
-  name: 'persianDate',
-  standalone: true
-})
+/** Backwards-compatible alias; follows the active language rather than forcing Jalali. */
+@Pipe({ name: 'persianDate', standalone: true, pure: false })
 export class PersianDatePipe implements PipeTransform {
-  transform(value: string | number | Date | null | undefined, opts?: { dateStyle?: 'short'|'medium'|'long'; timeStyle?: 'short'|'medium' }): string {
-    if (!value) return '—';
-    const d = value instanceof Date ? value : new Date(value);
-    const dateStyle = opts?.dateStyle ?? 'medium';
-    const timeStyle = opts?.timeStyle;
-
-    try {
-      const fmt = new Intl.DateTimeFormat('fa-IR-u-ca-persian', {
-        dateStyle,
-        ...(timeStyle ? { timeStyle } : {}),
-      } as any);
-      return fmt.format(d);
-    } catch {
-      return d.toLocaleString('fa-IR');
-    }
+  private readonly formatter: LocaleDatePipe;
+  constructor(language: LanguageService) { this.formatter = new LocaleDatePipe(language); }
+  transform(value: string | number | Date | null | undefined,
+    opts?: { dateStyle?: 'short'|'medium'|'long'; timeStyle?: 'short'|'medium' }): string {
+    return this.formatter.transform(value, opts);
   }
 }

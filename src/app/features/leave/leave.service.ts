@@ -1,47 +1,15 @@
-import { Injectable } from '@angular/core';
-
-export interface LeaveItem {
-  type: string;
-  start: string;
-  end: string;
-  days: number;
-  desc: string;
-  status: 'pending' | 'accepted' | 'rejected';
-}
-
-@Injectable({
-  providedIn: 'root'
-})
+import { Injectable, inject } from '@angular/core';
+import { PersonalRecordsService } from '../../core/auth/personal-records.service';
+export interface LeaveItem {type:string;start:string;end:string;days:number;desc:string;status:'pending'|'accepted'|'rejected'}
+@Injectable({providedIn:'root'})
 export class LeaveService {
-
-  private leaves: LeaveItem[] = [
-    { type: 'استحقاقی', start: '1403/10/20', end: '1403/10/22', days: 3, desc: '', status: 'pending' },
-    { type: 'استعلاجی', start: '1403/09/28', end: '1403/09/29', days: 2, desc: 'سرماخوردگی', status: 'accepted' }
-  ];
-
-  getSummary() {
-    const total = 30;
-    const used = this.leaves.reduce((sum, l) => sum + l.days, 0);
-    return {
-      total,
-      used,
-      remaining: total - used,
-      last: this.leaves[0]
-    };
-  }
-
-  getLeaves() {
-    return [...this.leaves];
-  }
-
-  calculateDays(start: string, end: string) {
-    const s = new Date(start);
-    const e = new Date(end);
-    const diff = ((e as any) - (s as any)) / (1000 * 3600 * 24) + 1;
-    return diff > 0 ? diff : 0;
-  }
-
-  addLeave(item: any) {
-    this.leaves.unshift({ ...item, status: "pending" });
-  }
+ private records=inject(PersonalRecordsService);
+ getLeaves():LeaveItem[]{return this.records.read<LeaveItem>('leave');}
+ getSummary(){const leaves=this.getLeaves();const total=30;const used=leaves.filter(x=>x.status!=='rejected').reduce((s,x)=>s+x.days,0);return {total,used,remaining:total-used,last:leaves[0]??null};}
+ calculateDays(start:string,end:string){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(start)||!/^\d{4}-\d{2}-\d{2}$/.test(end))return 0;
+  const s=Date.parse(start+'T00:00:00Z'),e=Date.parse(end+'T00:00:00Z');
+  return Number.isFinite(s)&&Number.isFinite(e)&&e>=s?Math.round((e-s)/86400000)+1:0;
+ }
+ addLeave(item:Omit<LeaveItem,'status'>){this.records.write('leave',[{...item,status:'pending' as const},...this.getLeaves()]);}
 }

@@ -35,10 +35,12 @@
         mat-raised-button
         class="login-button"
         type="submit"
-        [disabled]="loginForm.invalid || !captchaOk">
-        {{ 'LOGIN.BUTTON' | translate }}
+        [disabled]="loginForm.invalid || !captchaOk || submitting">
+        {{ submitting ? (language.currentLanguage === 'fa' ? 'در حال ورود…' : 'Signing in…') : ('LOGIN.BUTTON' | translate) }}
       </button>
 
+      <p *ngIf="submitting" class="login-progress" role="status">{{ loginStage }}</p>
+      <p *ngIf="loginError" class="login-error" role="alert">{{ loginError }}</p>
     </form>
   </div>
 

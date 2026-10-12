@@ -78,7 +78,7 @@
       </select>
 
       <label>تاریخ</label>
-      <input type="date" [(ngModel)]="newRequest.date">
+      <app-locale-date-input [(ngModel)]="newRequest.date"></app-locale-date-input>
 
       <label>توضیحات</label>
       <textarea rows="3" [(ngModel)]="newRequest.desc"></textarea>

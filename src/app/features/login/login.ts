@@ -28,11 +28,19 @@ export class Login implements OnInit {
 
   loginForm!: FormGroup;
   captchaOk = false;
+  submitting = false;
+  loginError = '';
+  loginStage = '';
+  private markStage(stage: string): void {
+    this.loginStage = stage;
+    try { sessionStorage.setItem('ashkanhr.login-stage', stage); } catch { /* storage unavailable */ }
+  }
+
   currentBg = '';
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private language: LanguageService,
+    public language: LanguageService,
     private auth: AuthService
   ) {}
 
@@ -64,21 +72,39 @@ export class Login implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
-    // اگر فرم یا کپچا معتبر نیست
-    if (this.loginForm.invalid || !this.captchaOk) {
-      return;
+    if (this.submitting || this.loginForm.invalid || !this.captchaOk) return;
+    this.submitting = true;
+    this.loginError = '';
+    try {
+      const { username, password } = this.loginForm.getRawValue();
+      // The frontend demo authenticator is synchronous; no API request is required.
+      this.markStage('checking-credentials');
+      await new Promise<void>(resolve => setTimeout(resolve, 0));
+      const success = this.auth.loginLocal(username, password);
+      if (!success) {
+        this.loginError = this.language.currentLanguage === 'fa'
+          ? 'نام کاربری یا رمز عبور اشتباه است یا حساب غیرفعال شده است.'
+          : 'Invalid credentials or inactive account.';
+        return;
+      }
+      this.markStage('navigating-to-dashboard');
+      // Allow the browser to paint before potentially expensive route activation.
+      await new Promise<void>(resolve => setTimeout(resolve, 0));
+      const navigated = await this.router.navigateByUrl('/app/dashboard');
+      this.markStage(navigated ? 'dashboard-loaded' : 'navigation-failed');
+      if (!navigated) {
+        this.loginError = this.language.currentLanguage === 'fa'
+          ? 'ورود انجام شد اما انتقال به داشبورد موفق نبود.'
+          : 'Signed in, but dashboard navigation was unsuccessful.';
+      }
+    } catch (error) {
+      console.error('Login failed', error);
+      this.markStage('error');
+      this.loginError = this.language.currentLanguage === 'fa'
+        ? 'خطایی هنگام ورود رخ داد. لطفاً دوباره تلاش کنید.'
+        : 'Something went wrong. Please try again.';
+    } finally {
+      this.submitting = false;
     }
-
-    const { username, password } = this.loginForm.value;
-
-    const success = await this.auth.login(username, password);
-
-    if (!success) {
-      alert(this.language.currentLanguage === 'fa' ? 'نام کاربری یا رمز عبور اشتباه است' : 'Incorrect username or password');
-      return;
-    }
-
-    // مسیر صحیح داشبورد
-    this.router.navigate(['/app/dashboard']);
   }
 }

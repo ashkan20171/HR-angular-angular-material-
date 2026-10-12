@@ -1,1 +1,40 @@
-<section class="page-shell"><header class="page-head"><div><h1>{{t('گاوصندوق اسناد کارکنان','Employee document vault')}}</h1><p>{{t('مدیریت امن مدارک، قراردادها و تاریخ انقضا','Secure employee documents, contracts and expiry dates')}}</p></div><button class="primary" (click)="add()">+ {{t('سند جدید','New document')}}</button></header><input [(ngModel)]="query" [placeholder]="t('جستجو...','Search...')"><div class="cards"><article class="card" *ngFor="let d of filtered"><h3>{{fa?d.titleFa:d.titleEn}}</h3><p>{{d.employee}} · {{d.category}}</p><p>{{t('انقضا','Expires')}}: {{d.expires|localeDate}}</p><span *ngIf="d.confidential">🔒 {{t('محرمانه','Confidential')}}</span><button (click)="remove(d.id)">{{t('حذف','Delete')}}</button></article></div><div class="modal-backdrop" *ngIf="draft"><div class="modal"><h2>{{t('ثبت سند','Add document')}}</h2><input [(ngModel)]="draft.employee" [placeholder]="t('نام کارمند','Employee')"><input [(ngModel)]="draft.titleFa" placeholder="عنوان فارسی"><input [(ngModel)]="draft.titleEn" placeholder="English title"><select [(ngModel)]="draft.category"><option value="contract">Contract</option><option value="identity">Identity</option><option value="certificate">Certificate</option><option value="other">Other</option></select><input type="date" [ngModel]="draft.expires|date:'yyyy-MM-dd'" (ngModelChange)="draft.expires=$event"><label><input type="checkbox" [(ngModel)]="draft.confidential"> {{t('محرمانه','Confidential')}}</label><div class="actions"><button (click)="draft=null">{{t('انصراف','Cancel')}}</button><button class="primary" (click)="save()">{{t('ذخیره','Save')}}</button></div></div></div></section>
+<section class="vault" [attr.dir]="fa?'rtl':'ltr'">
+ <header class="vault-hero">
+  <div><span class="eyebrow">AshkanHR · Personal documents</span>
+   <h1>{{t('مدارک شخصی من','My document records')}}</h1>
+   <p>{{t('صرفاً فهرست و اطلاعات نمایشی مدارک حساب شما؛ هیچ فایلی بارگذاری نمی‌شود.','Metadata for your own account only; no actual files are uploaded.')}}</p>
+  </div>
+  <button type="button" class="vault-primary" (click)="add()">{{t('افزودن مدرک','Add document')}}</button>
+ </header>
+ <p class="vault-warning">{{t('نسخه آزمایشی: اطلاعات در مرورگر ذخیره می‌شوند و برای مدارک واقعی و محرمانه مناسب نیستند.','Demo only: data is stored in your browser and is not suitable for real confidential documents.')}}</p>
+ <p *ngIf="error" class="vault-error" role="alert">{{error}}</p><p *ngIf="notice" role="status">{{notice}}</p>
+ <div class="vault-stats"><div><small>{{t('مدارک من','My records')}}</small><strong>{{docs.length}}</strong></div><div><small>{{t('محرمانه','Confidential')}}</small><strong>{{confidentialCount}}</strong></div><div><small>{{t('رویدادهای اخیر','Recent changes')}}</small><strong>{{history.length}}</strong></div></div>
+ <article class="vault-panel">
+  <div class="vault-panel-head"><h2>{{t('فهرست مدارک','Document list')}}</h2><input [(ngModel)]="query" [attr.aria-label]="t('جستجوی مدارک','Search documents')" [placeholder]="t('جستجو در مدارک...','Search documents...')"></div>
+  <div class="vault-grid">
+   <div class="vault-item" *ngFor="let d of filtered">
+    <span class="vault-icon">▣</span><div><h3>{{(fa?d.titleFa:d.titleEn)||d.titleFa||d.titleEn}}</h3>
+    <p>{{d.category}} · {{t('انقضا','Expires')}}: {{d.expires?(d.expires|localeDate):'—'}}</p>
+    <small *ngIf="d.confidential">{{t('خصوصی','Private')}}</small></div>
+    <button type="button" (click)="remove(d.id)">{{t('حذف','Delete')}}</button>
+   </div>
+   <p class="vault-empty" *ngIf="!filtered.length">{{t('مدرکی برای نمایش وجود ندارد.','No documents to display.')}}</p>
+  </div>
+ </article>
+ <article class="vault-panel"><h2>{{t('تاریخچه تغییرات این حساب','Account change history')}}</h2>
+  <ul class="vault-history"><li *ngFor="let e of history"><span>{{e.action==='created'?t('ثبت','Added'):t('حذف','Deleted')}} — {{e.title}}</span><time>{{e.at|date:'medium'}}</time></li>
+  <li *ngIf="!history.length">{{t('هنوز تغییری ثبت نشده است.','No changes recorded yet.')}}</li></ul>
+ </article>
+ <div class="vault-backdrop" *ngIf="draft as d">
+  <div class="vault-modal" role="dialog" aria-modal="true" [attr.aria-label]="t('ثبت مدرک','Add document')">
+   <h2>{{t('مدرک جدید','New document')}}</h2>
+   <label>{{t('عنوان فارسی','Persian title')}}<input [(ngModel)]="d.titleFa" maxlength="120"></label>
+   <label>{{t('عنوان انگلیسی','English title')}}<input [(ngModel)]="d.titleEn" maxlength="120"></label>
+   <label>{{t('نوع مدرک','Category')}}<select [(ngModel)]="d.category"><option value="contract">{{t('قرارداد','Contract')}}</option><option value="identity">{{t('هویتی','Identity')}}</option><option value="certificate">{{t('گواهی','Certificate')}}</option><option value="other">{{t('سایر','Other')}}</option></select></label>
+   <label>{{t('تاریخ انقضا (اختیاری)','Expiry date (optional)')}}<app-locale-date-input [(ngModel)]="d.expires"></app-locale-date-input></label>
+   <label class="vault-check"><input type="checkbox" [(ngModel)]="d.confidential">{{t('محرمانه','Confidential')}}</label>
+   <p *ngIf="error" role="alert" class="vault-error">{{error}}</p>
+   <div class="vault-actions"><button type="button" (click)="draft=null;error=''">{{t('انصراف','Cancel')}}</button><button type="button" class="vault-primary" (click)="save()">{{t('ثبت پیش‌نویس','Save draft')}}</button></div>
+  </div>
+ </div>
+</section>

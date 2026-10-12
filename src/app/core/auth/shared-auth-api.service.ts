@@ -1,13 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
-import type { User } from '../../features/users/user.service';
-@Injectable({providedIn:'root'})
-export class SharedAuthApiService{
- private http=inject(HttpClient); private base='http://localhost:4300/api';
- async login(username:string,password:string):Promise<any|null>{try{return await firstValueFrom(this.http.post<any>(`${this.base}/auth/login`,{username,password}))}catch{return null}}
- async create(user:User):Promise<User|null>{try{return await firstValueFrom(this.http.post<User>(`${this.base}/users`,user))}catch{return null}}
- async update(user:User):Promise<User|null>{try{return await firstValueFrom(this.http.put<User>(`${this.base}/users/${user.id}`,user))}catch{return null}}
- async remove(id:number):Promise<boolean>{try{await firstValueFrom(this.http.delete(`${this.base}/users/${id}`));return true}catch{return false}}
- async health():Promise<boolean>{try{await firstValueFrom(this.http.get(`${this.base}/health`));return true}catch{return false}}
+import { Injectable, inject } from '@angular/core';import { HttpClient,HttpHeaders } from '@angular/common/http';import { firstValueFrom } from 'rxjs';import type { User } from '../../features/users/user.service';
+export interface RemoteSession{id:string;userId:number;username:string;role:string;startedAt:string;lastSeenAt:string;device:string;ip:string;revokedAt?:string|null}
+@Injectable({providedIn:'root'}) export class SharedAuthApiService{private http=inject(HttpClient);private base='http://localhost:4300/api';private headers(){const t=typeof localStorage!=='undefined'?localStorage.getItem('authToken'):'';return {headers:new HttpHeaders(t?{Authorization:`Bearer ${t}`}:{})}}
+ async login(username:string,password:string):Promise<any|null>{try{return await firstValueFrom(this.http.post<any>(`${this.base}/auth/login`,{username,password,device:typeof navigator!=='undefined'?navigator.userAgent:'Browser'}))}catch{return null}}
+ async logout(){try{await firstValueFrom(this.http.post(`${this.base}/auth/logout`,{},this.headers()))}catch{}}
+ async me(){try{return await firstValueFrom(this.http.get<any>(`${this.base}/auth/me`,this.headers()))}catch{return null}}
+ async sessions():Promise<RemoteSession[]>{try{return await firstValueFrom(this.http.get<RemoteSession[]>(`${this.base}/sessions`,this.headers()))}catch{return []}}
+ async revokeSession(id:string){try{await firstValueFrom(this.http.delete(`${this.base}/sessions/${id}`,this.headers()));return true}catch{return false}}
+ async create(user:User):Promise<User|null>{try{return await firstValueFrom(this.http.post<User>(`${this.base}/users`,user))}catch{return null}}async update(user:User):Promise<User|null>{try{return await firstValueFrom(this.http.put<User>(`${this.base}/users/${user.id}`,user))}catch{return null}}async remove(id:number):Promise<boolean>{try{await firstValueFrom(this.http.delete(`${this.base}/users/${id}`));return true}catch{return false}}async health():Promise<boolean>{try{await firstValueFrom(this.http.get(`${this.base}/health`));return true}catch{return false}}
 }

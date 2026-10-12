@@ -1,6 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { inject, PLATFORM_ID } from '@angular/core';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommandPalette } from '../shared/command-palette/command-palette';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../core/auth/auth.service';
@@ -8,6 +9,7 @@ import { LanguageService } from '../core/i18n/language.service';
 import { ThemeService } from '../core/services/theme.service';
 import { NotificationService } from '../features/notifications/notification.service';
 import { AccessControlService } from '../core/auth/access-control.service';
+import { PersonalRecordsService } from '../core/auth/personal-records.service';
 
 type NavItem = { titleFa: string; titleEn: string; icon: string; link: string; permission?: string; roles?: string[] };
 
@@ -16,20 +18,69 @@ type NavItem = { titleFa: string; titleEn: string; icon: string; link: string; p
   standalone: true,
   templateUrl: './dashboard-layout.html',
   styleUrl: './dashboard-layout.css',
-  imports: [CommonModule, RouterModule, CommandPalette]
+  imports: [CommonModule, RouterModule, CommandPalette, FormsModule]
 })
-export class DashboardLayout {
+export class DashboardLayout implements OnInit, OnDestroy {
+  now = new Date();
+  private clockInterval?: ReturnType<typeof setInterval>;
+  ngOnInit(): void {
+    this.now = new Date();
+    this.refreshFavorites();
+    if (isPlatformBrowser(this.platformId)) {
+      this.clockInterval = setInterval(() => { this.now = new Date(); }, 1000);
+    }
+  }
+  ngOnDestroy(): void { if (this.clockInterval) clearInterval(this.clockInterval); }
+  get headerDate(): string {
+    return new Intl.DateTimeFormat(this.isFa ? 'fa-IR-u-ca-persian' : 'en-US-u-ca-gregory', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'}).format(this.now);
+  }
+  get headerTime(): string {
+    return new Intl.DateTimeFormat(this.isFa ? 'fa-IR' : 'en-US', {hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false}).format(this.now);
+  }
   private platformId = inject(PLATFORM_ID);
   sidebarCollapsed = false;
   mobileOpen = false;
   searchOpen = false;
-  userName = isPlatformBrowser(this.platformId) ? (localStorage.getItem('userName') || 'کاربر') : 'کاربر';
-  userRole = isPlatformBrowser(this.platformId) ? (localStorage.getItem('role') || 'employee') : 'employee';
+  navQuery = '';
+  favoriteLinks: string[] = [];
+  private favoritesOwner: string | null = null;
+  private records = inject(PersonalRecordsService);
+  private refreshFavorites(): void {
+    const owner = this.records.ownerId;
+    if (owner === this.favoritesOwner) return;
+    this.favoritesOwner = owner;
+    const stored = owner ? this.records.read<string>('favorite-links') : [];
+    const allowed = new Set(this.menu.map(item => item.link));
+    this.favoriteLinks = stored.filter(link => typeof link === 'string' && allowed.has(link)).slice(0, 12);
+  }
+  isFavorite(link: string): boolean { return this.favoriteLinks.includes(link); }
+  reloadFavorites(): void { this.favoritesOwner = null; this.refreshFavorites(); this.navCacheKey = ''; }
+  toggleFavorite(link: string): void {
+    this.refreshFavorites();
+    if (!this.menu.some(item => item.link === link && this.canSee(item))) return;
+    const next = this.favoriteLinks.includes(link) ? this.favoriteLinks.filter(x => x !== link) : [...this.favoriteLinks, link].slice(0, 12);
+    if (this.records.write('favorite-links', next)) { this.favoriteLinks = next; this.navCacheKey = ''; }
+  }
+  navGroups = [
+    { titleFa: 'اصلی', titleEn: 'Overview', links: ['dashboard','personal-hub','my-workspace','executive','users','directory','organization'] },
+    { titleFa: 'عملیات روزانه', titleEn: 'Daily operations', links: ['attendance','requests','leave','mission','overtime','timesheets','shifts','calendar','approvals'] },
+    { titleFa: 'مالی و اداری', titleEn: 'Finance & administration', links: ['payroll','salary-slip','expenses','loans','assets','documents'] },
+    { titleFa: 'توسعه کارکنان', titleEn: 'People development', links: ['performance','recruitment','learning','goals','talent','career-path','recognition'] },
+  ];
+  private safeSessionValue(key: string, fallback: string): string {
+    if (!isPlatformBrowser(this.platformId)) return fallback;
+    try { return localStorage.getItem(key) || fallback; } catch { return fallback; }
+  }
+  userName = this.safeSessionValue('userName', 'کاربر');
+  userRole = this.safeSessionValue('role', 'employee');
 
   menu: NavItem[] = [
+    { titleFa: 'تنظیمات شخصی', titleEn: 'Personal preferences', icon: 'tune', link: 'personal-preferences' },
+    { titleFa: 'مرکز شخصی من', titleEn: 'Personal hub', icon: 'dashboard_customize', link: 'personal-hub' },
+    { titleFa: 'کارهای شخصی', titleEn: 'My tasks', icon: 'checklist', link: 'my-workspace' },
     { titleFa: 'داشبورد', titleEn: 'Dashboard', icon: 'space_dashboard', link: 'dashboard', permission: 'dashboard.view' },
     { titleFa: 'داشبورد مدیران', titleEn: 'Executive', icon: 'monitoring', link: 'executive', roles: ['admin', 'manager', 'hr'] },
-    { titleFa: 'کارکنان', titleEn: 'Employees', icon: 'groups', link: 'users', roles: ['admin', 'manager', 'hr'] },
+    { titleFa: 'کارکنان', titleEn: 'Employees', icon: 'groups', link: 'users', permission: 'employees.view' },
     { titleFa: 'حضور و غیاب', titleEn: 'Attendance', icon: 'schedule', link: 'attendance', permission: 'attendance.view' },
     { titleFa: 'درخواست‌ها', titleEn: 'Requests', icon: 'assignment', link: 'requests', permission: 'requests.view' },
     { titleFa: 'مرخصی', titleEn: 'Leave', icon: 'event_available', link: 'leave' },
@@ -39,8 +90,9 @@ export class DashboardLayout {
     { titleFa: 'فیش حقوقی من', titleEn: 'My payslip', icon: 'receipt_long', link: 'salary-slip' },
     { titleFa: 'ارزیابی عملکرد', titleEn: 'Performance', icon: 'insights', link: 'performance', permission: 'performance.view' },
     { titleFa: 'استخدام', titleEn: 'Recruitment', icon: 'person_search', link: 'recruitment', roles: ['admin', 'hr'] },
+    { titleFa: 'اعلان‌های شخصی', titleEn: 'Personal notifications', icon: 'notifications', link: 'notifications' },
     { titleFa: 'پیام‌ها', titleEn: 'Messages', icon: 'mail', link: 'messages' },
-    { titleFa: 'دایرکتوری کارکنان', titleEn: 'Directory', icon: 'badge', link: 'directory' },
+    { titleFa: 'دایرکتوری کارکنان', titleEn: 'Directory', icon: 'badge', link: 'directory', permission: 'employees.view' },
     { titleFa: 'ساختار سازمانی', titleEn: 'Organization', icon: 'account_tree', link: 'organization', roles: ['admin', 'manager', 'hr'] },
     { titleFa: 'ورود و خروج کارکنان', titleEn: 'Onboarding', icon: 'person_add', link: 'onboarding', roles: ['admin', 'manager', 'hr'] },
     { titleFa: 'اسناد و قراردادها', titleEn: 'Documents', icon: 'folder_open', link: 'documents', roles: ['admin', 'hr'] },
@@ -114,6 +166,12 @@ export class DashboardLayout {
     { titleFa: 'تنظیمات اعلان‌ها', titleEn: 'Notification preferences', icon: 'notifications_active', link: 'notification-preferences' },
     { titleFa: 'تفویض اختیار', titleEn: 'Delegation', icon: 'move_up', link: 'delegation', permission: 'delegation.manage' },
     { titleFa: 'مرکز امنیت', titleEn: 'Security center', icon: 'shield_lock', link: 'security-center', permission: 'security.manage' },
+    { titleFa: 'نشست‌ها و کاربران آنلاین', titleEn: 'Sessions & online users', icon: 'devices', link: 'session-center', permission: 'security.sessions.manage' },
+    { titleFa: 'تماس‌های اضطراری', titleEn: 'Emergency contacts', icon: 'contact_emergency', link: 'emergency-contacts', permission: 'emergency.view' },
+    { titleFa: 'درخواست تجهیزات', titleEn: 'Equipment requests', icon: 'devices_other', link: 'equipment-requests', permission: 'equipmentrequests.view' },
+    { titleFa: 'درخواست آموزش', titleEn: 'Training requests', icon: 'school', link: 'training-requests', permission: 'trainingrequests.view' },
+    { titleFa: 'انتقال داخلی', titleEn: 'Internal transfers', icon: 'swap_horiz', link: 'internal-transfers', permission: 'transfers.view' },
+    { titleFa: 'مرکز انطباق HR', titleEn: 'HR compliance center', icon: 'gpp_good', link: 'hr-compliance', permission: 'compliance.view' },
     { titleFa: 'امنیت حساب‌ها', titleEn: 'Account security', icon: 'manage_accounts', link: 'account-security', permission: 'security.accounts.manage' },
     { titleFa: 'تنظیمات سازمان', titleEn: 'Organization settings', icon: 'settings', link: 'admin-settings', permission: 'settings.manage' },
   ];
@@ -131,7 +189,34 @@ export class DashboardLayout {
   label(item: NavItem): string { return this.isFa ? item.titleFa : item.titleEn; }
   canSee(item: NavItem): boolean {
     if (item.roles && !item.roles.includes(this.userRole)) return false;
-    return !item.permission || this.auth.hasPermission(item.permission) || this.access.can(item.permission);
+    return !item.permission || this.access.can(item.permission);
+  }
+  private rbacCacheVersion(): string { if (!isPlatformBrowser(this.platformId)) return ''; try { return localStorage.getItem('ashkanhr.rbac.v4') || ''; } catch { return ''; } }
+  private navCacheKey = '';
+  private navCache: { titleFa: string; titleEn: string; items: NavItem[] }[] = [];
+  get visibleNavGroups(): { titleFa: string; titleEn: string; items: NavItem[] }[] {
+    this.refreshFavorites();
+    const query = this.navQuery.trim().toLocaleLowerCase();
+    const cacheKey = `${query}|${this.favoriteLinks.join(',')}|${this.userRole}|${this.access.currentRole()}|${this.rbacCacheVersion()}`;
+    if (cacheKey === this.navCacheKey) return this.navCache;
+    const allowed = this.menu.filter(item => this.canSee(item) && (!query ||
+      `${item.titleFa} ${item.titleEn}`.toLocaleLowerCase().includes(query)));
+    const assigned = new Set(this.navGroups.flatMap(group => group.links));
+    const groups = this.navGroups.map(group => ({
+      titleFa: group.titleFa, titleEn: group.titleEn,
+      items: allowed.filter(item => group.links.includes(item.link))
+    })).filter(group => group.items.length > 0);
+    const favorites = allowed.filter(item => this.favoriteLinks.includes(item.link));
+    if (favorites.length) {
+      groups.forEach(group => { group.items = group.items.filter(item => !this.favoriteLinks.includes(item.link)); });
+      groups.unshift({ titleFa: 'علاقه‌مندی‌های من', titleEn: 'My favorites', items: favorites });
+    }
+    const other = allowed.filter(item => !assigned.has(item.link));
+    if (other.length) groups.push({ titleFa: 'سایر امکانات', titleEn: 'More tools', items: other.filter(item => !this.favoriteLinks.includes(item.link)) });
+    const nonEmptyGroups = groups.filter(group => group.items.length);
+    this.navCacheKey = cacheKey;
+    this.navCache = nonEmptyGroups;
+    return nonEmptyGroups;
   }
   openSearch(): void { this.searchOpen = true; }
   @HostListener('document:keydown', ['$event'])
@@ -139,6 +224,10 @@ export class DashboardLayout {
   toggleLanguage(): void { this.language.toggle(); }
   toggleTheme(): void { this.theme.toggleTheme(); }
   toggleSidebar(): void { this.sidebarCollapsed = !this.sidebarCollapsed; }
+  @HostListener('window:ashkanhr:favorites-changed')
+  onFavoritesChanged(): void { this.reloadFavorites(); }
+  @HostListener('document:keydown.escape')
+  closeSidebarOnEscape(): void { if (this.mobileOpen) this.mobileOpen = false; }
   toggleMobile(): void { this.mobileOpen = !this.mobileOpen; }
   closeMobile(): void { this.mobileOpen = false; }
   logout(): void { this.auth.logout(); this.router.navigate(['/login']); }

@@ -1,6 +1,6 @@
 <div class="app-shell" [class.sidebar-collapsed]="sidebarCollapsed" [class.mobile-open]="mobileOpen">
-  <button class="mobile-backdrop" aria-label="Close menu" (click)="closeMobile()"></button>
-  <aside class="sidebar">
+  <button class="mobile-backdrop" [attr.aria-label]="isFa ? 'بستن منو' : 'Close menu'" (click)="closeMobile()"></button>
+  <aside class="sidebar" id="primary-sidebar" [attr.aria-label]="isFa ? 'منوی اصلی' : 'Main sidebar'">
     <div class="brand">
       <div class="brand-mark">A</div>
       <div class="brand-copy"><strong>AshkanHR</strong><span>People Operations</span></div>
@@ -9,16 +9,29 @@
 
     <div class="workspace-card">
       <div class="workspace-icon"><span class="material-symbols-rounded">apartment</span></div>
-      <div><strong>{{ isFa ? 'شرکت نمونه' : 'Acme Company' }}</strong><span>{{ isFa ? 'فضای کاری اصلی' : 'Main workspace' }}</span></div>
+      <div><strong>{{ isFa ? 'محیط نمایشی' : 'Demo workspace' }}</strong><span>{{ isFa ? 'حساب شخصی' : 'Personal account' }}</span></div>
       <span class="material-symbols-rounded">unfold_more</span>
     </div>
 
-    <nav class="nav-list" aria-label="Main navigation">
-      <ng-container *ngFor="let item of menu">
-        <a *ngIf="canSee(item)" [routerLink]="item.link" routerLinkActive="active" (click)="closeMobile()" [title]="label(item)">
-          <span class="material-symbols-rounded">{{ item.icon }}</span><span class="nav-label">{{ label(item) }}</span>
-        </a>
-      </ng-container>
+    <div class="sidebar-filter">
+      <span class="material-symbols-rounded" aria-hidden="true">search</span>
+      <input type="search" [(ngModel)]="navQuery" [placeholder]="isFa ? 'جستجوی منو...' : 'Find a page...'" [attr.aria-label]="isFa ? 'جستجوی منو' : 'Search navigation'" />
+    </div>
+    <nav class="nav-list" [attr.aria-label]="isFa ? 'ناوبری اصلی' : 'Main navigation'">
+      <section class="nav-section" *ngFor="let group of visibleNavGroups">
+        <h2 class="nav-heading">{{ isFa ? group.titleFa : group.titleEn }}</h2>
+        <div class="nav-entry" *ngFor="let item of group.items">
+          <a [routerLink]="item.link" routerLinkActive="active" (click)="closeMobile()" [title]="label(item)">
+            <span class="material-symbols-rounded" aria-hidden="true">{{ item.icon }}</span><span class="nav-label">{{ label(item) }}</span>
+          </a>
+          <button type="button" class="favorite-toggle" [class.is-favorite]="isFavorite(item.link)" (click)="toggleFavorite(item.link)"
+            [attr.aria-label]="isFavorite(item.link) ? (isFa ? 'حذف از علاقه‌مندی‌ها' : 'Remove favorite') : (isFa ? 'افزودن به علاقه‌مندی‌ها' : 'Add favorite')"
+            [attr.aria-pressed]="isFavorite(item.link)">
+            <span class="material-symbols-rounded" aria-hidden="true">{{isFavorite(item.link) ? 'star' : 'star_outline'}}</span>
+          </button>
+        </div>
+      </section>
+      <p class="nav-empty" *ngIf="visibleNavGroups.length === 0">{{ isFa ? 'صفحه‌ای پیدا نشد' : 'No matching pages' }}</p>
     </nav>
 
     <div class="sidebar-footer">
@@ -30,16 +43,20 @@
   <section class="content-area">
     <header class="topbar">
       <div class="topbar-start">
-        <button class="icon-button mobile-menu" (click)="toggleMobile()"><span class="material-symbols-rounded">menu</span></button>
-        <button class="global-search" type="button" (click)="openSearch()"><span class="material-symbols-rounded">search</span><span class="search-placeholder">{{ isFa ? 'جستجو در کارکنان، درخواست‌ها و...' : 'Search employees, requests…' }}</span><kbd>Ctrl K</kbd></button>
+        <button class="icon-button mobile-menu" [attr.aria-label]="isFa ? 'باز کردن منو' : 'Open menu'" [attr.aria-expanded]="mobileOpen" aria-controls="primary-sidebar" (click)="toggleMobile()"><span class="material-symbols-rounded">menu</span></button>
+        <button class="global-search" type="button" (click)="openSearch()" [attr.aria-label]="isFa ? 'باز کردن جستجوی سراسری' : 'Open global search'"><span class="material-symbols-rounded">search</span><span class="search-placeholder">{{ isFa ? 'جستجوی صفحات مجاز...' : 'Search permitted pages…' }}</span><kbd>Ctrl K</kbd></button>
       </div>
       <div class="topbar-actions">
-        <button class="language-button" (click)="toggleLanguage()">{{ isFa ? 'EN' : 'فا' }}</button>
-        <button class="icon-button" (click)="toggleTheme()" [title]="isFa ? 'تغییر پوسته' : 'Toggle theme'"><span class="material-symbols-rounded">{{ theme.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode' }}</span></button>
-        <button class="icon-button notification" routerLink="notifications"><span class="material-symbols-rounded">notifications</span><i></i></button>
+        <div class="header-clock" role="timer" [attr.aria-label]="isFa ? 'تاریخ و ساعت جاری' : 'Current date and time'">
+          <span class="material-symbols-rounded header-clock-icon" aria-hidden="true">calendar_month</span>
+          <span class="header-clock-text"><strong>{{headerDate}}</strong><small dir="auto">{{headerTime}}</small></span>
+        </div>
+        <button class="language-button" type="button" (click)="toggleLanguage()" [attr.aria-label]="isFa ? 'Switch to English' : 'تغییر زبان به فارسی'">{{ isFa ? 'EN' : 'فا' }}</button>
+        <button class="icon-button" type="button" (click)="toggleTheme()" [attr.aria-label]="isFa ? 'تغییر پوسته' : 'Toggle theme'" [title]="isFa ? 'تغییر پوسته' : 'Toggle theme'"><span class="material-symbols-rounded">{{ theme.currentTheme() === 'dark' ? 'light_mode' : 'dark_mode' }}</span></button>
+        <button class="icon-button notification" routerLink="notifications" [attr.aria-label]="isFa ? 'اعلان‌ها' : 'Notifications'"><span class="material-symbols-rounded">notifications</span><i *ngIf="notif.unreadCount() > 0"></i></button>
         <div class="divider"></div>
         <button class="profile-chip" routerLink="profile"><span class="avatar">{{ userName.charAt(0).toUpperCase() }}</span><span class="profile-copy"><strong>{{ userName }}</strong><small>{{ userRole }}</small></span><span class="material-symbols-rounded">expand_more</span></button>
-        <button class="icon-button logout" (click)="logout()" [title]="isFa ? 'خروج' : 'Sign out'"><span class="material-symbols-rounded">logout</span></button>
+        <button class="icon-button logout" (click)="logout()" [attr.aria-label]="isFa ? 'خروج از حساب' : 'Sign out'" [title]="isFa ? 'خروج' : 'Sign out'"><span class="material-symbols-rounded">logout</span></button>
       </div>
     </header>
     <main class="main"><router-outlet></router-outlet></main>

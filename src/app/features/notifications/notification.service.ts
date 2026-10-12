@@ -1,85 +1,36 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { PersonalRecordsService } from '../../core/auth/personal-records.service';
 
 export interface NotificationItem {
-  id: number;
-  title: string;
-  message: string;
-  date: string;
-  important: boolean;
-  read: boolean;
+ id:number; title:string; message:string; date:string; important:boolean; read:boolean; ownerId?:string;
 }
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn:'root'})
 export class NotificationService {
-
-  private storeKey = 'notifications';
-
-  notifications = signal<NotificationItem[]>([]);
-
-  constructor() {
-    const saved = localStorage.getItem(this.storeKey);
-    if (saved) {
-      this.notifications.set(JSON.parse(saved));
-    } else {
-      this.seed();
-    }
-  }
-
-  private save() {
-    localStorage.setItem(this.storeKey, JSON.stringify(this.notifications()));
-  }
-
-  // چند اعلان اولیه
-  private seed() {
-    const demo: NotificationItem[] = [
-      {
-        id: 1,
-        title: 'وضعیت درخواست مرخصی',
-        message: 'مرخصی شما تأیید شد.',
-        date: '۱۴۰۳/۱۰/۲۳',
-        important: false,
-        read: false
-      },
-      {
-        id: 2,
-        title: 'پیام مهم منابع انسانی',
-        message: 'لطفاً پروفایل خود را تکمیل کنید.',
-        date: '۱۴۰۳/۱۰/۲۲',
-        important: true,
-        read: false
-      },
-      {
-        id: 3,
-        title: 'پیام سیستم',
-        message: 'نسخه جدید پورتال فعال شد.',
-        date: '۱۴۰۳/۱۰/۲۰',
-        important: false,
-        read: true
-      }
-    ];
-    this.notifications.set(demo);
-    this.save();
-  }
-
-  markAsRead(id: number) {
-    const updated = this.notifications().map(n =>
-      n.id === id ? { ...n, read: true } : n
-    );
-    this.notifications.set(updated);
-    this.save();
-  }
-
-  toggleImportant(id: number) {
-    const updated = this.notifications().map(n =>
-      n.id === id ? { ...n, important: !n.important } : n
-    );
-    this.notifications.set(updated);
-    this.save();
-  }
-
-  unreadCount() {
-    return this.notifications().filter(n => !n.read).length;
-  }
+ private records=inject(PersonalRecordsService);
+ notifications=signal<NotificationItem[]>([]);
+ private loadedOwner:string|null=null;
+ constructor(){this.refresh()}
+ refresh(){
+  const owner=this.records.ownerId;
+  if(this.loadedOwner===owner)return;
+  this.loadedOwner=owner;
+  this.notifications.set(owner?this.records.read<NotificationItem>('personal-notifications').filter(n=>n?.ownerId===owner).slice(0,100):[]);
+ }
+ private persist(items:NotificationItem[]):boolean {
+  if(!this.records.ownerId)return false;
+  if(!this.records.write('personal-notifications',items))return false;
+  this.notifications.set(items);return true;
+ }
+ add(title:string,message:string):boolean {
+  this.refresh();
+  const owner=this.records.ownerId;
+  if(!owner||!title.trim()||title.length>120||message.length>500||this.notifications().length>=100)return false;
+  const item:NotificationItem={id:Date.now()+Math.floor(Math.random()*1000),title:title.trim(),message:message.trim(),date:new Date().toISOString(),important:false,read:false,ownerId:owner};
+  return this.persist([item,...this.notifications()]);
+ }
+ markAsRead(id:number){this.refresh();this.persist(this.notifications().map(n=>n.id===id?{...n,read:true}:n))}
+ toggleImportant(id:number){this.refresh();this.persist(this.notifications().map(n=>n.id===id?{...n,important:!n.important}:n))}
+ markAllRead(){this.refresh();this.persist(this.notifications().map(n=>({...n,read:true})))}
+ remove(id:number){this.refresh();this.persist(this.notifications().filter(n=>n.id!==id))}
+ unreadCount(){this.refresh();return this.notifications().filter(n=>!n.read).length}
 }
